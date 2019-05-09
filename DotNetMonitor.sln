@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTargetProject", "WpfTarg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetMonitor.UI", "DotNetMonitor.UI\DotNetMonitor.UI.csproj", "{3A7B4220-0414-4C95-BBA2-57E42802E7F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetMonitor.Common", "DotNetMonitor.Common\DotNetMonitor.Common.csproj", "{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,22 @@ Global
 		{3A7B4220-0414-4C95-BBA2-57E42802E7F9}.Release|x64.Build.0 = Release|Any CPU
 		{3A7B4220-0414-4C95-BBA2-57E42802E7F9}.Release|x86.ActiveCfg = Release|Any CPU
 		{3A7B4220-0414-4C95-BBA2-57E42802E7F9}.Release|x86.Build.0 = Release|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Debug|Mixed.ActiveCfg = Debug|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Debug|Mixed.Build.0 = Debug|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Debug|x64.Build.0 = Debug|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Debug|x86.Build.0 = Debug|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Release|Mixed.ActiveCfg = Release|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Release|Mixed.Build.0 = Release|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Release|x64.ActiveCfg = Release|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Release|x64.Build.0 = Release|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Release|x86.ActiveCfg = Release|Any CPU
+		{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
