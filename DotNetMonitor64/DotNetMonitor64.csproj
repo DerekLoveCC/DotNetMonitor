@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotNetMonitor.Common\DotNetMonitor.Common.csproj" />
+    <ProjectReference Include="..\DotNetMonitor.Model\DotNetMonitor.Model.csproj" />
   </ItemGroup>
 
 </Project>
