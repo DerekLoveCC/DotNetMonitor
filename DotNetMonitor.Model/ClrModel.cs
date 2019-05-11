@@ -13,5 +13,8 @@ namespace DotNetMonitor.Model
                 return PointerSize == 8 ? "x64" : "x86";
             }
         }
+
+        public bool ServerGC { get; set; }
+        public int HeapCount { get; set; }
     }
 }
