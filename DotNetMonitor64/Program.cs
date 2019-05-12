@@ -11,8 +11,6 @@ namespace DotNetMonitor64
 {
     internal class Program
     {
-        private const string FILE_PATH = @"D:\clrmd.txt";
-
         private static void Main(string[] args)
         {
             var processId = args[0].ToNullableInt();
@@ -31,34 +29,27 @@ namespace DotNetMonitor64
 
         private static void Test(int processId)
         {
-            if (File.Exists(FILE_PATH))
-            {
-                File.Delete(FILE_PATH);
-            }
             var processModel = new ProcessModel();
 
-            using (var sw = new StreamWriter(File.OpenWrite(FILE_PATH)))
+            using (DataTarget dataTarget = DataTarget.AttachToProcess(processId, 500, AttachFlag.NonInvasive))
             {
-                using (DataTarget dataTarget = DataTarget.AttachToProcess(processId, 500, AttachFlag.NonInvasive))
+                foreach (var clrVersion in dataTarget.ClrVersions)
                 {
-                    foreach (var clrVersion in dataTarget.ClrVersions)
-                    {
-                        var runtime = clrVersion.CreateRuntime();
-                        //PrintAppDomains(runtime, sw);
-                        //PrintModules(runtime, sw);
-                        //PrintThreadS(runtime, sw);
-                        //PrintSegments(runtime, sw);
-                        //PrintGCHandles(runtime, sw);
-                        //PrintHeapSegments(runtime, sw);
-                        //PrintLogicHeapBalance(runtime, sw);
-                        //PrintManagedObjectsBySegment(runtime, sw);
-                        //PrintManagedObjects(runtime, sw);
-                    }
+                    var runtime = clrVersion.CreateRuntime();
+                    //PrintAppDomains(runtime, sw);
+                    //PrintModules(runtime, sw);
+                    //PrintThreadS(runtime, sw);
+                    //PrintSegments(runtime, sw);
+                    //PrintGCHandles(runtime, sw);
+                    //PrintHeapSegments(runtime, sw);
+                    //PrintLogicHeapBalance(runtime, sw);
+                    //PrintManagedObjectsBySegment(runtime, sw);
+                    //PrintManagedObjects(runtime, sw);
                 }
             }
         }
 
-        private static void PrintManagedObjects(ClrRuntime runtime, StreamWriter sw)
+        private static void PrintManagedObjects(ClrRuntime runtime)
         {
             if (!runtime.Heap.CanWalkHeap)
             {
@@ -77,16 +68,16 @@ namespace DotNetMonitor64
                     }
 
                     ulong size = type.GetSize(obj);
-                    sw.WriteLine("{0,12:X} {1,8:n0} {2,1:n0} {3}", obj, size, runtime.Heap.GetGeneration(obj), type.Name);
+                    LogHelper.Logger.InfoFormat("{0,12:X} {1,8:n0} {2,1:n0} {3}", obj, size, runtime.Heap.GetGeneration(obj), type.Name);
                 }
             }
         }
 
-        private static void PrintManagedObjectsBySegment(ClrRuntime runtime, StreamWriter sw)
+        private static void PrintManagedObjectsBySegment(ClrRuntime runtime)
         {
             if (!runtime.Heap.CanWalkHeap)
             {
-                sw.WriteLine("Cannot walk the heap!");
+                LogHelper.Logger.InfoFormat("Cannot walk the heap!");
             }
             else
             {
@@ -103,7 +94,7 @@ namespace DotNetMonitor64
                         }
 
                         ulong size = type.GetSize(obj);
-                        sw.WriteLine("{0,12:X} {1,8:n0} {2,1:n0} {3}", obj, size, seg.GetGeneration(obj), type.Name);
+                        LogHelper.Logger.InfoFormat("{0,12:X} {1,8:n0} {2,1:n0} {3}", obj, size, seg.GetGeneration(obj), type.Name);
                     }
                 }
             }
