@@ -24,15 +24,22 @@ namespace DotNetMonitor64
             {
                 return;
             }
+            //Test(processId.Value);
+            var processInfoCollector = new ProcessInfoCollector(processId.Value);
+            processInfoCollector.Collect();
+        }
 
+        private static void Test(int processId)
+        {
             if (File.Exists(FILE_PATH))
             {
                 File.Delete(FILE_PATH);
             }
-            var clrModels = new List<ClrModel>();
+            var processModel = new ProcessModel();
+
             using (var sw = new StreamWriter(File.OpenWrite(FILE_PATH)))
             {
-                using (DataTarget dataTarget = DataTarget.AttachToProcess(processId.Value, 500, AttachFlag.NonInvasive))
+                using (DataTarget dataTarget = DataTarget.AttachToProcess(processId, 500, AttachFlag.NonInvasive))
                 {
                     foreach (var clrVersion in dataTarget.ClrVersions)
                     {
@@ -45,7 +52,7 @@ namespace DotNetMonitor64
                         //PrintHeapSegments(runtime, sw);
                         //PrintLogicHeapBalance(runtime, sw);
                         //PrintManagedObjectsBySegment(runtime, sw);
-                        PrintManagedObjects(runtime, sw);
+                        //PrintManagedObjects(runtime, sw);
                     }
                 }
             }
@@ -65,7 +72,9 @@ namespace DotNetMonitor64
 
                     // If heap corruption, continue past this object.
                     if (type == null)
+                    {
                         continue;
+                    }
 
                     ulong size = type.GetSize(obj);
                     sw.WriteLine("{0,12:X} {1,8:n0} {2,1:n0} {3}", obj, size, runtime.Heap.GetGeneration(obj), type.Name);
@@ -205,22 +214,6 @@ namespace DotNetMonitor64
                 sw.WriteLine("Name:    {0}", domain.Name);
                 sw.WriteLine("Address: {0}", domain.Address);
             }
-        }
-
-        private static ClrModel CreateClrModel(ClrInfo clrVersion, ClrRuntime runtime)
-        {
-            return new ClrModel
-            {
-                Version = CreateVersion(clrVersion),
-                PointerSize = runtime.PointerSize,
-                ServerGC = runtime.ServerGC,
-                HeapCount = runtime.HeapCount,
-            };
-        }
-
-        private static Version CreateVersion(ClrInfo clrVersion)
-        {
-            return new Version(clrVersion.Version.Major, clrVersion.Version.Minor, clrVersion.Version.Patch, clrVersion.Version.Revision);
         }
 
         private static void ObjSize(ClrHeap heap, ulong obj, out uint count, out ulong size)

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\DotNetMonitor64\ProcessInfoCollector.cs" Link="ProcessInfoCollector.cs" />
     <Compile Include="..\DotNetMonitor64\Program.cs" Link="Program.cs" />
   </ItemGroup>
 
@@ -16,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotNetMonitor.Common\DotNetMonitor.Common.csproj" />
+    <ProjectReference Include="..\DotNetMonitor.Model\DotNetMonitor.Model.csproj" />
   </ItemGroup>
 
 </Project>
