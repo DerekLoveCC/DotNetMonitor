@@ -1,10 +1,6 @@
 ﻿using DotNetMonitor.Common;
-using DotNetMonitor.Model;
-using Microsoft.Diagnostics.Runtime;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 
 namespace DotNetMonitor64
@@ -24,7 +20,7 @@ namespace DotNetMonitor64
                 {
                     return;
                 }
-                //Test(processId.Value);
+                //ProcessInfoCollector.Test(processId.Value);
                 var processInfoCollector = new ProcessInfoCollector(processId.Value);
                 processInfoCollector.Collect();
             }
@@ -34,27 +30,5 @@ namespace DotNetMonitor64
                 Console.Read();
             }
         }
-
-        private static void Test(int processId)
-        {
-            using (DataTarget dataTarget = DataTarget.AttachToProcess(processId, 500, AttachFlag.NonInvasive))
-            {
-                foreach (var clrVersion in dataTarget.ClrVersions)
-                {
-                    var runtime = clrVersion.CreateRuntime();
-                    //PrintAppDomains(runtime, sw);
-                    //PrintModules(runtime, sw);
-                    //PrintThreadS(runtime, sw);
-                    //PrintSegments(runtime, sw);
-                    //PrintGCHandles(runtime, sw);
-                    //PrintHeapSegments(runtime, sw);
-                    //PrintLogicHeapBalance(runtime, sw);
-                    PrintManagedObjectsBySegment(runtime);
-                    //PrintManagedObjects(runtime, sw);
-                }
-            }
-        }
-
-       
     }
 }

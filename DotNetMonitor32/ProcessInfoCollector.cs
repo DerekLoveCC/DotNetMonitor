@@ -80,8 +80,6 @@ namespace DotNetMonitor64
                 ReferencedObjects = new List<ClrObjectModel>()
             };
 
-
-
             return result;
         }
 
@@ -128,19 +126,16 @@ namespace DotNetMonitor64
                 {
                     if (child != 0 && !considered.Contains(child))
                     {
-                        if(addressToClrObjectModel[obj].ReferencedObjects == null)
+                        if (addressToClrObjectModel[obj].ReferencedObjects == null)
                         {
-
                         }
 
                         eval.Push(child);
                     }
                 });
-
             }
             return (count, size);
         }
-
 
         private static IList<ClrObjectModel> BuildClrObjects(ClrRuntime runtime)
         {
@@ -220,6 +215,26 @@ namespace DotNetMonitor64
         }
 
         #region
+
+        private static void Test(int processId)
+        {
+            using (DataTarget dataTarget = DataTarget.AttachToProcess(processId, 500, AttachFlag.NonInvasive))
+            {
+                foreach (var clrVersion in dataTarget.ClrVersions)
+                {
+                    var runtime = clrVersion.CreateRuntime();
+                    //PrintAppDomains(runtime, sw);
+                    //PrintModules(runtime, sw);
+                    //PrintThreadS(runtime, sw);
+                    //PrintSegments(runtime, sw);
+                    //PrintGCHandles(runtime, sw);
+                    //PrintHeapSegments(runtime, sw);
+                    //PrintLogicHeapBalance(runtime, sw);
+                    //PrintManagedObjectsBySegment(runtime);
+                    //PrintManagedObjects(runtime, sw);
+                }
+            }
+        }
 
         private static void PrintManagedObjects(ClrRuntime runtime)
         {
