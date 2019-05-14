@@ -13,16 +13,24 @@ namespace DotNetMonitor64
     {
         private static void Main(string[] args)
         {
-            var processId = args[0].ToNullableInt();
-            if (processId == null)
+            try
             {
-                processId = Process.GetProcessesByName(args[0]).FirstOrDefault()?.Id;
+                var processId = args[0].ToNullableInt();
+                if (processId == null)
+                {
+                    processId = Process.GetProcessesByName(args[0]).FirstOrDefault()?.Id;
+                }
+                if (processId == null)
+                {
+                    return;
+                }
+                Test(processId.Value);
             }
-            if (processId == null)
+            catch (Exception ex)
             {
-                return;
+                LogHelper.Logger.Error(ex);
+                Console.Read();
             }
-            Test(processId.Value);
             //var processInfoCollector = new ProcessInfoCollector(processId.Value);
             //processInfoCollector.Collect();
         }

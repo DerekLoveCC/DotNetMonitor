@@ -1,5 +1,6 @@
 ﻿using log4net;
 using log4net.Config;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -10,7 +11,8 @@ namespace DotNetMonitor.Common
         static LogHelper()
         {
             var repository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-            XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));
+            var fileName = $"{Process.GetCurrentProcess().ProcessName}.exe.config";
+            XmlConfigurator.Configure(repository, new FileInfo(fileName));
         }
         public static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

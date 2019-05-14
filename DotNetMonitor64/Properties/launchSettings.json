@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "DotNetMonitor64": {
-      "commandName": "Project",
-      "commandLineArgs": "WpfTargetProject"
-    }
-  }
-}
