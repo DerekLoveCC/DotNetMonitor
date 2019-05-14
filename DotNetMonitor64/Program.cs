@@ -22,15 +22,13 @@ namespace DotNetMonitor64
             {
                 return;
             }
-            //Test(processId.Value);
-            var processInfoCollector = new ProcessInfoCollector(processId.Value);
-            processInfoCollector.Collect();
+            Test(processId.Value);
+            //var processInfoCollector = new ProcessInfoCollector(processId.Value);
+            //processInfoCollector.Collect();
         }
 
         private static void Test(int processId)
         {
-            var processModel = new ProcessModel();
-
             using (DataTarget dataTarget = DataTarget.AttachToProcess(processId, 500, AttachFlag.NonInvasive))
             {
                 foreach (var clrVersion in dataTarget.ClrVersions)
@@ -43,7 +41,7 @@ namespace DotNetMonitor64
                     //PrintGCHandles(runtime, sw);
                     //PrintHeapSegments(runtime, sw);
                     //PrintLogicHeapBalance(runtime, sw);
-                    //PrintManagedObjectsBySegment(runtime, sw);
+                    PrintManagedObjectsBySegment(runtime);
                     //PrintManagedObjects(runtime, sw);
                 }
             }
