@@ -89,6 +89,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Manager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

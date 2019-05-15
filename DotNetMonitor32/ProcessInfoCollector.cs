@@ -11,7 +11,6 @@ namespace DotNetMonitor64
     public class ProcessInfoCollector
     {
         private readonly int processId;
-
         public ProcessInfoCollector(int processId)
         {
             this.processId = processId;
@@ -43,7 +42,7 @@ namespace DotNetMonitor64
                 ServerGC = runtime.ServerGC,
                 HeapCount = runtime.HeapCount,
                 DacLocation = runtime.ClrInfo.LocalMatchingDac,
-                ClrObjects = BuildClrObjects(runtime),
+                //ClrObjects = BuildClrObjects(runtime),
                 RootObjects = BuildRootObjects(runtime),
             };
 
@@ -61,79 +60,113 @@ namespace DotNetMonitor64
 
         private static IList<ClrObjectModel> BuildRootObjects(ClrRuntime runtime)
         {
+            var addressToRoot = new Dictionary<ulong, (ClrRoot root, uint refCount)>();
+
             var rootObjects = new List<ClrObjectModel>();
             foreach (var root in runtime.Heap.EnumerateRoots())
             {
-                var rootObject = BuildRootObject(root);
+                if (addressToRoot.ContainsKey(root.Address))
+                {
+                    addressToRoot[root.Address] = (root, addressToRoot[root.Address].refCount + 1);
+                }
+                else
+                {
+                    addressToRoot.Add(root.Address, (root, 1));
+                }
+            }
+
+            foreach (var keyValue in addressToRoot)
+            {
+                var rootObject = BuildRootObject(keyValue.Value.root, runtime.Heap);
                 rootObjects.Add(rootObject);
             }
 
             return rootObjects;
         }
 
-        private static ClrObjectModel BuildRootObject(ClrRoot root)
+        private static ClrObjectModel BuildRootObject(ClrRoot root, ClrHeap heap)
         {
             var result = new ClrObjectModel
             {
-                TypeName = root.Type.Name,
+                TypeName = root.Type?.Name,
                 InnerId = root.Address,
                 ReferencedObjects = new List<ClrObjectModel>()
             };
 
+            (uint count, ulong toatalSize) = PopulateReferencedObjects(heap, result);
+            result.TotalSize = toatalSize;
+            result.ChildCount = count;
+
             return result;
         }
 
-        private static (uint, ulong) PopulateReferencedObjects(ClrHeap heap, ClrObjectModel clrObj)
+        private static (uint, ulong) PopulateReferencedObjects(ClrHeap heap, ClrObjectModel clrObjModel)
         {
             // Evaluation stack
             Stack<ulong> eval = new Stack<ulong>();
-            var addressToClrObjectModel = new Dictionary<ulong, ClrObjectModel>();
-            addressToClrObjectModel.Add(clrObj.InnerId, clrObj);
+            var addressToClrObjectModel = new Dictionary<ulong, ClrObjectModel>
+            {
+                { clrObjModel.InnerId, clrObjModel }
+            };
             // To make sure we don't count the same object twice, we'll keep a set of all objects
             // we've seen before.  Note the ObjectSet here is basically just "HashSet<ulong>".
             // However, HashSet<ulong> is *extremely* memory inefficient.  So we use our own to
             // avoid OOMs.
-            var obj = clrObj.InnerId;
-            ObjectSet considered = new ObjectSet(heap);
+            var currentObj = clrObjModel.InnerId;
+            var considered = new ObjectSet(heap);
             uint count = 0;
             ulong size = 0;
-            eval.Push(obj);
+            eval.Push(currentObj);
 
             while (eval.Count > 0)
             {
                 // Pop an object, ignore it if we've seen it before.
-                obj = eval.Pop();
-                if (considered.Contains(obj))
+                currentObj = eval.Pop();
+                if (considered.Contains(currentObj))
                 {
                     continue;
                 }
 
-                considered.Add(obj);
+                considered.Add(currentObj);
 
                 // Grab the type. We will only get null here in the case of heap corruption.
-                ClrType type = heap.GetObjectType(obj);
+                ClrType type = heap.GetObjectType(currentObj);
                 if (type == null)
                 {
                     continue;
                 }
 
                 count++;
-                size += type.GetSize(obj);
+                size += type.GetSize(currentObj);
 
                 // Now enumerate all objects that this object points to, add them to the
                 // evaluation stack if we haven't seen them before.
-                type.EnumerateRefsOfObject(obj, delegate (ulong child, int offset)
+                type.EnumerateRefsOfObject(currentObj, delegate (ulong child, int offset)
                 {
                     if (child != 0 && !considered.Contains(child))
                     {
-                        if (addressToClrObjectModel[obj].ReferencedObjects == null)
+                        var childObj = heap.GetObject(child);
+                        ClrObjectModel childClrModel = null;
+                        if (addressToClrObjectModel.ContainsKey(childObj))
                         {
+                            childClrModel = addressToClrObjectModel[childObj];
+                        }
+                        else
+                        {
+                            childClrModel = new ClrObjectModel
+                            {
+                                TypeName = childObj.Type.Name,
+                                InnerId = childObj,
+                                ReferencedObjects = new List<ClrObjectModel>(),
+                            };
                         }
 
+                        addressToClrObjectModel[currentObj].ReferencedObjects.Add(childClrModel);
                         eval.Push(child);
                     }
                 });
             }
+
             return (count, size);
         }
 
@@ -176,7 +209,7 @@ namespace DotNetMonitor64
                 clrObjects.Add(new ClrObjectModel
                 {
                     Gen = runtime.Heap.GetGeneration(obj),
-                    Size = size,
+                    TotalSize = size,
                     TypeName = type.Name,
                 });
             }
@@ -206,7 +239,7 @@ namespace DotNetMonitor64
                     clrObjects.Add(new ClrObjectModel
                     {
                         Gen = seg.GetGeneration(obj),
-                        Size = size,
+                        TotalSize = size,
                         TypeName = type.Name,
                         InnerId = obj,
                     });

@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using WpfTargetProject.Models;
 
 namespace WpfTargetProject
 {
@@ -21,6 +22,11 @@ namespace WpfTargetProject
         [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "4.0.0.0")]
         public static void Main()
         {
+            var p = new Employee
+            {
+                Name = "David"
+            };
+
             WpfTargetProject.App app = new WpfTargetProject.App();
             app.InitializeComponent();
             app.Run();
