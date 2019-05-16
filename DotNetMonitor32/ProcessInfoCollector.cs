@@ -11,6 +11,7 @@ namespace DotNetMonitor64
     public class ProcessInfoCollector
     {
         private readonly int processId;
+
         public ProcessInfoCollector(int processId)
         {
             this.processId = processId;
@@ -43,7 +44,7 @@ namespace DotNetMonitor64
                 HeapCount = runtime.HeapCount,
                 DacLocation = runtime.ClrInfo.LocalMatchingDac,
                 //ClrObjects = BuildClrObjects(runtime),
-                RootObjects = BuildRootObjects(runtime),
+                RootRefs = BuildRootRefs(runtime),
             };
 
             //PrintAppDomains(runtime, sw);
@@ -58,61 +59,59 @@ namespace DotNetMonitor64
             return clrModel;
         }
 
-        private static IList<ClrObjectModel> BuildRootObjects(ClrRuntime runtime)
+        private static IList<ClrRootRefModel> BuildRootRefs(ClrRuntime runtime)
         {
-            var addressToRoot = new Dictionary<ulong, (ClrRoot root, uint refCount)>();
-
-            var rootObjects = new List<ClrObjectModel>();
+            var rootRefs = new List<ClrRootRefModel>();
             foreach (var root in runtime.Heap.EnumerateRoots())
             {
-                if (addressToRoot.ContainsKey(root.Address))
+                var rootRef = new ClrRootRefModel
                 {
-                    addressToRoot[root.Address] = (root, addressToRoot[root.Address].refCount + 1);
-                }
-                else
-                {
-                    addressToRoot.Add(root.Address, (root, 1));
-                }
+                    Address = root.Address,
+                    RootObjectAddress = root.Object,
+                    Name = root.Name,
+                    RootObjectTypeName = root.Type?.Name,
+                };
+                rootRefs.Add(rootRef);
             }
 
-            foreach (var keyValue in addressToRoot)
+            foreach (var rootRef in rootRefs)
             {
-                var rootObject = BuildRootObject(keyValue.Value.root, runtime.Heap);
-                rootObjects.Add(rootObject);
+                PopulateRootObject(rootRef, runtime.Heap);
             }
 
-            return rootObjects;
+            return rootRefs;
         }
 
-        private static ClrObjectModel BuildRootObject(ClrRoot root, ClrHeap heap)
+        private static void PopulateRootObject(ClrRootRefModel rootRef, ClrHeap heap)
         {
-            var result = new ClrObjectModel
+            var rootObject = new ClrObjectModel
             {
-                TypeName = root.Type?.Name,
-                InnerId = root.Address,
+                TypeName = rootRef.RootObjectTypeName,
+                Address = rootRef.RootObjectAddress,
                 ReferencedObjects = new List<ClrObjectModel>()
             };
 
-            (uint count, ulong toatalSize) = PopulateReferencedObjects(heap, result);
-            result.TotalSize = toatalSize;
-            result.ChildCount = count;
+            (uint count, ulong toltalSize) = PopulateReferencedObjects(heap, rootObject);
+            rootObject.TotalSize = toltalSize;
+            rootRef.ObjectCount = count;
 
-            return result;
+            rootObject.ChildCount = rootRef.ObjectCount - 1;
+            rootRef.RootObject = rootObject;
         }
 
         private static (uint, ulong) PopulateReferencedObjects(ClrHeap heap, ClrObjectModel clrObjModel)
         {
             // Evaluation stack
-            Stack<ulong> eval = new Stack<ulong>();
+            var eval = new Stack<ulong>();
             var addressToClrObjectModel = new Dictionary<ulong, ClrObjectModel>
             {
-                { clrObjModel.InnerId, clrObjModel }
+                { clrObjModel.Address, clrObjModel }
             };
             // To make sure we don't count the same object twice, we'll keep a set of all objects
             // we've seen before.  Note the ObjectSet here is basically just "HashSet<ulong>".
             // However, HashSet<ulong> is *extremely* memory inefficient.  So we use our own to
             // avoid OOMs.
-            var currentObj = clrObjModel.InnerId;
+            var currentObj = clrObjModel.Address;
             var considered = new ObjectSet(heap);
             uint count = 0;
             ulong size = 0;
@@ -156,9 +155,10 @@ namespace DotNetMonitor64
                             childClrModel = new ClrObjectModel
                             {
                                 TypeName = childObj.Type.Name,
-                                InnerId = childObj,
+                                Address = childObj,
                                 ReferencedObjects = new List<ClrObjectModel>(),
                             };
+                            addressToClrObjectModel[currentObj] = childClrModel;
                         }
 
                         addressToClrObjectModel[currentObj].ReferencedObjects.Add(childClrModel);
@@ -241,7 +241,7 @@ namespace DotNetMonitor64
                         Gen = seg.GetGeneration(obj),
                         TotalSize = size,
                         TypeName = type.Name,
-                        InnerId = obj,
+                        Address = obj,
                     });
                 }
             }

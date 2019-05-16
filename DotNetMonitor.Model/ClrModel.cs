@@ -24,6 +24,6 @@ namespace DotNetMonitor.Model
         public string DacLocation { get; set; }
 
         public IList<ClrObjectModel> ClrObjects { get; set; }
-        public IList<ClrObjectModel> RootObjects { get; set; }
+        public IList<ClrRootRefModel> RootRefs { get; set; }
     }
 }

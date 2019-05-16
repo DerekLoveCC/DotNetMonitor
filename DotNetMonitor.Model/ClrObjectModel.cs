@@ -9,7 +9,7 @@ namespace DotNetMonitor.Model
         public ulong TotalSize { get; set; }
         public ulong OwnSize { get; set; }
         public int Gen { get; set; }
-        public ulong InnerId { get; set; }
+        public ulong Address { get; set; }
 
         public uint ChildCount { get; set; }
 
