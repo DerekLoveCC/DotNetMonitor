@@ -1,18 +1,18 @@
-﻿<Window
-    x:Class="DotNetMonitor.UI.Views.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:DotNetMonitor.UI.Views"
-    xmlns:localVM="clr-namespace:DotNetMonitor.UI.ViewModels"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Process List"
-    ResizeMode="NoResize"
-    SizeToContent="WidthAndHeight"
-    mc:Ignorable="d">
-    <Window.DataContext>
+﻿<Controls:MetroWindow x:Class="DotNetMonitor.UI.Views.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:local="clr-namespace:DotNetMonitor.UI.Views"
+                      xmlns:localVM="clr-namespace:DotNetMonitor.UI.ViewModels"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      Title="Process List"
+                      ResizeMode="NoResize"
+                      SizeToContent="WidthAndHeight"
+                      mc:Ignorable="d">
+    <Controls:MetroWindow.DataContext>
         <localVM:MainWindowViewModel />
-    </Window.DataContext>
+    </Controls:MetroWindow.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -21,17 +21,19 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Margin="10">Process:</TextBlock>
+        <TextBlock Grid.Column="0"
+                   Margin="10">
+            Process:
+        </TextBlock>
 
-        <ListBox
-            Grid.Column="1"
-            Height="700"
-            MinWidth="100"
-            Margin="5"
-            DisplayMemberPath="Name"
-            ItemsSource="{Binding ProcessList}"
-            ScrollViewer.VerticalScrollBarVisibility="Auto"
-            SelectedItem="{Binding SelectedProcess}" />
+        <ListBox Grid.Column="1"
+                 Height="700"
+                 MinWidth="100"
+                 Margin="5"
+                 DisplayMemberPath="Name"
+                 ItemsSource="{Binding ProcessList}"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 SelectedItem="{Binding SelectedProcess}" />
 
     </Grid>
-</Window>
+</Controls:MetroWindow>
