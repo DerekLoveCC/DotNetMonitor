@@ -6,7 +6,10 @@
                       xmlns:localVM="clr-namespace:DotNetMonitor.UI.ViewModels"
                       xmlns:localViews="clr-namespace:DotNetMonitor.UI.Views"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      Title="Process List"
+                      xmlns:s="clr-namespace:System;assembly=mscorlib"
+                      xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+                      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                      Title="Dotnet Monitor"
                       mc:Ignorable="d">
 
     <Controls:MetroWindow.DataContext>
@@ -14,15 +17,55 @@
     </Controls:MetroWindow.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <localViews:ProcessListView Grid.Column="0"
-                                    VerticalAlignment="Stretch" />
-        <localViews:ProcessDetailView Grid.Column="1"
-                                      VerticalAlignment="Stretch" />
+        <xcad:DockingManager Grid.Row="0"
+                             Margin="2"
+                             AllowMixedOrientation="True"
+                             BorderBrush="Black"
+                             BorderThickness="1">
+            <xcad:DockingManager.DocumentHeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Margin="0,0,4,0"
+                               Source="{Binding IconSource}" />
+                        <TextBlock Text="{Binding Title}" />
+                    </StackPanel>
+                </DataTemplate>
+            </xcad:DockingManager.DocumentHeaderTemplate>
+            <xcad:LayoutRoot x:Name="_layoutRoot">
+                <xcad:LayoutPanel Orientation="Horizontal">
+                    <xcad:LayoutAnchorablePane DockWidth="200">
+                        <xcad:LayoutAnchorable Title="Process List"
+                                               AutoHideWidth="240"
+                                               CanClose="False"
+                                               CanHide="False"
+                                               ContentId="ProcessList"
+                                               IconSource="../Images/property-blue.png">
+                            <localViews:ProcessListView />
+                        </xcad:LayoutAnchorable>
+                    </xcad:LayoutAnchorablePane>
+                    <xcad:LayoutDocumentPaneGroup>
+                        <xcad:LayoutDocumentPane>
+                            <xcad:LayoutDocument Title="Document 1"
+                                                 ContentId="document1"
+                                                 IconSource="../Images/document.png">
+                                <Button HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Content="Document 1 Content" />
+                            </xcad:LayoutDocument>
+                            <xcad:LayoutDocument Title="Document 2"
+                                                 ContentId="document2"
+                                                 IconSource="../Images/document.png">
+                                <TextBox AcceptsReturn="True"
+                                         Text="Document 2 Content" />
+                            </xcad:LayoutDocument>
+                        </xcad:LayoutDocumentPane>
+                    </xcad:LayoutDocumentPaneGroup>
+                </xcad:LayoutPanel>
+
+
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
     </Grid>
 </Controls:MetroWindow>
