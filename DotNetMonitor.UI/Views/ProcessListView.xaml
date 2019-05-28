@@ -24,10 +24,9 @@
                 <Setter Property="Margin" Value="2" />
             </Style>
             <DataTemplate x:Key="ProcessItemTemplate">
-                <Button Width="150"
-                        HorizontalContentAlignment="Left"
+                <Button HorizontalContentAlignment="Left"
                         Command="{Binding OpenDetailViewCommand}"
-                        Content="{Binding Name}">
+                        Content="{Binding DisplayMember}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Grid x:Name="grid">

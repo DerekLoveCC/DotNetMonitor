@@ -13,9 +13,9 @@ namespace DotNetMonitor.UI.ViewModels
         }
 
 
-        private ProcessViewModel _selectedProcess;
+        private NavigationItemViewModel _selectedProcess;
 
-        public ProcessViewModel SelectedProcess
+        public NavigationItemViewModel SelectedProcess
         {
             get { return _selectedProcess; }
             set
@@ -29,9 +29,9 @@ namespace DotNetMonitor.UI.ViewModels
             }
         }
 
-        private IList<ProcessViewModel> _processList;
+        private IList<NavigationItemViewModel> _processList;
 
-        public IList<ProcessViewModel> ProcessList
+        public IList<NavigationItemViewModel> ProcessList
         {
             get
             {
@@ -49,10 +49,10 @@ namespace DotNetMonitor.UI.ViewModels
 
         private void PopulateProcess()
         {
-            ProcessList = System.Diagnostics.Process.GetProcesses().Select(p => new ProcessViewModel
+            ProcessList = System.Diagnostics.Process.GetProcesses().OrderBy(p => p.Id).Select(p => new NavigationItemViewModel
             {
                 Id = p.Id,
-                Name = p.ProcessName,
+                DisplayMember = $"{p.Id,-10}-{p.ProcessName}",
             }).ToList();
         }
 
