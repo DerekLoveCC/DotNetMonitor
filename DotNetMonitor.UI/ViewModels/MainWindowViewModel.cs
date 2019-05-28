@@ -52,7 +52,7 @@ namespace DotNetMonitor.UI.ViewModels
             ProcessList = System.Diagnostics.Process.GetProcesses().OrderBy(p => p.Id).Select(p => new NavigationItemViewModel
             {
                 Id = p.Id,
-                DisplayMember = $"{p.Id,-10}-{p.ProcessName}",
+                DisplayMember = p.ProcessName,
             }).ToList();
         }
 

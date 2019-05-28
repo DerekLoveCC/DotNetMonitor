@@ -25,13 +25,20 @@
             </Style>
             <DataTemplate x:Key="ProcessItemTemplate">
                 <Button HorizontalContentAlignment="Left"
-                        Command="{Binding OpenDetailViewCommand}"
-                        Content="{Binding DisplayMember}">
+                        Command="{Binding OpenDetailViewCommand}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Grid x:Name="grid">
-                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding Id}" />
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding DisplayMember}" />
+                                <!--<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />-->
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
