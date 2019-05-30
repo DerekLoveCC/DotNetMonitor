@@ -1,4 +1,6 @@
-﻿using DotNetMonitor.UI.Views;
+﻿using Autofac;
+using DotNetMonitor.UI.Startup;
+using DotNetMonitor.UI.Views;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -17,7 +19,10 @@ namespace DotNetMonitor.UI
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var mainWindow = new MainWindow();
+            var bootstrapper = new Bootstrapper();
+            var container = bootstrapper.Bootstrap();
+
+            var mainWindow = container.Resolve<MainWindow>();
             mainWindow.Show();
         }
     }

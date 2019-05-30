@@ -11,10 +11,22 @@
                       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                       Title="Dotnet Monitor"
                       mc:Ignorable="d">
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="ProcessDocumentPaneTemplate">
+                <TextBlock Text="{Binding Id}" />
+            </DataTemplate>
+            <DataTemplate x:Key="ProcessDocumentPaneHeaderTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Image Margin="0,0,4,0"
+                           Source="../Images/document.png" />
+                    <TextBlock VerticalAlignment="Center"
+                               Text="{Binding Content.Id}" />
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Controls:MetroWindow.Resources>
 
-    <Controls:MetroWindow.DataContext>
-        <localVM:MainWindowViewModel />
-    </Controls:MetroWindow.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -23,16 +35,11 @@
                              Margin="2"
                              AllowMixedOrientation="True"
                              BorderBrush="Black"
-                             BorderThickness="1">
-            <xcad:DockingManager.DocumentHeaderTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Margin="0,0,4,0"
-                               Source="{Binding IconSource}" />
-                        <TextBlock Text="{Binding Title}" />
-                    </StackPanel>
-                </DataTemplate>
-            </xcad:DockingManager.DocumentHeaderTemplate>
+                             BorderThickness="1"
+                             DocumentHeaderTemplate="{StaticResource ProcessDocumentPaneHeaderTemplate}"
+                             DocumentsSource="{Binding ProcessDetailViewModel.LoadedProcesses}"
+                             LayoutItemTemplate="{StaticResource ProcessDocumentPaneTemplate}">
+
             <xcad:LayoutRoot x:Name="_layoutRoot">
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePane DockWidth="200">
@@ -42,12 +49,12 @@
                                                CanHide="False"
                                                ContentId="ProcessList"
                                                IconSource="../Images/property-blue.png">
-                            <localViews:ProcessListView />
+                            <localViews:ProcessListView DataContext="{Binding NavigationViewModel}" />
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
                     <xcad:LayoutDocumentPaneGroup>
                         <xcad:LayoutDocumentPane>
-                            <xcad:LayoutDocument Title="Document 1"
+                            <!--<xcad:LayoutDocument Title="Document 1"
                                                  ContentId="document1"
                                                  IconSource="../Images/document.png">
                                 <Button HorizontalAlignment="Center"
@@ -59,12 +66,10 @@
                                                  IconSource="../Images/document.png">
                                 <TextBox AcceptsReturn="True"
                                          Text="Document 2 Content" />
-                            </xcad:LayoutDocument>
+                            </xcad:LayoutDocument>-->
                         </xcad:LayoutDocumentPane>
                     </xcad:LayoutDocumentPaneGroup>
                 </xcad:LayoutPanel>
-
-
             </xcad:LayoutRoot>
         </xcad:DockingManager>
     </Grid>

@@ -25,7 +25,7 @@
             </Style>
             <DataTemplate x:Key="ProcessItemTemplate">
                 <Button HorizontalContentAlignment="Left"
-                        Command="{Binding OpenDetailViewCommand}">
+                        Command="{Binding OpenProcessDetailCommand}">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Grid x:Name="grid">

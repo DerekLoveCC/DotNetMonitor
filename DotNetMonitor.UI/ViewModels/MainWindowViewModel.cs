@@ -1,60 +1,56 @@
-﻿using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using Prism.Mvvm;
 
 namespace DotNetMonitor.UI.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        public MainWindowViewModel()
+        public MainWindowViewModel(NavigationViewModel navigationViewModel,
+                                   ProcessDetailViewModel processDetailViewModel)
         {
-            PopulateProcess();
+            NavigationViewModel = navigationViewModel;
+            ProcessDetailViewModel = processDetailViewModel;
         }
 
+        private NavigationViewModel _navigationViewModel;
 
-        private NavigationItemViewModel _selectedProcess;
-
-        public NavigationItemViewModel SelectedProcess
-        {
-            get { return _selectedProcess; }
-            set
-            {
-                if (_selectedProcess != value)
-                {
-                    _selectedProcess = value;
-
-                    RaisePropertyChanged(nameof(SelectedProcess));
-                }
-            }
-        }
-
-        private IList<NavigationItemViewModel> _processList;
-
-        public IList<NavigationItemViewModel> ProcessList
+        public NavigationViewModel NavigationViewModel
         {
             get
             {
-                return _processList;
+                return _navigationViewModel;
             }
             set
             {
-                if (_processList != value)
+                if (_navigationViewModel != value)
                 {
-                    _processList = value;
-                    RaisePropertyChanged(nameof(ProcessList));
+                    _navigationViewModel = value;
+                    RaisePropertyChanged(nameof(NavigationViewModel));
                 }
             }
         }
 
-        private void PopulateProcess()
+        private ProcessDetailViewModel _processDetailViewModel;
+
+        public ProcessDetailViewModel ProcessDetailViewModel
         {
-            ProcessList = System.Diagnostics.Process.GetProcesses().OrderBy(p => p.Id).Select(p => new NavigationItemViewModel
+            get
             {
-                Id = p.Id,
-                DisplayMember = p.ProcessName,
-            }).ToList();
+                return _processDetailViewModel;
+            }
+            set
+            {
+                if (_processDetailViewModel != value)
+                {
+                    _processDetailViewModel = value;
+                    RaisePropertyChanged(nameof(ProcessDetailViewModel));
+                }
+            }
         }
 
+        internal void Initialize()
+        {
+            NavigationViewModel?.LoadProcesses();
+        }
     }
 }
