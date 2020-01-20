@@ -37,8 +37,6 @@
                                            Text="{Binding Id}" />
                                 <TextBlock Grid.Column="1"
                                            Text="{Binding DisplayMember}" />
-                                <!--<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />-->
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">

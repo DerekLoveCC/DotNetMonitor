@@ -2,6 +2,7 @@
 using Prism.Events;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace DotNetMonitor.UI.ViewModels
 {
@@ -16,13 +17,12 @@ namespace DotNetMonitor.UI.ViewModels
             LoadedProcesses = new ObservableCollection<ProcessDetail>();
         }
 
-        private void HandleLoadProcessDetailEvent(int processId)
+        private async void HandleLoadProcessDetailEvent(int processId)
         {
-            LoadedProcesses.Add(new ProcessDetail
-            {
-                 Id = processId,
-                 Name = "Dummyname",
-            });
+            var processDetail = new ProcessDetail(processId);
+            await processDetail.InitializeAsync();
+
+            LoadedProcesses.Add(processDetail);
         }
 
         public int Id { get; set; }

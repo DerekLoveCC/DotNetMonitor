@@ -14,14 +14,19 @@
     <Controls:MetroWindow.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="ProcessDocumentPaneTemplate">
-                <TextBlock Text="{Binding Id}" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                <Button Command="{Binding InjectCommand}" CommandParameter="{Binding Id}">Inject</Button>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ProcessDocumentPaneHeaderTemplate">
                 <StackPanel Orientation="Horizontal">
                     <Image Margin="0,0,4,0"
                            Source="../Images/document.png" />
                     <TextBlock VerticalAlignment="Center"
-                               Text="{Binding Content.Id}" />
+                               Text="{Binding Content.Name}" />
                 </StackPanel>
             </DataTemplate>
         </ResourceDictionary>
