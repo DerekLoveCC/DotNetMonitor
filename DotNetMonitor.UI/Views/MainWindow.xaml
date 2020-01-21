@@ -9,6 +9,8 @@
                       xmlns:s="clr-namespace:System;assembly=mscorlib"
                       xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
                       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      ShowTitleBar="True"
                       Title="Dotnet Monitor"
                       mc:Ignorable="d">
     <Controls:MetroWindow.Resources>
@@ -31,7 +33,17 @@
             </DataTemplate>
         </ResourceDictionary>
     </Controls:MetroWindow.Resources>
-
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="settings" />
+            <Button>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconModern Width="24" Height="24" Kind="FoodApple"/>
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="food apple" />
+                </StackPanel>
+            </Button>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
