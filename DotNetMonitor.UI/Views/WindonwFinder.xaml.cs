@@ -51,7 +51,7 @@ namespace DotNetMonitor.UI.Views
         {
             ReleaseMouseCapture();
 
-            Cursor = _storedCursor ?? Cursors.Arrow;
+            Cursor = _storedCursor;
         }
     }
 }
