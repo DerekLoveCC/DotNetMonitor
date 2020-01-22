@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>DotnetMonitor.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.9.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.9.2\lib\net45\Autofac.dll</HintPath>
@@ -231,6 +234,12 @@
     <Resource Include="Images\alarm-clock-blue.png" />
     <Resource Include="Images\document.png" />
     <Resource Include="Images\property-blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DotnetMonitor.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="DotnetMonitor.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

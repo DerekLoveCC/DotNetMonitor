@@ -3,44 +3,41 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       xmlns:localVM="clr-namespace:DotNetMonitor.UI.ViewModels"
                       xmlns:localViews="clr-namespace:DotNetMonitor.UI.Views"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:s="clr-namespace:System;assembly=mscorlib"
                       xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
                       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                      ShowTitleBar="True"
                       Title="Dotnet Monitor"
+                      ShowTitleBar="True"
                       mc:Ignorable="d">
     <Controls:MetroWindow.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="ProcessDocumentPaneTemplate">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                <Button Command="{Binding InjectCommand}" CommandParameter="{Binding Id}">Inject</Button>
+                    <Button Command="{Binding InjectCommand}" CommandParameter="{Binding Id}">Inject</Button>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ProcessDocumentPaneHeaderTemplate">
                 <StackPanel Orientation="Horizontal">
-                    <Image Margin="0,0,4,0"
-                           Source="../Images/document.png" />
-                    <TextBlock VerticalAlignment="Center"
-                               Text="{Binding Content.Name}" />
+                    <Image Margin="0,0,4,0" Source="../Images/document.png" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Content.Name}" />
                 </StackPanel>
             </DataTemplate>
         </ResourceDictionary>
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Content="settings" />
             <Button>
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconModern Width="24" Height="24" Kind="FoodApple"/>
-                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="food apple" />
-                </StackPanel>
+                <iconPacks:PackIconModern Width="24"
+                                          Height="24"
+                                          Kind="FoodApple"
+                                          ToolTip="Drag to spy" />
             </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
