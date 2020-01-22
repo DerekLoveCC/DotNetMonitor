@@ -188,6 +188,9 @@
     <Compile Include="Views\ProcessListView.xaml.cs">
       <DependentUpon>ProcessListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WindonwFinder.xaml.cs">
+      <DependentUpon>WindonwFinder.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,6 +200,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProcessListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WindonwFinder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
