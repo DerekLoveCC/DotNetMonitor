@@ -73,6 +73,7 @@ namespace DotNetMonitor.Common
         }
 
         private delegate bool EnumWindowsCallBackDelegate(IntPtr hwnd, IntPtr lParam);
+
         private static bool EnumWindowsCallback(IntPtr hwnd, IntPtr lParam)
         {
             ((List<IntPtr>)((GCHandle)lParam).Target).Add(hwnd);
@@ -87,11 +88,13 @@ namespace DotNetMonitor.Common
             public uint th32ProcessID;
             public uint GlblcntUsage;
             public uint ProccntUsage;
-            IntPtr modBaseAddr;
+            private IntPtr modBaseAddr;
             public uint modBaseSize;
-            IntPtr hModule;
+            private IntPtr hModule;
+
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
             public string szModule;
+
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
             public string szExePath;
         };
@@ -258,7 +261,6 @@ namespace DotNetMonitor.Common
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+        private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
     }
-
 }

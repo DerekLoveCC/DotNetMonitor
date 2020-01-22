@@ -92,14 +92,14 @@ void Injector::Launch(IntPtr windowHandle, InjectorData^ injectorData)
 void Injector::LogMessage(String^ message, bool append)
 {	            
 	String ^ applicationDataPath = Environment::GetFolderPath(Environment::SpecialFolder::ApplicationData);
-	applicationDataPath += "\\Snoop";
+	applicationDataPath += "\\DotnetMonitor";
 
 	if (!Directory::Exists(applicationDataPath))
 	{
 		Directory::CreateDirectory(applicationDataPath);
 	}
 
-	String ^ pathname = applicationDataPath + "\\SnoopLog.txt";
+	String ^ pathname = applicationDataPath + "\\DotnetMonitorLog.txt";
 
 	if (!append)    
 	{    

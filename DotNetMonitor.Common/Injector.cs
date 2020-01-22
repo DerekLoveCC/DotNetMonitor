@@ -1,57 +1,36 @@
-﻿
-namespace DotNetMonitor.Common
+﻿namespace DotNetMonitor.Common
 {
     using System.Diagnostics;
-    using System.Reflection;
     using System.IO;
+    using System.Reflection;
 
     public static class Injector
     {
         private static string GetSuffix(WindowInfo windowInfo)
         {
-            var bitness = windowInfo.IsOwningProcess64Bit ? "64" : "32";
-            var clr = "4.0";
-
-            return bitness + "-" + clr;
+            return windowInfo.IsOwningProcess64Bit ? "64" : "32";
         }
 
-        internal static void Launch(WindowInfo windowInfo, Assembly assembly, string className, string methodName, string settingsFile)
+        public static void Launch(WindowInfo windowInfo, Assembly assembly, string className, string methodName)
         {
-            if (File.Exists(settingsFile) == false)
+            var location = Assembly.GetExecutingAssembly().Location;
+            var directory = Path.GetDirectoryName(location) ?? string.Empty;
+            var file = Path.Combine(directory, $"DotNetMonitor.ManagedInjectorLauncher{GetSuffix(windowInfo)}.exe");
+
+            if (!File.Exists(file))
             {
-                throw new FileNotFoundException("The generated temporary settings file could not be found.", settingsFile);
+                string message = $"Cannot find launcher {file}";
+                throw new FileNotFoundException(message, file);
             }
 
-            try
+            var startInfo = new ProcessStartInfo(file, $"{windowInfo.HWnd} \"{assembly.Location}\" \"{className}\" \"{methodName}\"")
             {
-                var location = Assembly.GetExecutingAssembly().Location;
-                var directory = Path.GetDirectoryName(location) ?? string.Empty;
-                var file = Path.Combine(directory, $"ManagedInjectorLauncher{GetSuffix(windowInfo)}.exe");
+                Verb = windowInfo.IsOwningProcessElevated ? "runas" : null
+            };
 
-                if (File.Exists(file) == false)
-                {
-                    const string message = @"Could not find the injector launcher.
-Snoop requires this component, which is part of the snoop project, to do it's job.
-If you compiled snoop you should compile all required components.
-If you downloaded snoop you should not omit any files contained in the archive you downloaded.";
-                    throw new FileNotFoundException(message, file);
-                }
-
-                var startInfo = new ProcessStartInfo(file, $"{windowInfo.HWnd} \"{assembly.Location}\" \"{className}\" \"{methodName}\" \"{settingsFile}\"")
-                {
-                    Verb = windowInfo.IsOwningProcessElevated
-                                               ? "runas"
-                                               : null
-                };
-
-                using (var process = Process.Start(startInfo))
-                {
-                    process?.WaitForExit();
-                }
-            }
-            finally
+            using (var process = Process.Start(startInfo))
             {
-                File.Delete(settingsFile);
+                process?.WaitForExit();
             }
         }
     }

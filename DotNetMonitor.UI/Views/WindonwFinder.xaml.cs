@@ -1,4 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using DotNetMonitor.Common;
+using DotNetMonitor.SpyModule;
+using System;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace DotNetMonitor.UI.Views
@@ -33,12 +37,30 @@ namespace DotNetMonitor.UI.Views
         {
             RestoreCursor();
             base.OnPreviewMouseLeftButtonUp(e);
+            Attach();
         }
 
-        protected override void OnPreviewKeyUp(KeyEventArgs e)
+        private void Attach()
         {
-            RestoreCursor();
-            base.OnPreviewKeyUp(e);
+            var windowUnderCursor = NativeMethods.GetWindowUnderMouse();
+            var windowInfo = new WindowInfo(windowUnderCursor);
+
+            Mouse.OverrideCursor = Cursors.Wait;
+            try
+            {
+                Injector.Launch(windowInfo, 
+                                typeof(ProcessInfoWindow).Assembly, 
+                                typeof(ProcessInfoWindow).FullName, 
+                                nameof(ProcessInfoWindow.ShowInfo));
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Failed to attach:" + e);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
         }
 
         private void UpdateCursor()

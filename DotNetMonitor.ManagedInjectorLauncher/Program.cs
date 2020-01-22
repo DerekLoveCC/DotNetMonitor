@@ -3,30 +3,28 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
 // All other rights reserved.
 
+using DotNetMonitorManagedInjector;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using DotNetMonitorManagedInjector;
 
 namespace DotNetMonitorManagedInjectorLauncher
 {
     public static class Program
     {
         public static void Main(string[] args)
-        { 
+        {
             var windowHandle = (IntPtr)long.Parse(args[0]);
             var assemblyName = args[1];
             var className = args[2];
             var methodName = args[3];
-            var settingsFile = args[4];
 
             var injectorData = new InjectorData
-                                {
-                                    AssemblyName = assemblyName,
-                                    ClassName = className,
-                                    MethodName = methodName,
-                                    SettingsFile = settingsFile
-                                };
+            {
+                AssemblyName = assemblyName,
+                ClassName = className,
+                MethodName = methodName
+            };
 
             Injector.Launch(windowHandle, injectorData);
 
@@ -72,7 +70,7 @@ namespace DotNetMonitorManagedInjectorLauncher
             }
             if (containsFile)
             {
-                Injector.LogMessage(string.Format("Successfully injected Snoop for process {0} (PID = {1})", process.ProcessName, process.Id), true);
+                Injector.LogMessage(string.Format("Successfully injected for process {0} (PID = {1})", process.ProcessName, process.Id), true);
             }
             else
             {

@@ -248,5 +248,15 @@
   <ItemGroup>
     <Resource Include="DotnetMonitor.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetMonitor.Common\DotNetMonitor.Common.csproj">
+      <Project>{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}</Project>
+      <Name>DotNetMonitor.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetMonitor.SpyModule\DotNetMonitor.SpyModule.csproj">
+      <Project>{CFD0D62B-3C2F-435A-96BC-880DE89F9792}</Project>
+      <Name>DotNetMonitor.SpyModule</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
