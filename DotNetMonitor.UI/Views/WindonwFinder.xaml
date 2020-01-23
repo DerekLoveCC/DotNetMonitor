@@ -12,7 +12,7 @@
         <Button x:Name="btnSeacher">
             <iconPacks:PackIconBoxIcons Width="20"
                                         Height="20"
-                                        Kind="LogosSlack"/>
+                                        Kind="LogosSlack" />
         </Button>
     </StackPanel>
 </UserControl>

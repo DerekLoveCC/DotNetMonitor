@@ -2,7 +2,6 @@
 using Prism.Events;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace DotNetMonitor.UI.ViewModels
 {

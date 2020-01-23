@@ -14,6 +14,7 @@ namespace DotNetMonitor.Common
             var fileName = $"{Process.GetCurrentProcess().ProcessName}.exe.config";
             XmlConfigurator.Configure(repository, new FileInfo(fileName));
         }
+
         public static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static void Log(LogLevel level, string message)

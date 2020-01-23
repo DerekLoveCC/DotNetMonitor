@@ -1,9 +1,5 @@
 ﻿using Prism.Commands;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -11,7 +7,6 @@ namespace DotNetMonitor.UI.ViewModels
 {
     public class ProcessDetail
     {
-
         public ProcessDetail(int processId)
         {
             Id = processId;
@@ -21,7 +16,6 @@ namespace DotNetMonitor.UI.ViewModels
 
         private void OnInject(int? processId)
         {
-           
         }
 
         public int Id { get; }
@@ -35,7 +29,6 @@ namespace DotNetMonitor.UI.ViewModels
             {
                 var process = Process.GetProcessById(Id);
                 Name = process.ProcessName;
-
             });
         }
     }

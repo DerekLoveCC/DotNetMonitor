@@ -17,7 +17,6 @@ namespace DotNetMonitor.UI.Startup
             //containerBuilder.RegisterType<ExchangeCenterRepository>().As<IExchangeCenterRepository>();
             //containerBuilder.RegisterType<LookupDataService>().AsImplementedInterfaces();
 
-
             containerBuilder.RegisterType<MainWindowViewModel>().AsSelf();
             containerBuilder.RegisterType<NavigationViewModel>().AsSelf();
             containerBuilder.RegisterType<ProcessDetailViewModel>().AsSelf();
