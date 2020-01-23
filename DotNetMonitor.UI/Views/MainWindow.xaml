@@ -20,7 +20,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Button Command="{Binding InjectCommand}" CommandParameter="{Binding Id}">Inject</Button>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ProcessDocumentPaneHeaderTemplate">
