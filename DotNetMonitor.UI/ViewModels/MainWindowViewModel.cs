@@ -4,11 +4,31 @@ namespace DotNetMonitor.UI.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        public MainWindowViewModel(NavigationViewModel navigationViewModel,
-                                   ProcessDetailViewModel processDetailViewModel)
+        public MainWindowViewModel(ProcessListViewModel processListViewModel)
         {
-            NavigationViewModel = navigationViewModel;
-            ProcessDetailViewModel = processDetailViewModel;
+            ProcessListViewModel = processListViewModel;
+        }
+
+        //public MainWindowViewModel(NavigationViewModel navigationViewModel,
+        //                           ProcessDetailViewModel processDetailViewModel)
+        //{
+        //    NavigationViewModel = navigationViewModel;
+        //    ProcessDetailViewModel = processDetailViewModel;
+        //}
+
+        private ProcessListViewModel _processListViewModel;
+
+        public ProcessListViewModel ProcessListViewModel
+        {
+            get { return _processListViewModel; }
+            set
+            {
+                if (_processListViewModel != value)
+                {
+                    _processListViewModel = value;
+                    RaisePropertyChanged(nameof(ProcessListViewModel));
+                }
+            }
         }
 
         private NavigationViewModel _navigationViewModel;
@@ -49,7 +69,7 @@ namespace DotNetMonitor.UI.ViewModels
 
         internal void Initialize()
         {
-            NavigationViewModel?.LoadProcesses();
+            ProcessListViewModel?.LoadProcesses();
         }
     }
 }

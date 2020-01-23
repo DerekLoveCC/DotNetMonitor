@@ -20,6 +20,7 @@ namespace DotNetMonitor.UI.Startup
             containerBuilder.RegisterType<MainWindowViewModel>().AsSelf();
             containerBuilder.RegisterType<NavigationViewModel>().AsSelf();
             containerBuilder.RegisterType<ProcessDetailViewModel>().AsSelf();
+            containerBuilder.RegisterType<ProcessListViewModel>().AsSelf();
             containerBuilder.RegisterType<MainWindow>().AsSelf();
 
             //containerBuilder.RegisterType<MainViewModel>().AsSelf();

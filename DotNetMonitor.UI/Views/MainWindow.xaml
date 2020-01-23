@@ -21,7 +21,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Text="{Binding Id}"></TextBlock>
+                    <DataGrid ItemsSource="{Binding ProcessProperties}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ProcessDocumentPaneHeaderTemplate">
@@ -54,7 +54,7 @@
                              LayoutItemTemplateSelector="{StaticResource DockingManagerItemplateSelector}">
             <xcad:LayoutRoot x:Name="_layoutRoot">
                 <xcad:LayoutPanel Orientation="Horizontal">
-                    <xcad:LayoutAnchorablePane DockWidth="200">
+                    <!--<xcad:LayoutAnchorablePane DockWidth="200">
                         <xcad:LayoutAnchorable Title="Process List"
                                                AutoHideWidth="240"
                                                CanClose="False"
@@ -63,10 +63,18 @@
                                                IconSource="../Images/property-blue.png">
                             <localViews:ProcessListView DataContext="{Binding NavigationViewModel}" />
                         </xcad:LayoutAnchorable>
+                    </xcad:LayoutAnchorablePane>-->
+                    <xcad:LayoutAnchorablePane>
+                        <xcad:LayoutAnchorable Title="Process List"
+                                               CanClose="False"
+                                               CanDockAsTabbedDocument="False"
+                                               CanHide="False">
+                            <localViews:ProcessListView DataContext="{Binding ProcessListViewModel}" />
+                        </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
-                    <xcad:LayoutDocumentPaneGroup>
+                    <!--<xcad:LayoutDocumentPaneGroup>
                         <xcad:LayoutDocumentPane />
-                    </xcad:LayoutDocumentPaneGroup>
+                    </xcad:LayoutDocumentPaneGroup>-->
                 </xcad:LayoutPanel>
             </xcad:LayoutRoot>
         </xcad:DockingManager>

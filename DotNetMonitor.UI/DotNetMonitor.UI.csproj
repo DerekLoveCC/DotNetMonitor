@@ -176,6 +176,8 @@
     <Compile Include="ViewModels\ProcessDetail.cs" />
     <Compile Include="ViewModels\ProcessDetailViewModel.cs" />
     <Compile Include="ViewModels\NavigationItemViewModel.cs" />
+    <Compile Include="ViewModels\ProcessInfoViewModel.cs" />
+    <Compile Include="ViewModels\ProcessListViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -185,6 +187,9 @@
     </Compile>
     <Compile Include="Views\ProcessDetailView.xaml.cs">
       <DependentUpon>ProcessDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProcessListNavView.xaml.cs">
+      <DependentUpon>ProcessListNavView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessListView.xaml.cs">
       <DependentUpon>ProcessListView.xaml</DependentUpon>
@@ -197,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProcessDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProcessListNavView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
