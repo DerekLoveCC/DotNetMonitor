@@ -8,6 +8,7 @@
                       xmlns:localViews="clr-namespace:DotNetMonitor.UI.Views"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:s="clr-namespace:System;assembly=mscorlib"
+                      xmlns:selectors="clr-namespace:DotNetMonitor.UI.TemplateSelector"
                       xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
                       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                       Title="Dotnet Monitor"
@@ -20,6 +21,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding Id}"></TextBlock>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ProcessDocumentPaneHeaderTemplate">
@@ -28,6 +30,7 @@
                     <TextBlock VerticalAlignment="Center" Text="{Binding Content.Name}" />
                 </StackPanel>
             </DataTemplate>
+            <selectors:DockingManagerLayoutItemSelector x:Key="DockingManagerItemplateSelector" />
         </ResourceDictionary>
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
@@ -48,8 +51,7 @@
                              BorderThickness="1"
                              DocumentHeaderTemplate="{StaticResource ProcessDocumentPaneHeaderTemplate}"
                              DocumentsSource="{Binding ProcessDetailViewModel.LoadedProcesses}"
-                             LayoutItemTemplate="{StaticResource ProcessDocumentPaneTemplate}">
-
+                             LayoutItemTemplateSelector="{StaticResource DockingManagerItemplateSelector}">
             <xcad:LayoutRoot x:Name="_layoutRoot">
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePane DockWidth="200">
@@ -63,21 +65,7 @@
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
                     <xcad:LayoutDocumentPaneGroup>
-                        <xcad:LayoutDocumentPane>
-                            <!--<xcad:LayoutDocument Title="Document 1"
-                                                 ContentId="document1"
-                                                 IconSource="../Images/document.png">
-                                <Button HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Content="Document 1 Content" />
-                            </xcad:LayoutDocument>
-                            <xcad:LayoutDocument Title="Document 2"
-                                                 ContentId="document2"
-                                                 IconSource="../Images/document.png">
-                                <TextBox AcceptsReturn="True"
-                                         Text="Document 2 Content" />
-                            </xcad:LayoutDocument>-->
-                        </xcad:LayoutDocumentPane>
+                        <xcad:LayoutDocumentPane />
                     </xcad:LayoutDocumentPaneGroup>
                 </xcad:LayoutPanel>
             </xcad:LayoutRoot>

@@ -170,6 +170,7 @@
     </ApplicationDefinition>
     <Compile Include="Event\LoadProcessDetailEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
+    <Compile Include="TemplateSelector\DockingManagerLayoutItemSelector.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\NavigationViewModel.cs" />
     <Compile Include="ViewModels\ProcessDetail.cs" />
