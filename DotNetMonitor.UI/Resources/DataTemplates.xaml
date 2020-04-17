@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:DotNetMonitor.UI.Resources">
+    <DataTemplate x:Key="ProcessDocumentPaneTemplate">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <DataGrid ItemsSource="{Binding ProcessProperties}" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="ProcessDocumentPaneHeaderTemplate">
+        <StackPanel Orientation="Horizontal">
+            <Image Margin="0,0,4,0" Source="../Images/document.png" />
+            <TextBlock VerticalAlignment="Center" Text="{Binding Content.Name}" />
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

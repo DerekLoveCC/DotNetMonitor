@@ -197,6 +197,10 @@
     <Compile Include="Views\WindonwFinder.xaml.cs">
       <DependentUpon>WindonwFinder.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Resources\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
