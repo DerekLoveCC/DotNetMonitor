@@ -47,6 +47,9 @@
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.2.1\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="CSharpExtensionMethods, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CSharpExtensionMethods.1.1.0\lib\net40\CSharpExtensionMethods.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.2.0.0-alpha0316\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -176,8 +179,9 @@
     <Compile Include="ViewModels\ProcessDetail.cs" />
     <Compile Include="ViewModels\ProcessDetailViewModel.cs" />
     <Compile Include="ViewModels\NavigationItemViewModel.cs" />
-    <Compile Include="ViewModels\ProcessInfoViewModel.cs" />
+    <Compile Include="ViewModels\ProcessInfo\ProcessDetailInfo.cs" />
     <Compile Include="ViewModels\ProcessListViewModel.cs" />
+    <Compile Include="ViewModels\ProcessInfo\ProcessModuleInfo.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

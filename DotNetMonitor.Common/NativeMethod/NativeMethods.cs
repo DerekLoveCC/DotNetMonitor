@@ -1,15 +1,13 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 
 namespace DotNetMonitor.Common
 {
-    public static class NativeMethods
+    public static partial class NativeMethods
     {
         public const int ERROR_ACCESS_DENIED = 5;
 
@@ -78,65 +76,6 @@ namespace DotNetMonitor.Common
         {
             ((List<IntPtr>)((GCHandle)lParam).Target).Add(hwnd);
             return true;
-        }
-
-        [StructLayoutAttribute(LayoutKind.Sequential)]
-        public struct MODULEENTRY32
-        {
-            public uint dwSize;
-            public uint th32ModuleID;
-            public uint th32ProcessID;
-            public uint GlblcntUsage;
-            public uint ProccntUsage;
-            private IntPtr modBaseAddr;
-            public uint modBaseSize;
-            private IntPtr hModule;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-            public string szModule;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-            public string szExePath;
-        };
-
-        public class ToolHelpHandle : SafeHandleZeroOrMinusOneIsInvalid
-        {
-            private ToolHelpHandle()
-                : base(true)
-            {
-            }
-
-            [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
-            override protected bool ReleaseHandle()
-            {
-                return NativeMethods.CloseHandle(handle);
-            }
-        }
-
-        public class ProcessHandle : SafeHandleZeroOrMinusOneIsInvalid
-        {
-            private ProcessHandle()
-                : base(true)
-            {
-            }
-
-            [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
-            override protected bool ReleaseHandle()
-            {
-                return NativeMethods.CloseHandle(handle);
-            }
-        }
-
-        [Flags]
-        public enum SnapshotFlags : uint
-        {
-            HeapList = 0x00000001,
-            Process = 0x00000002,
-            Thread = 0x00000004,
-            Module = 0x00000008,
-            Module32 = 0x00000010,
-            Inherit = 0x80000000,
-            All = 0x0000001F
         }
 
         [DllImport("user32.dll")]

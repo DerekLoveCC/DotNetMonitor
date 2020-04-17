@@ -24,6 +24,10 @@
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
+            <Button x:Name="btnSeacher">
+                <iconPacks:EvaIcons Width="20"
+                                    Height="20"/>
+            </Button>
             <localViews:WindonwFinder HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
                                       ToolTip="Drag to spy" />

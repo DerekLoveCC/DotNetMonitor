@@ -1,17 +1,45 @@
 ﻿<UserControl x:Class="DotNetMonitor.UI.Views.ProcessListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:DotNetMonitor.UI.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="CustomizedRowStyle" TargetType="DataGridRow">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsNetProcess}" Value="True">
+                    <Setter Property="Foreground" Value="Green" />
+                </DataTrigger>
+
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="DarkBlue" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
-        <DataGrid ItemsSource="{Binding Processes}" AutoGenerateColumns="False">
+        <DataGrid AutoGenerateColumns="False"
+                  ItemsSource="{Binding Processes}"
+                  RowStyle="{StaticResource CustomizedRowStyle}"
+                  SelectedItem="{Binding SelectedRow}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}" ></DataGridTextColumn>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Id}"
+                                    Header="Id"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding Name}"
+                                    Header="Name"
+                                    IsReadOnly="True" />
+                <DataGridCheckBoxColumn Binding="{Binding IsNetProcess, Mode=OneWay}"
+                                        Header=".Net Process"
+                                        IsReadOnly="True" />
+                <DataGridCheckBoxColumn Binding="{Binding IsX64, Mode=OneWay}"
+                                        Header="X64"
+                                        IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
