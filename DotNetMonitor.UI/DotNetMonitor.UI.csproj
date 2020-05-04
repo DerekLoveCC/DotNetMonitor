@@ -119,6 +119,9 @@
     <Reference Include="MahApps.Metro.IconPacks.Zondicons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.IconPacks.3.1.0\lib\net47\MahApps.Metro.IconPacks.Zondicons.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
@@ -135,8 +138,8 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Wpf.7.2.0.1422\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -174,14 +177,11 @@
     <Compile Include="Event\LoadProcessDetailEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="TemplateSelector\DockingManagerLayoutItemSelector.cs" />
+    <Compile Include="Utils\ProcessUtil.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\NavigationViewModel.cs" />
-    <Compile Include="ViewModels\ProcessDetail.cs" />
-    <Compile Include="ViewModels\ProcessDetailViewModel.cs" />
-    <Compile Include="ViewModels\NavigationItemViewModel.cs" />
-    <Compile Include="ViewModels\ProcessInfo\ProcessDetailInfo.cs" />
+    <Compile Include="ViewModels\ProcessInfoViewModel.cs" />
     <Compile Include="ViewModels\ProcessListViewModel.cs" />
-    <Compile Include="ViewModels\ProcessInfo\ProcessModuleInfo.cs" />
+    <Compile Include="ViewModels\ProcessModuleInfo.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -191,9 +191,6 @@
     </Compile>
     <Compile Include="Views\ProcessDetailView.xaml.cs">
       <DependentUpon>ProcessDetailView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ProcessListNavView.xaml.cs">
-      <DependentUpon>ProcessListNavView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessListView.xaml.cs">
       <DependentUpon>ProcessListView.xaml</DependentUpon>
@@ -210,10 +207,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProcessDetailView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ProcessListNavView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

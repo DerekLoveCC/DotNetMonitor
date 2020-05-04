@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace DotNetMonitor.UI.ViewModels.ProcessInfo
+namespace DotNetMonitor.UI.ViewModels
 {
     [DebuggerDisplay("{Name}", Name = "Name")]
     public class ProcessModuleInfo

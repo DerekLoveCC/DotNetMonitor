@@ -8,11 +8,11 @@ namespace DotNetMonitor.UI.TemplateSelector
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is ProcessDetail)
-            {
-                var foundTempalte = Application.Current.MainWindow.TryFindResource("ProcessDocumentPaneTemplate") as DataTemplate;
-                return foundTempalte;
-            }
+            //if (item is ProcessDetail)
+            //{
+            //    var foundTempalte = Application.Current.MainWindow.TryFindResource("ProcessDocumentPaneTemplate") as DataTemplate;
+            //    return foundTempalte;
+            //}
 
             return base.SelectTemplate(item, container);
         }

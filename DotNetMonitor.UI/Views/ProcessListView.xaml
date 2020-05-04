@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:DotNetMonitor.UI.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com"
@@ -27,6 +28,11 @@
                   ItemsSource="{Binding Processes}"
                   RowStyle="{StaticResource CustomizedRowStyle}"
                   SelectedItem="{Binding SelectedRow}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick" >
+                    <i:InvokeCommandAction Command="{Binding RowDoulbeClickCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}"
                                     Header="Id"
@@ -35,6 +41,7 @@
                                     Header="Name"
                                     IsReadOnly="True" />
                 <DataGridCheckBoxColumn Binding="{Binding IsNetProcess, Mode=OneWay}"
+                                        SortDirection="Descending"
                                         Header=".Net Process"
                                         IsReadOnly="True" />
                 <DataGridCheckBoxColumn Binding="{Binding IsX64, Mode=OneWay}"

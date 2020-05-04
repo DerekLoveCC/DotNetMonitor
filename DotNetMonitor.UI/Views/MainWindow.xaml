@@ -25,8 +25,7 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Button x:Name="btnSeacher">
-                <iconPacks:EvaIcons Width="20"
-                                    Height="20"/>
+                <iconPacks:EvaIcons Width="20" Height="20" />
             </Button>
             <localViews:WindonwFinder HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
@@ -57,12 +56,20 @@
                             <localViews:ProcessListView DataContext="{Binding NavigationViewModel}" />
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>-->
-                    <xcad:LayoutAnchorablePane>
+                    <xcad:LayoutAnchorablePane >
                         <xcad:LayoutAnchorable Title="Process List"
                                                CanClose="False"
                                                CanDockAsTabbedDocument="False"
                                                CanHide="False">
                             <localViews:ProcessListView DataContext="{Binding ProcessListViewModel}" />
+                        </xcad:LayoutAnchorable>
+                    </xcad:LayoutAnchorablePane>
+                    <xcad:LayoutAnchorablePane>
+                        <xcad:LayoutAnchorable Title="Process Detail"
+                                               CanClose="False"
+                                               CanDockAsTabbedDocument="False"
+                                               CanHide="False">
+                            <localViews:ProcessDetailView DataContext="{Binding ProcessListViewModel.SelectedRow}"></localViews:ProcessDetailView>
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
                     <!--<xcad:LayoutDocumentPaneGroup>

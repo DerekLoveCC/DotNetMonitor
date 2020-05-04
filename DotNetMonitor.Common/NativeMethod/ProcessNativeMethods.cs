@@ -7,6 +7,14 @@ namespace DotNetMonitor.Common.NativeMethod
 {
     public static class ProcessNativeMethods
     {
+        [DllImport("psapi")]
+        private static extern bool EmptyWorkingSet(IntPtr hProcess);
+        public static bool EmptyWorkingSet(Process process)
+        {
+            return EmptyWorkingSet(process.Handle);
+        }
+
+
         [DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool IsWow64Process([In] IntPtr process, [Out] out bool wow64Process);

@@ -1,4 +1,5 @@
 ﻿using Prism.Mvvm;
+using System.Threading.Tasks;
 
 namespace DotNetMonitor.UI.ViewModels
 {
@@ -8,13 +9,6 @@ namespace DotNetMonitor.UI.ViewModels
         {
             ProcessListViewModel = processListViewModel;
         }
-
-        //public MainWindowViewModel(NavigationViewModel navigationViewModel,
-        //                           ProcessDetailViewModel processDetailViewModel)
-        //{
-        //    NavigationViewModel = navigationViewModel;
-        //    ProcessDetailViewModel = processDetailViewModel;
-        //}
 
         private ProcessListViewModel _processListViewModel;
 
@@ -31,45 +25,9 @@ namespace DotNetMonitor.UI.ViewModels
             }
         }
 
-        private NavigationViewModel _navigationViewModel;
-
-        public NavigationViewModel NavigationViewModel
+        internal async Task Initialize()
         {
-            get
-            {
-                return _navigationViewModel;
-            }
-            set
-            {
-                if (_navigationViewModel != value)
-                {
-                    _navigationViewModel = value;
-                    RaisePropertyChanged(nameof(NavigationViewModel));
-                }
-            }
-        }
-
-        private ProcessDetailViewModel _processDetailViewModel;
-
-        public ProcessDetailViewModel ProcessDetailViewModel
-        {
-            get
-            {
-                return _processDetailViewModel;
-            }
-            set
-            {
-                if (_processDetailViewModel != value)
-                {
-                    _processDetailViewModel = value;
-                    RaisePropertyChanged(nameof(ProcessDetailViewModel));
-                }
-            }
-        }
-
-        internal void Initialize()
-        {
-            ProcessListViewModel?.LoadProcesses();
+            await ProcessListViewModel?.LoadProcesses();
         }
     }
 }

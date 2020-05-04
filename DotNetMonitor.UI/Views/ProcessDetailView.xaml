@@ -3,13 +3,64 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:DotNetMonitor.UI.Views"
+             xmlns:localVM="clr-namespace:DotNetMonitor.UI.ViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DataContext="{d:DesignInstance localVM:ProcessInfoViewModel}"
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
     <Grid>
-        <StackPanel Grid.Column="1">
-            <TextBlock>Process Detail</TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button Command="{Binding TrimWorksetCommand}">Trim Working Set</Button>
+            <Button Command="{Binding TracePerformanceCommand}">
+                <TextBlock Text="{Binding TracePerformanceText}"/>
+            </Button>
         </StackPanel>
+        <UniformGrid Grid.Row="1" Columns="3">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Id: " />
+                <TextBlock Text="{Binding Id}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Name: " />
+                <TextBlock Text="{Binding Name}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Session Id: " />
+                <TextBlock Text="{Binding SessionId}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Is .Net Process: " />
+                <TextBlock Text="{Binding IsNetProcess}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="X64: " />
+                <TextBlock Text="{Binding IsX64}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Working Set: " />
+                <TextBlock Text="{Binding WorkingSet}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Private Memory Size: " />
+                <TextBlock Text="{Binding PrivateMemorySize}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Gen0 Size: " />
+                <TextBlock Text="{Binding Gen0Size}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Gen1 Size: " />
+                <TextBlock Text="{Binding Gen1Size}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Gen2 Size: " />
+                <TextBlock Text="{Binding Gen2Size}"></TextBlock>
+            </StackPanel>
+        </UniformGrid>
     </Grid>
 </UserControl>
