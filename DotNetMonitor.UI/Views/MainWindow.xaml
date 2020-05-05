@@ -20,9 +20,12 @@
                 <ResourceDictionary Source="pack://application:,,,/DotNetMonitor.UI;component/Resources/DataTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <selectors:DockingManagerLayoutItemSelector x:Key="DockingManagerItemplateSelector" />
-            <!--<Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-                <Setter Property="lcontrols:ButtonHelper.PreserveTextCase" Value="True" />
-            </Style>-->
+            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                <Setter Property="Controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
+            </Style>
+            <Style BasedOn="{StaticResource MetroDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                <Setter Property="Controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
+            </Style>
         </ResourceDictionary>
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
