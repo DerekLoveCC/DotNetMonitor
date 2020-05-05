@@ -155,13 +155,14 @@ namespace DotNetMonitor.UI.ViewModels
             var gen0SizeCounter = new PerformanceCounter(category, "Gen 0 heap size", instance);
             var gen1SizeCounter = new PerformanceCounter(category, "Gen 1 heap size", instance);
             var gen2SizeCounter = new PerformanceCounter(category, "Gen 2 heap size", instance);
+            const int sleepInterval = (int)(0.5 * 1000);
             while (Tracing)
             {
                 Gen0Size = gen0SizeCounter.NextValue();
                 Gen1Size = gen1SizeCounter.NextValue();
                 Gen2Size = gen2SizeCounter.NextValue();
 
-                Thread.Sleep(0.5 * 1000);
+                Thread.Sleep(sleepInterval);
             }
         }
     }
