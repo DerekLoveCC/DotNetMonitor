@@ -16,6 +16,7 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0">
             <Button Command="{Binding TrimWorksetCommand}">Trim Working Set</Button>
+            <Button Command="{Binding RefreshCommand}">Refresh</Button>
             <Button Command="{Binding TracePerformanceCommand}">
                 <TextBlock Text="{Binding TracePerformanceText}"/>
             </Button>
@@ -43,23 +44,23 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Working Set: " />
-                <TextBlock Text="{Binding WorkingSet}"></TextBlock>
+                <TextBlock Text="{Binding WorkingSet, StringFormat=N0}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Private Memory Size: " />
-                <TextBlock Text="{Binding PrivateMemorySize}"></TextBlock>
+                <TextBlock Text="{Binding PrivateMemorySize, StringFormat=N0}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Gen0 Size: " />
-                <TextBlock Text="{Binding Gen0Size}"></TextBlock>
+                <TextBlock Text="{Binding Gen0Size, StringFormat=N0}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Gen1 Size: " />
-                <TextBlock Text="{Binding Gen1Size}"></TextBlock>
+                <TextBlock Text="{Binding Gen1Size, StringFormat=N0}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Gen2 Size: " />
-                <TextBlock Text="{Binding Gen2Size}"></TextBlock>
+                <TextBlock Text="{Binding Gen2Size, StringFormat=N0}"></TextBlock>
             </StackPanel>
         </UniformGrid>
     </Grid>

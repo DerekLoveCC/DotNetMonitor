@@ -1,4 +1,5 @@
 ﻿using DotNetMonitor.Common.NativeMethod;
+using DotNetMonitor.UI.Utils;
 using Prism.Commands;
 using Prism.Mvvm;
 using System.Collections.Generic;
@@ -17,6 +18,13 @@ namespace DotNetMonitor.UI.ViewModels
         {
             TrimWorksetCommand = new DelegateCommand(OnTrimWorkset);
             TracePerformanceCommand = new DelegateCommand(OnTracePerformance, () => IsNetProcess);
+            RefreshCommand = new DelegateCommand(OnRefresh);
+        }
+
+        private void OnRefresh()
+        {
+            var process = Process.GetProcessById(Id);
+            ProcessUtil.PopulateInfo(this, process);
         }
 
         private void OnTrimWorkset()
@@ -46,6 +54,7 @@ namespace DotNetMonitor.UI.ViewModels
 
         public ICommand TrimWorksetCommand { get; }
         public ICommand TracePerformanceCommand { get; }
+        public ICommand RefreshCommand { get; }
 
         public int Id { get; internal set; }
         public string Name { get; internal set; }
@@ -73,6 +82,7 @@ namespace DotNetMonitor.UI.ViewModels
         public long PrivateMemorySize { get; internal set; }
 
         private string _tracePerformanceText = "Start to trace perforamnce";
+
         public string TracePerformanceText
         {
             get { return _tracePerformanceText; }
@@ -135,25 +145,23 @@ namespace DotNetMonitor.UI.ViewModels
 
         private void TracePerformance()
         {
+            string instance = PerformanceCounterUtil.GetPerformanceCounterInstance(Id);
+            if (instance == null)
+            {
+                return;
+            }
+
+            var category = ".NET CLR Memory";
+            var gen0SizeCounter = new PerformanceCounter(category, "Gen 0 heap size", instance);
+            var gen1SizeCounter = new PerformanceCounter(category, "Gen 1 heap size", instance);
+            var gen2SizeCounter = new PerformanceCounter(category, "Gen 2 heap size", instance);
             while (Tracing)
             {
-                //var ctr1 = new PerformanceCounter("Process", "Private Bytes", Process.GetCurrentProcess().ProcessName);
-                //var ctr2 = new PerformanceCounter(".NET CLR Memory", "# Gen 0 Collections", Process.GetCurrentProcess().ProcessName);
-                //var ctr3 = new PerformanceCounter(".NET CLR Memory", "# Gen 1 Collections", Process.GetCurrentProcess().ProcessName);
-                //var ctr4 = new PerformanceCounter(".NET CLR Memory", "# Gen 2 Collections", Process.GetCurrentProcess().ProcessName);
-                var gen0Size = new PerformanceCounter(".NET CLR Memory", "Gen 0 heap size", Process.GetCurrentProcess().ProcessName);
-                var gen1Size = new PerformanceCounter(".NET CLR Memory", "Gen 1 heap size", Process.GetCurrentProcess().ProcessName);
-                var gen2Size = new PerformanceCounter(".NET CLR Memory", "Gen 2 heap size", Process.GetCurrentProcess().ProcessName);
-                Gen0Size = gen0Size.NextValue();
-                Gen1Size = gen1Size.NextValue();
-                Gen2Size = gen2Size.NextValue();
-                //...
-                //Debug.WriteLine("ctr1 = " + ctr1.NextValue());
-                //Debug.WriteLine("ctr2 = " + ctr2.NextValue());
-                //Debug.WriteLine("ctr3 = " + ctr3.NextValue());
-                //Debug.WriteLine("ctr4 = " + ctr4.NextValue());
-                //Debug.WriteLine("ctr5 = " + ctr5.NextValue());
-                Thread.Sleep(1 * 1000);
+                Gen0Size = gen0SizeCounter.NextValue();
+                Gen1Size = gen1SizeCounter.NextValue();
+                Gen2Size = gen2SizeCounter.NextValue();
+
+                Thread.Sleep(0.5 * 1000);
             }
         }
     }

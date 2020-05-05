@@ -3,6 +3,7 @@ using DotNetMonitor.UI.ViewModels;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 
 namespace DotNetMonitor.UI.Utils
@@ -23,20 +24,23 @@ namespace DotNetMonitor.UI.Utils
             return new List<ProcessInfoViewModel>(processInfoList);
         }
 
-        private static ProcessInfoViewModel BuildProcessInfo(Process p)
+        private static ProcessInfoViewModel BuildProcessInfo(Process process)
         {
-            var result = new ProcessInfoViewModel
-            {
-                Id = p.Id,
-                Name = p.ProcessName,
-                SessionId = p.SessionId,
-                WorkingSet = p.WorkingSet64,
-                PrivateMemorySize = p.PrivateMemorySize64,
-                Modules = GetProcessModuleInfos(p),
-            };
-            result.IsNetProcess = CheckDotNetProcess(result);
-            result.IsX64 = CheckProcessBit(p);
+            var result = new ProcessInfoViewModel();
+            PopulateInfo(result, process);
             return result;
+        }
+
+        public static void PopulateInfo(ProcessInfoViewModel processInfo, Process process)
+        {
+            processInfo.Id = process.Id;
+            processInfo.Name = process.ProcessName;
+            processInfo.SessionId = process.SessionId;
+            processInfo.WorkingSet = process.WorkingSet64;
+            processInfo.PrivateMemorySize = process.PrivateMemorySize64;
+            processInfo.Modules = GetProcessModuleInfos(process);
+            processInfo.IsNetProcess = CheckDotNetProcess(processInfo);
+            processInfo.IsX64 = CheckProcessBit(process);
         }
 
         private static bool? CheckProcessBit(Process p)

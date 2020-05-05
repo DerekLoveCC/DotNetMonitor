@@ -177,6 +177,7 @@
     <Compile Include="Event\LoadProcessDetailEvent.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="TemplateSelector\DockingManagerLayoutItemSelector.cs" />
+    <Compile Include="Utils\PerformanceCounterUtil.cs" />
     <Compile Include="Utils\ProcessUtil.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ProcessInfoViewModel.cs" />
