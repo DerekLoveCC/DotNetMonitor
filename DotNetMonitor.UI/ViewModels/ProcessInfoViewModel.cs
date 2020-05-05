@@ -65,6 +65,7 @@ namespace DotNetMonitor.UI.ViewModels
         public IList<ProcessModuleInfo> Modules { get; internal set; }
 
         public bool? IsX64 { get; internal set; }
+
         private long _workingSet;
 
         public long WorkingSet

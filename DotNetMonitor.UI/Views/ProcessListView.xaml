@@ -22,6 +22,47 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <DataTemplate x:Key="IsNetCircleDataTemplate">
+            <Ellipse Width="10" Height="10">
+                <Ellipse.Style>
+                    <Style TargetType="{x:Type Ellipse}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsNetProcess}" Value="True">
+                                <Setter Property="Fill" Value="Green" />
+                                <Setter Property="ToolTip" Value=".Net Process"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsNetProcess}" Value="False">
+                                <Setter Property="Fill" Value="Red" />
+                                <Setter Property="ToolTip" Value="Not .Net Process"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Ellipse.Style>
+            </Ellipse>
+        </DataTemplate>
+        <DataTemplate x:Key="IsX64CircleDataTemplate">
+            <Ellipse Width="10" Height="10">
+                <Ellipse.Style>
+                    <Style TargetType="{x:Type Ellipse}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsX64}" Value="True">
+                                <Setter Property="Fill" Value="Green" />
+                                <Setter Property="ToolTip" Value="x64 Process"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsX64}" Value="False">
+                                <Setter Property="Fill" Value="Red" />
+                                <Setter Property="ToolTip" Value="x86 Process"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsX64}" Value="{x:Null}">
+                                <Setter Property="Fill" Value="BurlyWood" />
+                                <Setter Property="ToolTip" Value="Unknown"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Ellipse.Style>
+            </Ellipse>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <DataGrid AutoGenerateColumns="False"
@@ -29,7 +70,7 @@
                   RowStyle="{StaticResource CustomizedRowStyle}"
                   SelectedItem="{Binding SelectedRow}">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick" >
+                <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding RowDoulbeClickCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
@@ -40,11 +81,11 @@
                 <DataGridTextColumn Binding="{Binding Name}"
                                     Header="Name"
                                     IsReadOnly="True" />
-                <DataGridCheckBoxColumn Binding="{Binding IsNetProcess, Mode=OneWay}"
-                                        SortDirection="Descending"
+                <DataGridTemplateColumn CellTemplate="{StaticResource IsNetCircleDataTemplate}"
                                         Header=".Net"
-                                        IsReadOnly="True" />
-                <DataGridCheckBoxColumn Binding="{Binding IsX64, Mode=OneWay}"
+                                        IsReadOnly="True"
+                                        SortDirection="Descending" />
+                <DataGridTemplateColumn CellTemplate="{StaticResource IsX64CircleDataTemplate}"
                                         Header="X64"
                                         IsReadOnly="True" />
             </DataGrid.Columns>
