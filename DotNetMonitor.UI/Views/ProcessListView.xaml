@@ -42,7 +42,7 @@
                                     IsReadOnly="True" />
                 <DataGridCheckBoxColumn Binding="{Binding IsNetProcess, Mode=OneWay}"
                                         SortDirection="Descending"
-                                        Header=".Net Process"
+                                        Header=".Net"
                                         IsReadOnly="True" />
                 <DataGridCheckBoxColumn Binding="{Binding IsX64, Mode=OneWay}"
                                         Header="X64"

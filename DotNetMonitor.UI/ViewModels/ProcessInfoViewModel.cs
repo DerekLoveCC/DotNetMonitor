@@ -2,6 +2,7 @@
 using DotNetMonitor.UI.Utils;
 using Prism.Commands;
 using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -12,7 +13,7 @@ using System.Windows.Input;
 namespace DotNetMonitor.UI.ViewModels
 {
     [DebuggerDisplay("Id={Id}, Name={Name}")]
-    public class ProcessInfoViewModel : BindableBase
+    public class ProcessInfoViewModel : BindableBase, IDisposable
     {
         public ProcessInfoViewModel()
         {
@@ -164,6 +165,11 @@ namespace DotNetMonitor.UI.ViewModels
 
                 Thread.Sleep(sleepInterval);
             }
+        }
+
+        public void Dispose()
+        {
+            Tracing = false;
         }
     }
 }

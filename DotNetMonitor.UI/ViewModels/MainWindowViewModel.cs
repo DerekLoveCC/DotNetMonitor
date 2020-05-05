@@ -1,5 +1,7 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace DotNetMonitor.UI.ViewModels
 {
@@ -8,6 +10,7 @@ namespace DotNetMonitor.UI.ViewModels
         public MainWindowViewModel(ProcessListViewModel processListViewModel)
         {
             ProcessListViewModel = processListViewModel;
+            RefreshProcessListCommand = new DelegateCommand(OnRefreshProcessList);
         }
 
         private ProcessListViewModel _processListViewModel;
@@ -27,6 +30,23 @@ namespace DotNetMonitor.UI.ViewModels
 
         internal async Task Initialize()
         {
+            await ProcessListViewModel?.LoadProcesses();
+        }
+
+        public ICommand RefreshProcessListCommand { get; }
+
+        private async void OnRefreshProcessList()
+        {
+            if (ProcessListViewModel?.Processes == null)
+            {
+                return;
+            }
+
+            foreach (var process in ProcessListViewModel?.Processes)
+            {
+                process.Dispose();
+            }
+
             await ProcessListViewModel?.LoadProcesses();
         }
     }

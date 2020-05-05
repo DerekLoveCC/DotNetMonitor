@@ -20,12 +20,19 @@
                 <ResourceDictionary Source="pack://application:,,,/DotNetMonitor.UI;component/Resources/DataTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <selectors:DockingManagerLayoutItemSelector x:Key="DockingManagerItemplateSelector" />
+            <!--<Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                <Setter Property="lcontrols:ButtonHelper.PreserveTextCase" Value="True" />
+            </Style>-->
         </ResourceDictionary>
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button x:Name="btnSeacher">
-                <iconPacks:EvaIcons Width="20" Height="20" />
+            <Button x:Name="btnRefresh"
+                    Command="{Binding RefreshProcessListCommand}"
+                    ToolTip="Refresh Process List">
+                <iconPacks:JamIcons Width="20"
+                                    Height="20"
+                                    Kind="Refresh" />
             </Button>
             <localViews:WindonwFinder HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
@@ -46,17 +53,7 @@
                              LayoutItemTemplateSelector="{StaticResource DockingManagerItemplateSelector}">
             <xcad:LayoutRoot x:Name="_layoutRoot">
                 <xcad:LayoutPanel Orientation="Horizontal">
-                    <!--<xcad:LayoutAnchorablePane DockWidth="200">
-                        <xcad:LayoutAnchorable Title="Process List"
-                                               AutoHideWidth="240"
-                                               CanClose="False"
-                                               CanHide="False"
-                                               ContentId="ProcessList"
-                                               IconSource="../Images/property-blue.png">
-                            <localViews:ProcessListView DataContext="{Binding NavigationViewModel}" />
-                        </xcad:LayoutAnchorable>
-                    </xcad:LayoutAnchorablePane>-->
-                    <xcad:LayoutAnchorablePane >
+                    <xcad:LayoutAnchorablePane>
                         <xcad:LayoutAnchorable Title="Process List"
                                                CanClose="False"
                                                CanDockAsTabbedDocument="False"
@@ -69,12 +66,9 @@
                                                CanClose="False"
                                                CanDockAsTabbedDocument="False"
                                                CanHide="False">
-                            <localViews:ProcessDetailView DataContext="{Binding ProcessListViewModel.SelectedRow}"></localViews:ProcessDetailView>
+                            <localViews:ProcessDetailView DataContext="{Binding ProcessListViewModel.SelectedRow}" />
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
-                    <!--<xcad:LayoutDocumentPaneGroup>
-                        <xcad:LayoutDocumentPane />
-                    </xcad:LayoutDocumentPaneGroup>-->
                 </xcad:LayoutPanel>
             </xcad:LayoutRoot>
         </xcad:DockingManager>
