@@ -10,58 +10,96 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="StackPanel">
+                <Setter Property="Margin" Value="5,0" />
+            </Style>
+            <Style x:Key="txtBlockStyle" TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="Bold" />
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
+        <StackPanel Grid.Row="0"
+                    DataContext="{Binding SelectedProcess}"
+                    Orientation="Horizontal">
             <Button Command="{Binding TrimWorksetCommand}">Trim Working Set</Button>
             <Button Command="{Binding RefreshCommand}">Refresh</Button>
             <Button Command="{Binding TracePerformanceCommand}">
-                <TextBlock Text="{Binding TracePerformanceText}"/>
+                <TextBlock Text="{Binding TracePerformanceText}" />
             </Button>
         </StackPanel>
-        <UniformGrid Grid.Row="1" Columns="3">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Id: " />
-                <TextBlock Text="{Binding Id}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Name: " />
-                <TextBlock Text="{Binding Name}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Session Id: " />
-                <TextBlock Text="{Binding SessionId}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Is .Net Process: " />
-                <TextBlock Text="{Binding IsNetProcess}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="X64: " />
-                <TextBlock Text="{Binding IsX64}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Working Set: " />
-                <TextBlock Text="{Binding WorkingSet, StringFormat=N0}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Private Memory Size: " />
-                <TextBlock Text="{Binding PrivateMemorySize, StringFormat=N0}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Gen0 Size: " />
-                <TextBlock Text="{Binding Gen0Size, StringFormat=N0}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Gen1 Size: " />
-                <TextBlock Text="{Binding Gen1Size, StringFormat=N0}"></TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Gen2 Size: " />
-                <TextBlock Text="{Binding Gen2Size, StringFormat=N0}"></TextBlock>
-            </StackPanel>
-        </UniformGrid>
+        <GroupBox Grid.Row="1"
+                  DataContext="{Binding SelectedProcess}"
+                  Header="Basic">
+            <WrapPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource txtBlockStyle}" Text="Id: " />
+                    <TextBlock Text="{Binding Id}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource txtBlockStyle}" Text="Name: " />
+                    <TextBlock Text="{Binding Name}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource txtBlockStyle}" Text="Session Id: " />
+                    <TextBlock Text="{Binding SessionId}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource txtBlockStyle}" Text="Is .Net Process: " />
+                    <TextBlock Text="{Binding IsNetProcess}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource txtBlockStyle}" Text="X64: " />
+                    <TextBlock Text="{Binding IsX64}" />
+                </StackPanel>
+
+            </WrapPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="2"
+                  DataContext="{Binding PerformanceCounterViewModel}"
+                  Header="Performance Counters">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <WrapPanel Grid.Row="0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Working Set: " />
+                        <TextBlock Text="{Binding WorkingSetCounter, StringFormat=N0}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Private Memory: " />
+                        <TextBlock Text="{Binding PrivateBytesCounter, StringFormat=N0}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Gen0: " />
+                        <TextBlock Text="{Binding Gen0SizeCounter, StringFormat=N0}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Gen1: " />
+                        <TextBlock Text="{Binding Gen1SizeCounter, StringFormat=N0}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Gen2: " />
+                        <TextBlock Text="{Binding Gen2SizeCounter, StringFormat=N0}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="LOH: " />
+                        <TextBlock Text="{Binding LohSizeCounter, StringFormat=N0}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Bytes in all Heap: " />
+                        <TextBlock Text="{Binding BytesInAllHeapsCounter, StringFormat=N0}" />
+                    </StackPanel>
+                </WrapPanel>
+
+                <ItemsControl ItemsSource="{Binding}" Grid.Row="1"></ItemsControl>
+            </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>

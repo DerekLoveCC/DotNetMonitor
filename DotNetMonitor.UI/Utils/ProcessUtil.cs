@@ -26,7 +26,7 @@ namespace DotNetMonitor.UI.Utils
 
         private static ProcessInfoViewModel BuildProcessInfo(Process process)
         {
-            var result = new ProcessInfoViewModel();
+            var result = new ProcessInfoViewModel(process.Id);
             PopulateInfo(result, process);
             return result;
         }
@@ -36,8 +36,6 @@ namespace DotNetMonitor.UI.Utils
             processInfo.Id = process.Id;
             processInfo.Name = process.ProcessName;
             processInfo.SessionId = process.SessionId;
-            processInfo.WorkingSet = process.WorkingSet64;
-            processInfo.PrivateMemorySize = process.PrivateMemorySize64;
             processInfo.Modules = GetProcessModuleInfos(process);
             processInfo.IsNetProcess = CheckDotNetProcess(processInfo);
             processInfo.IsX64 = CheckProcessBit(process);

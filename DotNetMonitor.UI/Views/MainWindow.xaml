@@ -69,7 +69,7 @@
                                                CanClose="False"
                                                CanDockAsTabbedDocument="False"
                                                CanHide="False">
-                            <localViews:ProcessDetailView DataContext="{Binding ProcessListViewModel.SelectedRow}" />
+                            <localViews:ProcessDetailView DataContext="{Binding ProcessListViewModel}" />
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
                 </xcad:LayoutPanel>

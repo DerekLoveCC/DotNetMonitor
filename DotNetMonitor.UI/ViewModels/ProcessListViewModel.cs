@@ -1,12 +1,7 @@
-﻿using DotNetMonitor.Common.NativeMethod;
-using DotNetMonitor.UI.Utils;
+﻿using DotNetMonitor.UI.Utils;
 using Prism.Commands;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -17,7 +12,9 @@ namespace DotNetMonitor.UI.ViewModels
         public ProcessListViewModel()
         {
             RowDoulbeClickCommand = new DelegateCommand(OnRowDouleClick);
+            PerformanceCounterViewModel = new PerformanceCounterViewModel();
         }
+
         private ObservableCollection<ProcessInfoViewModel> _processes;
 
         public ObservableCollection<ProcessInfoViewModel> Processes
@@ -33,26 +30,41 @@ namespace DotNetMonitor.UI.ViewModels
             }
         }
 
-        private ProcessInfoViewModel _selectedRow;
+        private ProcessInfoViewModel _selectedProcess;
 
-        public ProcessInfoViewModel SelectedRow
+        public ProcessInfoViewModel SelectedProcess
         {
-            get { return _selectedRow; }
+            get { return _selectedProcess; }
             set
             {
-                if (_selectedRow != value)
+                if (_selectedProcess != value)
                 {
-                    _selectedRow = value;
-                    RaisePropertyChanged(nameof(SelectedRow));
+                    _selectedProcess = value;
+                    RaisePropertyChanged(nameof(SelectedProcess));
+                    PerformanceCounterViewModel.ChangeProcess(SelectedProcess);
                 }
             }
         }
+
+        private PerformanceCounterViewModel _performanceCounterViewModel;
+        public PerformanceCounterViewModel PerformanceCounterViewModel
+        {
+            get { return _performanceCounterViewModel; }
+            set
+            {
+                if (_performanceCounterViewModel != value)
+                {
+                    _performanceCounterViewModel = value;
+                    RaisePropertyChanged(nameof(PerformanceCounterViewModel));
+                }
+            }
+        }
+
 
         public ICommand RowDoulbeClickCommand { get; }
 
         private void OnRowDouleClick()
         {
-
         }
 
         internal async Task LoadProcesses()

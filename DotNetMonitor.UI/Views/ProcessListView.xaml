@@ -68,7 +68,7 @@
         <DataGrid AutoGenerateColumns="False"
                   ItemsSource="{Binding Processes}"
                   RowStyle="{StaticResource CustomizedRowStyle}"
-                  SelectedItem="{Binding SelectedRow}">
+                  SelectedItem="{Binding SelectedProcess}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding RowDoulbeClickCommand}" />
@@ -84,9 +84,12 @@
                 <DataGridTemplateColumn CellTemplate="{StaticResource IsNetCircleDataTemplate}"
                                         Header=".Net"
                                         IsReadOnly="True"
-                                        SortDirection="Descending" />
+                                        CanUserSort="True"
+                                        SortMemberPath="IsNetProcess" />
                 <DataGridTemplateColumn CellTemplate="{StaticResource IsX64CircleDataTemplate}"
                                         Header="X64"
+                                        SortMemberPath="IsX64"
+                                        CanUserSort="True"
                                         IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>

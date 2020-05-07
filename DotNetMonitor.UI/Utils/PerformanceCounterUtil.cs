@@ -1,4 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace DotNetMonitor.UI.Utils
 {
@@ -23,6 +27,15 @@ namespace DotNetMonitor.UI.Utils
             }
 
             return null;
+        }
+
+        public static IList<PerformanceCounterCategory> GetDotNetPerformanceCategories()
+        {
+            var result = PerformanceCounterCategory.GetCategories().Where(c => c.CategoryName.StartsWith(".Net", StringComparison.OrdinalIgnoreCase))
+                                                                   .ToList();
+
+
+            return result;
         }
     }
 }

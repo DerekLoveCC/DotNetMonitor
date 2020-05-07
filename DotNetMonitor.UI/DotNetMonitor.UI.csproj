@@ -190,6 +190,7 @@
     <Compile Include="Utils\PerformanceCounterUtil.cs" />
     <Compile Include="Utils\ProcessUtil.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\PerformanceCounterViewModel.cs" />
     <Compile Include="ViewModels\ProcessInfoViewModel.cs" />
     <Compile Include="ViewModels\ProcessListViewModel.cs" />
     <Compile Include="ViewModels\ProcessModuleInfo.cs" />
@@ -279,6 +280,9 @@
       <Project>{CFD0D62B-3C2F-435A-96BC-880DE89F9792}</Project>
       <Name>DotNetMonitor.SpyModule</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

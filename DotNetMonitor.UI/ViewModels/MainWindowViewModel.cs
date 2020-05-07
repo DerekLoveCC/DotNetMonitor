@@ -42,10 +42,7 @@ namespace DotNetMonitor.UI.ViewModels
                 return;
             }
 
-            foreach (var process in ProcessListViewModel?.Processes)
-            {
-                process.Dispose();
-            }
+            ProcessListViewModel.PerformanceCounterViewModel?.Dispose();
 
             await ProcessListViewModel?.LoadProcesses();
         }
