@@ -185,6 +185,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Event\LoadProcessDetailEvent.cs" />
+    <Compile Include="Model\DMPerformanceCounter.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="TemplateSelector\DockingManagerLayoutItemSelector.cs" />
     <Compile Include="Utils\PerformanceCounterUtil.cs" />

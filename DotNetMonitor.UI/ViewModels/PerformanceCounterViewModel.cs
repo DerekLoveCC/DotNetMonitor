@@ -1,4 +1,5 @@
-﻿using DotNetMonitor.UI.Utils;
+﻿using DotNetMonitor.UI.Model;
+using DotNetMonitor.UI.Utils;
 using Prism.Mvvm;
 using System;
 using System.Diagnostics;
@@ -13,13 +14,12 @@ namespace DotNetMonitor.UI.ViewModels
         private int _processId;
         private ProcessInfoViewModel _processInfoViewModel;
         private Task _traceTask;
+        private readonly object _startTraceLock = new object();
 
-        internal async Task ChangeProcess(ProcessInfoViewModel processInfoViewModel)
+        internal void ChangeProcess(ProcessInfoViewModel processInfoViewModel)
         {
-            await StopTrace();
             _processInfoViewModel = processInfoViewModel;
             _processId = processInfoViewModel.Id;
-            ClearCounters();
 
             StartTrace();
         }
@@ -33,75 +33,122 @@ namespace DotNetMonitor.UI.ViewModels
             }
         }
 
-        public bool Tracing { get; private set; } = true;
+        public bool Tracing { get; private set; }
 
         public void StartTrace()
         {
-            Tracing = true;
-            _traceTask = Task.Run(() =>
+            lock (_startTraceLock)
             {
-                try
+                if (Tracing)
                 {
-                    TracePerformance();
+                    return;
                 }
-                catch (Exception ex)
+                _traceTask = Task.Run(() =>
                 {
-                    Debug.WriteLine(ex);
-                }
-            });
+                    try
+                    {
+                        TracePerformance();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                    }
+                });
+            }
         }
 
-        private async Task StopTrace()
+        private DMPerformanceCounter gen0SizeCounter;
+        private DMPerformanceCounter gen1SizeCounter;
+        private DMPerformanceCounter gen2SizeCounter;
+        private DMPerformanceCounter lohSizeCounter;
+
+        private DMPerformanceCounter allBytesInHeapCounter;
+        private DMPerformanceCounter workSetCounter;
+        private DMPerformanceCounter privateBytesCounter;
+
+        private void UpdateCounterValues()
         {
-            Tracing = false;
-            if (_traceTask != null)
-            {
-                try
-                {
-                    await _traceTask;
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex);
-                }
-            }
+            gen0SizeCounter.UpdateCounterValue();
+            gen1SizeCounter.UpdateCounterValue();
+            gen2SizeCounter.UpdateCounterValue();
+            lohSizeCounter.UpdateCounterValue();
+            allBytesInHeapCounter.UpdateCounterValue();
+
+            workSetCounter.UpdateCounterValue();
+            privateBytesCounter.UpdateCounterValue();
         }
 
         private void TracePerformance()
         {
-            string instance = PerformanceCounterUtil.GetPerformanceCounterInstance(_processId);
-            if (instance == null)
+            const int sleepInterval = (int)(0.5 * 1000);
+
+            var category = ".NET CLR Memory";
+            gen0SizeCounter = new DMPerformanceCounter(category, "Gen 0 heap size", nameof(Gen0SizeCounter), this);
+            gen1SizeCounter = new DMPerformanceCounter(category, "Gen 1 heap size", nameof(Gen1SizeCounter), this);
+            gen2SizeCounter = new DMPerformanceCounter(category, "Gen 2 heap size", nameof(Gen2SizeCounter), this);
+            lohSizeCounter = new DMPerformanceCounter(category, "Large Object Heap Size", nameof(Gen0SizeCounter), this);
+            allBytesInHeapCounter = new DMPerformanceCounter(category, "# Bytes in all Heaps", nameof(BytesInAllHeapsCounter), this);
+            workSetCounter = new DMPerformanceCounter("Process", "Working Set", nameof(WorkingSetCounter), this);
+            privateBytesCounter = new DMPerformanceCounter("Process", "Private Bytes", nameof(PrivateBytesCounter), this);
+
+            var processId = _processId;
+            var succeed = SetInstance(processId);
+            if (!succeed)
             {
                 return;
             }
 
-            const int sleepInterval = (int)(0.5 * 1000);
-
-            var category = ".NET CLR Memory";
-            var gen0SizeCounter = new PerformanceCounter(category, "Gen 0 heap size", instance);
-            var gen1SizeCounter = new PerformanceCounter(category, "Gen 1 heap size", instance);
-            var gen2SizeCounter = new PerformanceCounter(category, "Gen 2 heap size", instance);
-            var lohSizeCounter = new PerformanceCounter(category, "Large Object Heap Size", instance);
-            var allBytesInHeapCounter = new PerformanceCounter(category, "# Bytes in all Heaps", instance);
-
-            var workSetCounter = new PerformanceCounter("Process", "Working Set", instance);
-            var privateBytesCounter = new PerformanceCounter("Process", "Private Bytes", instance);
-            while (Tracing)
+            try
             {
-                WorkingSetCounter = workSetCounter.NextValue();
-                PrivateBytesCounter = privateBytesCounter.NextValue();
-
-                if (_processInfoViewModel.IsNetProcess)
+                while (Tracing)
                 {
-                    BytesInAllHeapsCounter = allBytesInHeapCounter.NextValue();
-                    Gen0SizeCounter = gen0SizeCounter.NextValue();
-                    Gen1SizeCounter = gen1SizeCounter.NextValue();
-                    Gen2SizeCounter = gen2SizeCounter.NextValue();
-                    LohSizeCounter = lohSizeCounter.NextValue();
+                    UpdateCounterValues();
+                    if (processId == _processId)
+                    {
+                        Thread.Sleep(sleepInterval);
+                    }
+                    else
+                    {
+                        ClearCounters();
+                        processId = _processId;
+                        succeed = SetInstance(processId);
+                        if (!succeed)
+                        {
+                            return;
+                        }
+                    }
                 }
-
-                Thread.Sleep(sleepInterval);
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                lock (_startTraceLock)
+                {
+                    Tracing = false;
+                }
+            }
+        }
+
+        private bool SetInstance(int processId)
+        {
+            string instance = PerformanceCounterUtil.GetPerformanceCounterInstance(processId);
+            if (instance == null)
+            {
+                return false;
+            }
+
+            gen0SizeCounter.UpdateInstance(instance);
+            gen1SizeCounter.UpdateInstance(instance);
+            gen2SizeCounter.UpdateInstance(instance);
+            lohSizeCounter.UpdateInstance(instance);
+            allBytesInHeapCounter.UpdateInstance(instance);
+
+            workSetCounter.UpdateInstance(instance);
+            privateBytesCounter.UpdateInstance(instance);
+            return true;
         }
 
         public void Dispose()
