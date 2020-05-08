@@ -87,7 +87,7 @@
                                         CanUserSort="True"
                                         SortMemberPath="IsNetProcess" />
                 <DataGridTemplateColumn CellTemplate="{StaticResource IsX64CircleDataTemplate}"
-                                        Header="X64"
+                                        Header="x64"
                                         SortMemberPath="IsX64"
                                         CanUserSort="True"
                                         IsReadOnly="True" />

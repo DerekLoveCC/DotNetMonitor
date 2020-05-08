@@ -1,9 +1,9 @@
 ﻿using DotNetMonitor.Common.NativeMethod;
 using DotNetMonitor.UI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 
 namespace DotNetMonitor.UI.Utils
@@ -36,9 +36,9 @@ namespace DotNetMonitor.UI.Utils
             processInfo.Id = process.Id;
             processInfo.Name = process.ProcessName;
             processInfo.SessionId = process.SessionId;
+            processInfo.IsX64 = CheckProcessBit(process);
             processInfo.Modules = GetProcessModuleInfos(process);
             processInfo.IsNetProcess = CheckDotNetProcess(processInfo);
-            processInfo.IsX64 = CheckProcessBit(process);
         }
 
         private static bool? CheckProcessBit(Process p)
@@ -47,8 +47,9 @@ namespace DotNetMonitor.UI.Utils
             {
                 return ProcessNativeMethods.Is64Bit(p);
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 return null;
             }
         }
