@@ -37,9 +37,24 @@
                                     Height="20"
                                     Kind="Refresh" />
             </Button>
+            <Button x:Name="CompactMemory"
+                    Command="{Binding CompactMemoryCommand}"
+                    ToolTip="Compact Memory">
+                <iconPacks:BoxIcons Width="20"
+                                    Height="20"
+                                    Kind="RegularCompass" />
+            </Button>
+
             <localViews:WindonwFinder HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
                                       ToolTip="Drag to spy" />
+            <Button x:Name="Settings"
+                    Command="{Binding CustomizeCommand}"
+                    ToolTip="Customize">
+                <iconPacks:EvaIcons Width="20"
+                                    Height="20"
+                                    Kind="Settings" />
+            </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>

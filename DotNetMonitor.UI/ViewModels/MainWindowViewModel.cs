@@ -1,9 +1,8 @@
-﻿using DotNetMonitor.Common.NativeMethod;
-using DotNetMonitor.UI.Utils;
+﻿using DotNetMonitor.UI.Utils;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
-using System.Diagnostics;
+using System.Runtime;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -15,10 +14,17 @@ namespace DotNetMonitor.UI.ViewModels
         {
             ProcessListViewModel = processListViewModel;
             RefreshProcessListCommand = new DelegateCommand(OnRefreshProcessList);
+            CompactMemoryCommand = new DelegateCommand(OnCompactMemory);
+        }
 
-            var s = Environment.Is64BitProcess;
-
-            var isX64 = ProcessNativeMethods.Is64Bit(Process.GetCurrentProcess());
+        private void OnCompactMemory()
+        {
+            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+#pragma warning disable S1215 // "GC.Collect" should not be called
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+#pragma warning restore S1215 // "GC.Collect" should not be called
         }
 
         private ProcessListViewModel _processListViewModel;
@@ -45,6 +51,7 @@ namespace DotNetMonitor.UI.ViewModels
         }
 
         public ICommand RefreshProcessListCommand { get; }
+        public ICommand CompactMemoryCommand { get; }
 
         private async void OnRefreshProcessList()
         {

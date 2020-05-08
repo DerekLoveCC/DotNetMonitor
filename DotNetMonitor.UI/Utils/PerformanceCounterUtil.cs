@@ -19,14 +19,18 @@ namespace DotNetMonitor.UI.Utils
             string[] instances = cat.GetInstanceNames();
             foreach (string instance in instances)
             {
-                using (var cnt = new PerformanceCounter(processCategory, "ID Process", instance, true))
+                try
                 {
-                    int val = (int)cnt.RawValue;
-                    if (!_pidToInstance.ContainsKey(val))
+                    using (var cnt = new PerformanceCounter(processCategory, "ID Process", instance, true))
                     {
-                        _pidToInstance.Add(val, instance);
+                        int val = (int)cnt.RawValue;
+                        if (!_pidToInstance.ContainsKey(val))
+                        {
+                            _pidToInstance.Add(val, instance);
+                        }
                     }
                 }
+                catch { }
             }
         }
 

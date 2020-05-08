@@ -191,6 +191,7 @@
     <Compile Include="TemplateSelector\DockingManagerLayoutItemSelector.cs" />
     <Compile Include="Utils\PerformanceCounterUtil.cs" />
     <Compile Include="Utils\ProcessUtil.cs" />
+    <Compile Include="Utils\UIDispatcher.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PerformanceCounterViewModel.cs" />
     <Compile Include="ViewModels\ProcessInfoViewModel.cs" />

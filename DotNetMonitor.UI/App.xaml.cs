@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DotNetMonitor.UI.Startup;
+using DotNetMonitor.UI.Utils;
 using DotNetMonitor.UI.Views;
 using System.Windows;
 using System.Windows.Threading;
@@ -19,6 +20,8 @@ namespace DotNetMonitor.UI
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            UIDispatcher.Dispatcher = Dispatcher;
+
             var bootstrapper = new Bootstrapper();
             var container = bootstrapper.Bootstrap();
 
