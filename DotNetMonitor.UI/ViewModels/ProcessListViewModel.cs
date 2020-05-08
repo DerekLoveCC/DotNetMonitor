@@ -67,7 +67,7 @@ namespace DotNetMonitor.UI.ViewModels
         {
         }
 
-        internal async Task LoadProcesses()
+        internal async Task LoadProcessesAsync()
         {
             var processInfoList = await ProcessUtil.LoadProcessesAsync();
             Processes = new ObservableCollection<ProcessInfoViewModel>(processInfoList);

@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using DotNetMonitor.UI.Utils;
+using Prism.Commands;
 using Prism.Mvvm;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -30,7 +31,10 @@ namespace DotNetMonitor.UI.ViewModels
 
         internal async Task Initialize()
         {
-            await ProcessListViewModel?.LoadProcesses();
+            var loadProcessTask = ProcessListViewModel?.LoadProcessesAsync();
+            var refreshInstanceTask = Task.Run(() => PerformanceCounterUtil.RefreshInstances());
+
+            await Task.WhenAll(loadProcessTask, refreshInstanceTask);
         }
 
         public ICommand RefreshProcessListCommand { get; }
@@ -44,7 +48,9 @@ namespace DotNetMonitor.UI.ViewModels
 
             ProcessListViewModel.PerformanceCounterViewModel?.Dispose();
 
-            await ProcessListViewModel?.LoadProcesses();
+            var loadProcessTask = ProcessListViewModel?.LoadProcessesAsync();
+            var refreshInstanceTask = Task.Run(() => PerformanceCounterUtil.RefreshInstances());
+            await Task.WhenAll(loadProcessTask, refreshInstanceTask);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace DotNetMonitor.UI.ViewModels
 {
     public class PerformanceCounterViewModel : BindableBase, IDisposable
     {
-        private int _processId;
+        private int? _processId;
         private ProcessInfoViewModel _processInfoViewModel;
         private Task _traceTask;
         private readonly object _startTraceLock = new object();
@@ -19,7 +19,7 @@ namespace DotNetMonitor.UI.ViewModels
         internal void ChangeProcess(ProcessInfoViewModel processInfoViewModel)
         {
             _processInfoViewModel = processInfoViewModel;
-            _processId = processInfoViewModel.Id;
+            _processId = processInfoViewModel?.Id;
 
             StartTrace();
         }
@@ -43,6 +43,7 @@ namespace DotNetMonitor.UI.ViewModels
                 {
                     return;
                 }
+                Tracing = true;
                 _traceTask = Task.Run(() =>
                 {
                     try
@@ -91,15 +92,17 @@ namespace DotNetMonitor.UI.ViewModels
             workSetCounter = new DMPerformanceCounter("Process", "Working Set", nameof(WorkingSetCounter), this);
             privateBytesCounter = new DMPerformanceCounter("Process", "Private Bytes", nameof(PrivateBytesCounter), this);
 
-            var processId = _processId;
-            var succeed = SetInstance(processId);
-            if (!succeed)
-            {
-                return;
-            }
+         
 
             try
             {
+                var processId = _processId;
+                var succeed = processId != null && SetInstance(processId.Value);
+                if (!succeed)
+                {
+                    return;
+                }
+
                 while (Tracing)
                 {
                     UpdateCounterValues();
@@ -110,8 +113,9 @@ namespace DotNetMonitor.UI.ViewModels
                     else
                     {
                         ClearCounters();
+
                         processId = _processId;
-                        succeed = SetInstance(processId);
+                        succeed = processId != null && SetInstance(processId.Value);
                         if (!succeed)
                         {
                             return;
