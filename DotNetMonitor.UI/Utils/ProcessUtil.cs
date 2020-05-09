@@ -1,5 +1,4 @@
 ﻿using DotNetMonitor.Common;
-using DotNetMonitor.Common.NativeMethod;
 using DotNetMonitor.UI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -38,7 +37,7 @@ namespace DotNetMonitor.UI.Utils
             processInfo.Name = process.ProcessName;
             processInfo.SessionId = process.SessionId;
             processInfo.IsX64 = CheckProcessBit(process);
-            processInfo.Modules = GetProcessModuleInfos(process);
+            processInfo.Modules = GetProcessModuleInfos(process, processInfo.IsX64);
             processInfo.IsNetProcess = CheckDotNetProcess(processInfo);
         }
 
@@ -55,13 +54,29 @@ namespace DotNetMonitor.UI.Utils
             }
         }
 
-        private static IList<ProcessModuleInfo> GetProcessModuleInfos(Process process)
+        private static IList<ProcessModuleInfo> GetProcessModuleInfos(Process process, bool? isX64)
         {
             try
             {
-                return process.Modules.OfType<ProcessModule>()
-                                      .Select(m => new ProcessModuleInfo { Name = m.ModuleName })
-                                      .ToList();
+                if (isX64 == null || (Environment.Is64BitProcess && isX64 == true) || (!Environment.Is64BitProcess && isX64 == false))
+                {
+                    return process.Modules.OfType<ProcessModule>()
+                                          .Select(m => new ProcessModuleInfo { Name = m.ModuleName })
+                                          .ToList();
+                }
+                else
+                {
+                    var modules = new List<ProcessModuleInfo>();
+                    var proc = InjectorHelper.GetLaunchProcess(InjectAction.ProcessInfo, isX64.Value, process.Id);
+                    proc.Start();
+                    while (!proc.StandardOutput.EndOfStream)
+                    {
+                        string line = proc.StandardOutput.ReadLine();
+                        modules.Add(new ProcessModuleInfo { Name = line });
+                    }
+
+                    return modules;
+                }
             }
             catch
             {

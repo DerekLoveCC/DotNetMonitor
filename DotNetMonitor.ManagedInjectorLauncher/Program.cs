@@ -7,6 +7,7 @@ using DotNetMonitor.Common;
 using DotNetMonitorManagedInjector;
 using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace DotNetMonitorManagedInjectorLauncher
 {

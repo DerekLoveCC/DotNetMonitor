@@ -15,7 +15,8 @@
         {
             string file = GetProcessExeFile(windowInfo.IsOwningProcess64Bit);
 
-            var startInfo = new ProcessStartInfo(file, $"{InjectAction.Inject} {windowInfo.HWnd} \"{assembly.Location}\" \"{className}\" \"{methodName}\"")
+            var argument = $"{InjectAction.Inject} {windowInfo.HWnd} \"{assembly.Location}\" \"{className}\" \"{methodName}\"";
+            var startInfo = new ProcessStartInfo(file, argument)
             {
                 Verb = windowInfo.IsOwningProcessElevated ? "runas" : null
             };
@@ -26,16 +27,17 @@
             }
         }
 
-        public static Process GetLaunchProcess(InjectAction injectAction, Process process)
+        public static Process GetLaunchProcess(InjectAction injectAction, bool isX64, int processId)
         {
-            string file = GetProcessExeFile(WindowInfo.IsProcess64Bit(process));
+            string file = GetProcessExeFile(isX64);
 
+            var argument = $"{injectAction} {processId}";
             var proc = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = file,
-                    Arguments = "command line arguments to your executable",
+                    Arguments = argument,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
