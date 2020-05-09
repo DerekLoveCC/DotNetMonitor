@@ -4,7 +4,7 @@
     using System.IO;
     using System.Reflection;
 
-    public static class Injector
+    public static class InjectorHelper
     {
         private static string GetSuffix(WindowInfo windowInfo)
         {
@@ -23,7 +23,7 @@
                 throw new FileNotFoundException(message, file);
             }
 
-            var startInfo = new ProcessStartInfo(file, $"{windowInfo.HWnd} \"{assembly.Location}\" \"{className}\" \"{methodName}\"")
+            var startInfo = new ProcessStartInfo(file, $"{InjectAction.Inject} {windowInfo.HWnd} \"{assembly.Location}\" \"{className}\" \"{methodName}\"")
             {
                 Verb = windowInfo.IsOwningProcessElevated ? "runas" : null
             };

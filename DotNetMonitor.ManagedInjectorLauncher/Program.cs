@@ -3,10 +3,10 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
 // All other rights reserved.
 
+using DotNetMonitor.Common;
 using DotNetMonitorManagedInjector;
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace DotNetMonitorManagedInjectorLauncher
 {
@@ -14,10 +14,25 @@ namespace DotNetMonitorManagedInjectorLauncher
     {
         public static void Main(string[] args)
         {
-            var windowHandle = (IntPtr)long.Parse(args[0]);
-            var assemblyName = args[1];
-            var className = args[2];
-            var methodName = args[3];
+            if (!Enum.TryParse(args[0], true, out InjectAction injectAction))
+            {
+                Console.WriteLine("Unknown inject action");
+                return;
+            }
+            switch (injectAction)
+            {
+                case InjectAction.Inject:
+                    Inject(args);
+                    break;
+            }
+        }
+
+        private static void Inject(string[] args)
+        {
+            var windowHandle = (IntPtr)long.Parse(args[1]);
+            var assemblyName = args[2];
+            var className = args[3];
+            var methodName = args[4];
 
             var injectorData = new InjectorData
             {
@@ -40,8 +55,7 @@ namespace DotNetMonitorManagedInjectorLauncher
 
         private static Process GetProcessFromWindowHandle(IntPtr windowHandle)
         {
-            int processId;
-            GetWindowThreadProcessId(windowHandle, out processId);
+            NativeMethods.GetWindowThreadProcessId(windowHandle, out int processId);
             if (processId == 0)
             {
                 Injector.LogMessage(string.Format("could not get process for window handle {0}", windowHandle), true);
@@ -70,17 +84,14 @@ namespace DotNetMonitorManagedInjectorLauncher
             }
             if (containsFile)
             {
-                Injector.LogMessage(string.Format("Successfully injected for process {0} (PID = {1})", process.ProcessName, process.Id), true);
+                Injector.LogMessage($"Successfully injected for process {process.ProcessName} (PID = {process.Id})", true);
             }
             else
             {
-                Injector.LogMessage(string.Format("Failed to inject for process {0} (PID = {1})", process.ProcessName, process.Id), true);
+                Injector.LogMessage($"Failed to inject for process {process.ProcessName} (PID = {process.Id})", true);
             }
 
             return containsFile;
         }
-
-        [DllImport("user32.dll")]
-        public static extern int GetWindowThreadProcessId(IntPtr hwnd, out int processId);
     }
 }

@@ -50,6 +50,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotNetMonitor.Common\DotNetMonitor.Common.csproj">
+      <Project>{2cdc774e-edde-4425-bbe3-d4a82795d9b0}</Project>
+      <Name>DotNetMonitor.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetMonitor.ManagedInjector\DotNetMonitor.ManagedInjector64.vcxproj">
       <Project>{a27c8b34-2527-4258-8c07-d2720c576b90}</Project>
       <Name>DotNetMonitor.ManagedInjector64</Name>
