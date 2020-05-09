@@ -48,7 +48,7 @@ namespace DotNetMonitor.UI.Views
             Mouse.OverrideCursor = Cursors.Wait;
             try
             {
-                InjectorHelper.Launch(windowInfo,
+                InjectorHelper.InjectLaunch(windowInfo,
                                 typeof(ProcessInfoWindow).Assembly,
                                 typeof(ProcessInfoWindow).FullName,
                                 nameof(ProcessInfoWindow.ShowInfo));

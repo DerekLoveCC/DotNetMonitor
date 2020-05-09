@@ -1,3 +1,4 @@
+using DotNetMonitor.Common.NativeMethod;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,7 +24,7 @@ namespace DotNetMonitor.Common
 
         public WindowInfo(IntPtr hwnd)
         {
-            this.HWnd = hwnd;
+            HWnd = hwnd;
         }
 
         public static void ClearCachedWindowHandleInfo()
@@ -31,7 +32,7 @@ namespace DotNetMonitor.Common
             windowHandleToValidityMap.Clear();
         }
 
-        public IList<NativeMethods.MODULEENTRY32> Modules => this.modules ?? (this.modules = this.GetModules().ToList());
+        public IList<NativeMethods.MODULEENTRY32> Modules => modules ?? (modules = GetModules().ToList());
 
         /// <summary>
         /// Similar to System.Diagnostics.WinProcessManager.GetModuleInfos,
@@ -40,7 +41,7 @@ namespace DotNetMonitor.Common
         /// </summary>
         private IEnumerable<NativeMethods.MODULEENTRY32> GetModules()
         {
-            NativeMethods.GetWindowThreadProcessId(this.HWnd, out var processId);
+            NativeMethods.GetWindowThreadProcessId(HWnd, out var processId);
 
             var me32 = new NativeMethods.MODULEENTRY32();
             var hModuleSnap = NativeMethods.CreateToolhelp32Snapshot(NativeMethods.SnapshotFlags.Module | NativeMethods.SnapshotFlags.Module32, processId);
@@ -71,18 +72,18 @@ namespace DotNetMonitor.Common
                 var isValid = false;
                 try
                 {
-                    if (this.HWnd == IntPtr.Zero)
+                    if (HWnd == IntPtr.Zero)
                     {
                         return false;
                     }
 
                     // see if we have cached the process validity previously, if so, return it.
-                    if (windowHandleToValidityMap.TryGetValue(this.HWnd, out isValid))
+                    if (windowHandleToValidityMap.TryGetValue(HWnd, out isValid))
                     {
                         return isValid;
                     }
 
-                    var process = this.OwningProcess;
+                    var process = OwningProcess;
                     if (process == null)
                     {
                         return false;
@@ -103,7 +104,7 @@ namespace DotNetMonitor.Common
                     else
                     {
                         // WPF-Windows have a defined class name
-                        if (windowClassNameRegex.IsMatch(this.ClassName))
+                        if (windowClassNameRegex.IsMatch(ClassName))
                         {
                             isValid = true;
                         }
@@ -124,7 +125,7 @@ namespace DotNetMonitor.Common
                             // sometimes the module names aren't always the same case. compare case insensitive.
                             // see for more info: http://snoopwpf.codeplex.com/workitem/6090
 
-                            foreach (var module in this.Modules)
+                            foreach (var module in Modules)
                             {
                                 if (module.szModule.StartsWith("PresentationFramework", StringComparison.OrdinalIgnoreCase)
                                     || module.szModule.StartsWith("PresentationCore", StringComparison.OrdinalIgnoreCase)
@@ -137,7 +138,7 @@ namespace DotNetMonitor.Common
                         }
                     }
 
-                    windowHandleToValidityMap[this.HWnd] = isValid;
+                    windowHandleToValidityMap[HWnd] = isValid;
                 }
                 catch
                 {
@@ -148,11 +149,11 @@ namespace DotNetMonitor.Common
             }
         }
 
-        public Process OwningProcess => this.owningProcess ?? (this.owningProcess = NativeMethods.GetWindowThreadProcess(this.HWnd));
+        public Process OwningProcess => owningProcess ?? (owningProcess = NativeMethods.GetWindowThreadProcess(HWnd));
 
-        public bool IsOwningProcess64Bit => (this.isOwningProcess64Bit ?? (this.isOwningProcess64Bit = IsProcess64Bit(this.OwningProcess))) == true;
+        public bool IsOwningProcess64Bit => (isOwningProcess64Bit ?? (isOwningProcess64Bit = IsProcess64Bit(OwningProcess))) == true;
 
-        public bool IsOwningProcessElevated => (this.isOwningProcessElevated ?? (this.isOwningProcessElevated = IsProcessElevated(this.OwningProcess))) == true;
+        public bool IsOwningProcessElevated => (isOwningProcessElevated ?? (isOwningProcessElevated = IsProcessElevated(OwningProcess))) == true;
 
         public IntPtr HWnd { get; }
 
@@ -160,8 +161,8 @@ namespace DotNetMonitor.Common
         {
             get
             {
-                var process = this.OwningProcess;
-                var windowTitle = NativeMethods.GetText(this.HWnd);
+                var process = OwningProcess;
+                var windowTitle = NativeMethods.GetText(HWnd);
 
                 if (string.IsNullOrEmpty(windowTitle))
                 {
@@ -180,47 +181,43 @@ namespace DotNetMonitor.Common
             }
         }
 
-        public string ClassName => NativeMethods.GetClassName(this.HWnd);
+        public string ClassName => NativeMethods.GetClassName(HWnd);
 
-        public string TraceInfo => $"{this.Description} [{this.HWnd.ToInt64():X8}] {this.ClassName}";
+        public string TraceInfo => $"{Description} [{HWnd.ToInt64():X8}] {ClassName}";
 
         public override string ToString()
         {
-            return this.Description;
-        }
-
-        private void OnFailedToAttach(Exception e)
-        {
+            return Description;
         }
 
         // see https://msdn.microsoft.com/en-us/library/windows/desktop/ms684139%28v=vs.85%29.aspx
         public static bool IsProcess64Bit(Process process)
         {
-            if (Environment.Is64BitOperatingSystem == false)
+            if (!Environment.Is64BitOperatingSystem)
             {
                 return false;
             }
 
             // if this method is not available in your version of .NET, use GetNativeSystemInfo via P/Invoke instead
-            using (var processHandle = NativeMethods.OpenProcess(process, NativeMethods.ProcessAccessFlags.QueryLimitedInformation))
+            using (var processHandle = ProcessNativeMethods.OpenProcess(process, ProcessAccessFlags.QueryLimitedInformation))
             {
                 if (processHandle.IsInvalid)
                 {
                     throw new Exception("Could not query process information.");
                 }
 
-                if (NativeMethods.IsWow64Process(processHandle.DangerousGetHandle(), out var isWow64) == false)
+                if (!ProcessNativeMethods.IsWow64Process(processHandle.DangerousGetHandle(), out var isWow64))
                 {
                     throw new Win32Exception();
                 }
 
-                return isWow64 == false;
+                return !isWow64;
             }
         }
 
         private static bool IsProcessElevated(Process process)
         {
-            using (var processHandle = NativeMethods.OpenProcess(process, NativeMethods.ProcessAccessFlags.QueryInformation))
+            using (var processHandle = ProcessNativeMethods.OpenProcess(process, ProcessAccessFlags.QueryInformation))
             {
                 if (processHandle.IsInvalid)
                 {

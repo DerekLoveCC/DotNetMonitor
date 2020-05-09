@@ -1,4 +1,5 @@
-﻿using DotNetMonitor.Common.NativeMethod;
+﻿using DotNetMonitor.Common;
+using DotNetMonitor.Common.NativeMethod;
 using DotNetMonitor.UI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace DotNetMonitor.UI.Utils
         {
             try
             {
-                return ProcessNativeMethods.Is64Bit(p);
+                return WindowInfo.IsProcess64Bit(p);
             }
             catch (Exception ex)
             {

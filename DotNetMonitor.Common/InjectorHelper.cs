@@ -6,22 +6,14 @@
 
     public static class InjectorHelper
     {
-        private static string GetSuffix(WindowInfo windowInfo)
+        private static string GetSuffix(bool isX64)
         {
-            return windowInfo.IsOwningProcess64Bit ? "64" : "32";
+            return isX64 ? "64" : "32";
         }
 
-        public static void Launch(WindowInfo windowInfo, Assembly assembly, string className, string methodName)
+        public static void InjectLaunch(WindowInfo windowInfo, Assembly assembly, string className, string methodName)
         {
-            var location = Assembly.GetExecutingAssembly().Location;
-            var directory = Path.GetDirectoryName(location) ?? string.Empty;
-            var file = Path.Combine(directory, $"DotNetMonitor.ManagedInjectorLauncher{GetSuffix(windowInfo)}.exe");
-
-            if (!File.Exists(file))
-            {
-                string message = $"Cannot find launcher {file}";
-                throw new FileNotFoundException(message, file);
-            }
+            string file = GetProcessExeFile(windowInfo.IsOwningProcess64Bit);
 
             var startInfo = new ProcessStartInfo(file, $"{InjectAction.Inject} {windowInfo.HWnd} \"{assembly.Location}\" \"{className}\" \"{methodName}\"")
             {
@@ -32,6 +24,40 @@
             {
                 process?.WaitForExit();
             }
+        }
+
+        public static Process GetLaunchProcess(InjectAction injectAction, Process process)
+        {
+            string file = GetProcessExeFile(WindowInfo.IsProcess64Bit(process));
+
+            var proc = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = file,
+                    Arguments = "command line arguments to your executable",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                }
+            };
+
+            return proc;
+        }
+
+        private static string GetProcessExeFile(bool isX64)
+        {
+            var location = Assembly.GetExecutingAssembly().Location;
+            var directory = Path.GetDirectoryName(location) ?? string.Empty;
+            var file = Path.Combine(directory, $"DotNetMonitor.ManagedInjectorLauncher{GetSuffix(isX64)}.exe");
+
+            if (!File.Exists(file))
+            {
+                string message = $"Cannot find launcher {file}";
+                throw new FileNotFoundException(message, file);
+            }
+
+            return file;
         }
     }
 }

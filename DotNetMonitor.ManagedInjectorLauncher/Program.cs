@@ -24,6 +24,31 @@ namespace DotNetMonitorManagedInjectorLauncher
                 case InjectAction.Inject:
                     Inject(args);
                     break;
+
+                case InjectAction.ProcessInfo:
+                    PrintInjectInfo(args);
+                    break;
+            }
+        }
+
+        private static void PrintInjectInfo(string[] args)
+        {
+            if (!int.TryParse(args[1], out int processId))
+            {
+                return;
+            }
+
+            var process = Process.GetProcessById(processId);
+
+            try
+            {
+                foreach (ProcessModule module in process.Modules)
+                {
+                    Console.WriteLine(module.ModuleName);
+                }
+            }
+            catch
+            {
             }
         }
 
