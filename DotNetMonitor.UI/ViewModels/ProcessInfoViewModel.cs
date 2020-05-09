@@ -2,6 +2,7 @@
 using DotNetMonitor.UI.Utils;
 using Prism.Commands;
 using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
@@ -17,6 +18,12 @@ namespace DotNetMonitor.UI.ViewModels
             TrimWorksetCommand = new DelegateCommand(OnTrimWorkset);
             //TracePerformanceCommand = new DelegateCommand(OnTracePerformance, () => IsNetProcess);
             RefreshCommand = new DelegateCommand(OnRefresh);
+            KillCommand = new DelegateCommand<ProcessInfoViewModel>(OnKill);
+        }
+
+        private void OnKill(ProcessInfoViewModel p)
+        {
+            Process.GetProcessById(p.Id)?.Kill();
         }
 
         private void OnRefresh()
@@ -35,6 +42,7 @@ namespace DotNetMonitor.UI.ViewModels
         public ICommand TrimWorksetCommand { get; }
         public ICommand TracePerformanceCommand { get; }
         public ICommand RefreshCommand { get; }
+        public ICommand KillCommand { get; }
 
         public int Id { get; internal set; }
         public string Name { get; internal set; }

@@ -11,7 +11,13 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <UserControl.Resources>
+        <ContextMenu x:Key="GridRowMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+            <MenuItem Command="{Binding KillCommand}"
+                      CommandParameter="{Binding}"
+                      Header="Kill" />
+        </ContextMenu>
         <Style x:Key="CustomizedRowStyle" TargetType="DataGridRow">
+            <Setter Property="ContextMenu" Value="{StaticResource GridRowMenu}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsNetProcess}" Value="True">
                     <Setter Property="Foreground" Value="Green" />
@@ -30,11 +36,11 @@
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsNetProcess}" Value="True">
                                 <Setter Property="Fill" Value="Green" />
-                                <Setter Property="ToolTip" Value=".Net Process"/>
+                                <Setter Property="ToolTip" Value=".Net Process" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsNetProcess}" Value="False">
                                 <Setter Property="Fill" Value="Red" />
-                                <Setter Property="ToolTip" Value="Not .Net Process"/>
+                                <Setter Property="ToolTip" Value="Not .Net Process" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -48,15 +54,15 @@
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsX64}" Value="True">
                                 <Setter Property="Fill" Value="Green" />
-                                <Setter Property="ToolTip" Value="x64 Process"/>
+                                <Setter Property="ToolTip" Value="x64 Process" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsX64}" Value="False">
                                 <Setter Property="Fill" Value="Red" />
-                                <Setter Property="ToolTip" Value="x86 Process"/>
+                                <Setter Property="ToolTip" Value="x86 Process" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsX64}" Value="{x:Null}">
                                 <Setter Property="Fill" Value="BurlyWood" />
-                                <Setter Property="ToolTip" Value="Unknown"/>
+                                <Setter Property="ToolTip" Value="Unknown" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -81,16 +87,16 @@
                 <DataGridTextColumn Binding="{Binding Name}"
                                     Header="Name"
                                     IsReadOnly="True" />
-                <DataGridTemplateColumn CellTemplate="{StaticResource IsNetCircleDataTemplate}"
+                <DataGridTemplateColumn CanUserSort="True"
+                                        CellTemplate="{StaticResource IsNetCircleDataTemplate}"
                                         Header=".Net"
                                         IsReadOnly="True"
-                                        CanUserSort="True"
                                         SortMemberPath="IsNetProcess" />
-                <DataGridTemplateColumn CellTemplate="{StaticResource IsX64CircleDataTemplate}"
+                <DataGridTemplateColumn CanUserSort="True"
+                                        CellTemplate="{StaticResource IsX64CircleDataTemplate}"
                                         Header="x64"
-                                        SortMemberPath="IsX64"
-                                        CanUserSort="True"
-                                        IsReadOnly="True" />
+                                        IsReadOnly="True"
+                                        SortMemberPath="IsX64" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
