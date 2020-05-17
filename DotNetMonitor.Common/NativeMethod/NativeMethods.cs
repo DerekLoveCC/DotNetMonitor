@@ -168,5 +168,9 @@ namespace DotNetMonitor.Common
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern int GetLastError();
+
     }
 }

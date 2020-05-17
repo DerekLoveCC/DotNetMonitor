@@ -16,7 +16,6 @@ namespace DotNetMonitor.UI.ViewModels
         public ProcessInfoViewModel(int pid)
         {
             TrimWorksetCommand = new DelegateCommand(OnTrimWorkset);
-            //TracePerformanceCommand = new DelegateCommand(OnTracePerformance, () => IsNetProcess);
             RefreshCommand = new DelegateCommand(OnRefresh);
             KillCommand = new DelegateCommand<ProcessInfoViewModel>(OnKill);
         }
@@ -40,7 +39,7 @@ namespace DotNetMonitor.UI.ViewModels
         }
 
         public ICommand TrimWorksetCommand { get; }
-        public ICommand TracePerformanceCommand { get; }
+   
         public ICommand RefreshCommand { get; }
         public ICommand KillCommand { get; }
 
@@ -53,19 +52,6 @@ namespace DotNetMonitor.UI.ViewModels
 
         public bool? IsX64 { get; internal set; }
 
-        private string _tracePerformanceText = "Start to trace perforamnce";
-
-        public string TracePerformanceText
-        {
-            get { return _tracePerformanceText; }
-            set
-            {
-                if (_tracePerformanceText != value)
-                {
-                    _tracePerformanceText = value;
-                    RaisePropertyChanged(nameof(TracePerformanceText));
-                }
-            }
-        }
+        public string Error { get; set; }
     }
 }

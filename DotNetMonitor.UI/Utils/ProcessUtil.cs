@@ -37,7 +37,7 @@ namespace DotNetMonitor.UI.Utils
             processInfo.Name = process.ProcessName;
             processInfo.SessionId = process.SessionId;
             processInfo.IsX64 = CheckProcessBit(process);
-            processInfo.Modules = GetProcessModuleInfos(process, processInfo.IsX64);
+            processInfo.Modules = GetProcessModuleInfos(process, processInfo);
             processInfo.IsNetProcess = CheckDotNetProcess(processInfo);
         }
 
@@ -54,11 +54,17 @@ namespace DotNetMonitor.UI.Utils
             }
         }
 
-        private static IList<ProcessModuleInfo> GetProcessModuleInfos(Process process, bool? isX64)
+        private static IList<ProcessModuleInfo> GetProcessModuleInfos(Process process, ProcessInfoViewModel processInfoViewModel)
         {
+            var isX64 = processInfoViewModel.IsX64;
+            if (isX64 == null)
+            {
+                return new List<ProcessModuleInfo>();
+            }
+
             try
             {
-                if (isX64 == null || (Environment.Is64BitProcess && isX64 == true) || (!Environment.Is64BitProcess && isX64 == false))
+                if ((Environment.Is64BitProcess && isX64 == true) || (!Environment.Is64BitProcess && isX64 == false))
                 {
                     return process.Modules.OfType<ProcessModule>()
                                           .Select(m => new ProcessModuleInfo { Name = m.ModuleName })
@@ -78,8 +84,10 @@ namespace DotNetMonitor.UI.Utils
                     return modules;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                processInfoViewModel.Error = ex.Message;
+
                 return new List<ProcessModuleInfo>();
             }
         }

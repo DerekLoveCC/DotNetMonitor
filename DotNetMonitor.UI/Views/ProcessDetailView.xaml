@@ -28,9 +28,6 @@
                     Orientation="Horizontal">
             <Button Command="{Binding TrimWorksetCommand}">Trim Working Set</Button>
             <Button Command="{Binding RefreshCommand}">Refresh</Button>
-            <Button Command="{Binding TracePerformanceCommand}">
-                <TextBlock Text="{Binding TracePerformanceText}" />
-            </Button>
         </StackPanel>
         <GroupBox Grid.Row="1"
                   DataContext="{Binding SelectedProcess}"

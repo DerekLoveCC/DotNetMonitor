@@ -4,6 +4,7 @@ using Prism.Mvvm;
 using System;
 using System.Runtime;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DotNetMonitor.UI.ViewModels
@@ -15,6 +16,12 @@ namespace DotNetMonitor.UI.ViewModels
             ProcessListViewModel = processListViewModel;
             RefreshProcessListCommand = new DelegateCommand(OnRefreshProcessList);
             CompactMemoryCommand = new DelegateCommand(OnCompactMemory);
+            CustomizeCommand = new DelegateCommand(OnCustomize);
+        }
+
+        private void OnCustomize()
+        {
+            MessageBox.Show("On Customize");
         }
 
         private void OnCompactMemory()
@@ -53,6 +60,7 @@ namespace DotNetMonitor.UI.ViewModels
         public ICommand RefreshProcessListCommand { get; }
         public ICommand CompactMemoryCommand { get; }
 
+        public ICommand CustomizeCommand { get; }
         private async void OnRefreshProcessList()
         {
             if (ProcessListViewModel?.Processes == null)

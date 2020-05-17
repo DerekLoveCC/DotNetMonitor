@@ -191,7 +191,7 @@ namespace DotNetMonitor.Common
         }
 
         // see https://msdn.microsoft.com/en-us/library/windows/desktop/ms684139%28v=vs.85%29.aspx
-        public static bool IsProcess64Bit(Process process)
+        public static bool? IsProcess64Bit(Process process)
         {
             if (!Environment.Is64BitOperatingSystem)
             {
@@ -203,12 +203,19 @@ namespace DotNetMonitor.Common
             {
                 if (processHandle.IsInvalid)
                 {
-                    throw new Exception("Could not query process information.");
+                    var errorCode = NativeMethods.GetLastError();
+                    if (errorCode == 5)
+                    {
+                        return null;//no access
+                    }
+                    throw new Win32Exception(errorCode);
                 }
 
                 if (!ProcessNativeMethods.IsWow64Process(processHandle.DangerousGetHandle(), out var isWow64))
                 {
-                    throw new Win32Exception();
+                    var errorCode = NativeMethods.GetLastError();
+
+                    throw new Win32Exception(errorCode);
                 }
 
                 return !isWow64;

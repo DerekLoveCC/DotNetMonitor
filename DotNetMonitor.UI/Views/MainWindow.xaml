@@ -67,7 +67,6 @@
                              BorderBrush="Black"
                              BorderThickness="1"
                              DocumentHeaderTemplate="{StaticResource ProcessDocumentPaneHeaderTemplate}"
-                             DocumentsSource="{Binding ProcessDetailViewModel.LoadedProcesses}"
                              LayoutItemTemplateSelector="{StaticResource DockingManagerItemplateSelector}">
             <xcad:LayoutRoot x:Name="_layoutRoot">
                 <xcad:LayoutPanel Orientation="Horizontal">

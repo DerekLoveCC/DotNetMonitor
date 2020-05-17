@@ -62,7 +62,7 @@
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsX64}" Value="{x:Null}">
                                 <Setter Property="Fill" Value="BurlyWood" />
-                                <Setter Property="ToolTip" Value="Unknown" />
+                                <Setter Property="ToolTip" Value="{Binding Error}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
