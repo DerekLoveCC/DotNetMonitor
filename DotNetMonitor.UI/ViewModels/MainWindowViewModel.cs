@@ -32,6 +32,7 @@ namespace DotNetMonitor.UI.ViewModels
             GC.WaitForPendingFinalizers();
             GC.Collect();
 #pragma warning restore S1215 // "GC.Collect" should not be called
+            //GC.AddMemoryPressure(1024);
         }
 
         private ProcessListViewModel _processListViewModel;
