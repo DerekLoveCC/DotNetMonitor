@@ -1,18 +1,18 @@
 ﻿using DotNetMonitor.UI.ViewModels;
+using Prism.Mvvm;
 using System;
 using System.Diagnostics;
 using System.Reflection;
 
 namespace DotNetMonitor.UI.Model
 {
-    public class DMPerformanceCounter
+    public class DMPerformanceCounter : BindableBase
     {
         private readonly string _category;
-        private readonly string _counterName;
         private string _instance;
         private readonly PerformanceCounterViewModel _viewModel;
         private readonly PropertyInfo _propertyInfo;
-        private PerformanceCounter _performanceCounter;
+        public PerformanceCounter _performanceCounter;
         private bool _hasError;
 
         public DMPerformanceCounter(string category,
@@ -26,6 +26,46 @@ namespace DotNetMonitor.UI.Model
 
             _propertyInfo = viewModel.GetType().GetProperty(property);
         }
+
+        public DMPerformanceCounter(string category, string counterName)
+        {
+            _category = category;
+            _counterName = counterName;
+        }
+
+        #region Bindable Properties
+
+        private string _counterName;
+
+        public string CounterName
+        {
+            get { return _counterName; }
+            set
+            {
+                if (_counterName != value)
+                {
+                    _counterName = value;
+                    RaisePropertyChanged(nameof(CounterName));
+                }
+            }
+        }
+
+        private float? _counterValue;
+
+        public float? CounterValue
+        {
+            get { return _counterValue; }
+            set
+            {
+                if (_counterValue != value)
+                {
+                    _counterValue = value;
+                    RaisePropertyChanged(nameof(CounterValue));
+                }
+            }
+        }
+
+        #endregion Bindable Properties
 
         public void UpdateInstance(string instance)
         {
@@ -49,7 +89,7 @@ namespace DotNetMonitor.UI.Model
             }
             try
             {
-                _propertyInfo.SetValue(_viewModel, _performanceCounter.NextValue());
+                CounterValue = _performanceCounter.NextValue();
             }
             catch (Exception)
             {

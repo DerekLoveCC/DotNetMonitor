@@ -2,8 +2,8 @@
 using DotNetMonitor.UI.Utils;
 using Prism.Mvvm;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,13 +12,24 @@ namespace DotNetMonitor.UI.ViewModels
     public class PerformanceCounterViewModel : BindableBase, IDisposable
     {
         private int? _processId;
-        private ProcessInfoViewModel _processInfoViewModel;
-        private Task _traceTask;
         private readonly object _startTraceLock = new object();
+
+        public PerformanceCounterViewModel()
+        {
+            Counters = new ObservableCollection<DMPerformanceCounter>
+            {
+                 new DMPerformanceCounter(".NET CLR Memory", "Gen 0 heap size"),
+                 new DMPerformanceCounter(".NET CLR Memory", "Gen 1 heap size"),
+                 new DMPerformanceCounter(".NET CLR Memory", "Gen 2 heap size"),
+                 new DMPerformanceCounter(".NET CLR Memory", "Large Object Heap Size"),
+                 new DMPerformanceCounter(".NET CLR Memory", "# Bytes in all Heaps"),
+                 new DMPerformanceCounter("Process", "Working Set"),
+                 new DMPerformanceCounter("Process", "Private Bytes"),
+        };
+        }
 
         internal void ChangeProcess(ProcessInfoViewModel processInfoViewModel)
         {
-            _processInfoViewModel = processInfoViewModel;
             _processId = processInfoViewModel?.Id;
 
             StartTrace();
@@ -26,10 +37,9 @@ namespace DotNetMonitor.UI.ViewModels
 
         private void ClearCounters()
         {
-            var properties = GetType().GetProperties().Where(p => p.Name.EndsWith("Counter"));
-            foreach (var property in properties)
+            foreach (var counter in Counters)
             {
-                property.SetValue(this, null);
+                counter.CounterValue = null;
             }
         }
 
@@ -44,7 +54,7 @@ namespace DotNetMonitor.UI.ViewModels
                     return;
                 }
                 Tracing = true;
-                _traceTask = Task.Run(() =>
+                var traceTask = Task.Run(() =>
                 {
                     try
                     {
@@ -58,42 +68,17 @@ namespace DotNetMonitor.UI.ViewModels
             }
         }
 
-        private DMPerformanceCounter gen0SizeCounter;
-        private DMPerformanceCounter gen1SizeCounter;
-        private DMPerformanceCounter gen2SizeCounter;
-        private DMPerformanceCounter lohSizeCounter;
-
-        private DMPerformanceCounter allBytesInHeapCounter;
-        private DMPerformanceCounter workSetCounter;
-        private DMPerformanceCounter privateBytesCounter;
-
         private void UpdateCounterValues()
         {
-            gen0SizeCounter.UpdateCounterValue();
-            gen1SizeCounter.UpdateCounterValue();
-            gen2SizeCounter.UpdateCounterValue();
-            lohSizeCounter.UpdateCounterValue();
-            allBytesInHeapCounter.UpdateCounterValue();
-
-            workSetCounter.UpdateCounterValue();
-            privateBytesCounter.UpdateCounterValue();
+            foreach (var counter in Counters)
+            {
+                counter.UpdateCounterValue();
+            }
         }
 
         private void TracePerformance()
         {
             const int sleepInterval = (int)(0.5 * 1000);
-
-            var category = ".NET CLR Memory";
-            gen0SizeCounter = new DMPerformanceCounter(category, "Gen 0 heap size", nameof(Gen0SizeCounter), this);
-            gen1SizeCounter = new DMPerformanceCounter(category, "Gen 1 heap size", nameof(Gen1SizeCounter), this);
-            gen2SizeCounter = new DMPerformanceCounter(category, "Gen 2 heap size", nameof(Gen2SizeCounter), this);
-            lohSizeCounter = new DMPerformanceCounter(category, "Large Object Heap Size", nameof(Gen0SizeCounter), this);
-            allBytesInHeapCounter = new DMPerformanceCounter(category, "# Bytes in all Heaps", nameof(BytesInAllHeapsCounter), this);
-            workSetCounter = new DMPerformanceCounter("Process", "Working Set", nameof(WorkingSetCounter), this);
-            privateBytesCounter = new DMPerformanceCounter("Process", "Private Bytes", nameof(PrivateBytesCounter), this);
-
-         
-
             try
             {
                 var processId = _processId;
@@ -144,127 +129,61 @@ namespace DotNetMonitor.UI.ViewModels
                 return false;
             }
 
-            gen0SizeCounter.UpdateInstance(instance);
-            gen1SizeCounter.UpdateInstance(instance);
-            gen2SizeCounter.UpdateInstance(instance);
-            lohSizeCounter.UpdateInstance(instance);
-            allBytesInHeapCounter.UpdateInstance(instance);
-
-            workSetCounter.UpdateInstance(instance);
-            privateBytesCounter.UpdateInstance(instance);
+            foreach (var counter in Counters)
+            {
+                counter.UpdateInstance(instance);
+            }
             return true;
         }
 
-        public void Dispose()
-        {
-            Tracing = false;
-        }
+
 
         #region Binding Properties
 
-        private float? _gen0SizeCounter;
+        private ObservableCollection<DMPerformanceCounter> _counters;
+        private bool disposedValue;
 
-        public float? Gen0SizeCounter
+        public ObservableCollection<DMPerformanceCounter> Counters
         {
-            get { return _gen0SizeCounter; }
+            get { return _counters; }
             set
             {
-                if (_gen0SizeCounter != value)
+                if (_counters != value)
                 {
-                    _gen0SizeCounter = value;
-                    RaisePropertyChanged(nameof(Gen0SizeCounter));
+                    _counters = value;
+                    RaisePropertyChanged(nameof(Counters));
                 }
             }
         }
 
-        private float? _gen1SizeCounter;
-
-        public float? Gen1SizeCounter
+        protected virtual void Dispose(bool disposing)
         {
-            get { return _gen1SizeCounter; }
-            set
+            if (!disposedValue)
             {
-                if (_gen1SizeCounter != value)
+                if (disposing)
                 {
-                    _gen1SizeCounter = value;
-                    RaisePropertyChanged(nameof(Gen1SizeCounter));
+                    // TODO: dispose managed state (managed objects)
+                    Tracing = false;
                 }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
             }
         }
 
-        private float? _gen2SizeCounter;
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~PerformanceCounterViewModel()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
 
-        public float? Gen2SizeCounter
+        public void Dispose()
         {
-            get { return _gen2SizeCounter; }
-            set
-            {
-                if (_gen2SizeCounter != value)
-                {
-                    _gen2SizeCounter = value;
-                    RaisePropertyChanged(nameof(Gen2SizeCounter));
-                }
-            }
-        }
-
-        private float? _lohSizeCounter;
-
-        public float? LohSizeCounter
-        {
-            get { return _lohSizeCounter; }
-            set
-            {
-                if (_lohSizeCounter != value)
-                {
-                    _lohSizeCounter = value;
-                    RaisePropertyChanged(nameof(LohSizeCounter));
-                }
-            }
-        }
-
-        private float? _bytesInAllHeapsCounter;
-
-        public float? BytesInAllHeapsCounter
-        {
-            get { return _bytesInAllHeapsCounter; }
-            set
-            {
-                if (_bytesInAllHeapsCounter != value)
-                {
-                    _bytesInAllHeapsCounter = value;
-                    RaisePropertyChanged(nameof(BytesInAllHeapsCounter));
-                }
-            }
-        }
-
-        private float? _workingSetCounter;
-
-        public float? WorkingSetCounter
-        {
-            get { return _workingSetCounter; }
-            set
-            {
-                if (_workingSetCounter != value)
-                {
-                    _workingSetCounter = value;
-                    RaisePropertyChanged(nameof(WorkingSetCounter));
-                }
-            }
-        }
-
-        private float? _privateBytesCounter;
-
-        public float? PrivateBytesCounter
-        {
-            get { return _privateBytesCounter; }
-            set
-            {
-                if (_privateBytesCounter != value)
-                {
-                    _privateBytesCounter = value;
-                    RaisePropertyChanged(nameof(PrivateBytesCounter));
-                }
-            }
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion Binding Properties

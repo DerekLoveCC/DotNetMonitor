@@ -47,6 +47,7 @@ namespace DotNetMonitor.UI.ViewModels
         }
 
         private PerformanceCounterViewModel _performanceCounterViewModel;
+
         public PerformanceCounterViewModel PerformanceCounterViewModel
         {
             get { return _performanceCounterViewModel; }
@@ -59,7 +60,6 @@ namespace DotNetMonitor.UI.ViewModels
                 }
             }
         }
-
 
         public ICommand RowDoulbeClickCommand { get; }
 

@@ -62,40 +62,25 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition />
                 </Grid.RowDefinitions>
-                <WrapPanel Grid.Row="0">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Working Set: " />
-                        <TextBlock Text="{Binding WorkingSetCounter, StringFormat=N0}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Private Memory: " />
-                        <TextBlock Text="{Binding PrivateBytesCounter, StringFormat=N0}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Gen0: " />
-                        <TextBlock Text="{Binding Gen0SizeCounter, StringFormat=N0}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Gen1: " />
-                        <TextBlock Text="{Binding Gen1SizeCounter, StringFormat=N0}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Gen2: " />
-                        <TextBlock Text="{Binding Gen2SizeCounter, StringFormat=N0}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="LOH: " />
-                        <TextBlock Text="{Binding LohSizeCounter, StringFormat=N0}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource txtBlockStyle}" Text="Bytes in all Heap: " />
-                        <TextBlock Text="{Binding BytesInAllHeapsCounter, StringFormat=N0}" />
-                    </StackPanel>
-                </WrapPanel>
-
-                <ItemsControl ItemsSource="{Binding}" Grid.Row="1"></ItemsControl>
+                <ItemsControl Grid.Row="0" ItemsSource="{Binding Counters}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Style="{StaticResource txtBlockStyle}"
+                                           Text="{Binding CounterName}" />
+                                <TextBlock Grid.Column="1"
+                                           HorizontalAlignment="Right"
+                                           Text="{Binding CounterValue, StringFormat={}{0:N0} bytes}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Grid>
         </GroupBox>
     </Grid>
