@@ -63,24 +63,16 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <ItemsControl Grid.Row="0" ItemsSource="{Binding Counters}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0"
-                                           Style="{StaticResource txtBlockStyle}"
-                                           Text="{Binding CounterName}" />
-                                <TextBlock Grid.Column="1"
-                                           HorizontalAlignment="Right"
-                                           Text="{Binding CounterValue, StringFormat={}{0:N0} bytes}" />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Counters}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding CounterName}"
+                                            Header="Counter Name"
+                                            IsReadOnly="True" />
+                        <DataGridTextColumn Binding="{Binding CounterValue, TargetNullValue=N/A, StringFormat={}{0:N0}}"
+                                            Header="Value(bytes)"
+                                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </GroupBox>
     </Grid>
