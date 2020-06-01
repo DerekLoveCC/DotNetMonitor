@@ -191,7 +191,7 @@ namespace DotNetMonitor.Common
         }
 
         // see https://msdn.microsoft.com/en-us/library/windows/desktop/ms684139%28v=vs.85%29.aspx
-        public static bool? IsProcess64Bit(Process process)
+        public static bool? IsProcess64Bit(int processId)
         {
             if (!Environment.Is64BitOperatingSystem)
             {
@@ -199,7 +199,7 @@ namespace DotNetMonitor.Common
             }
 
             // if this method is not available in your version of .NET, use GetNativeSystemInfo via P/Invoke instead
-            using (var processHandle = ProcessNativeMethods.OpenProcess(process, ProcessAccessFlags.QueryLimitedInformation))
+            using (var processHandle = ProcessNativeMethods.OpenProcess(processId, ProcessAccessFlags.QueryLimitedInformation))
             {
                 if (processHandle.IsInvalid)
                 {
@@ -220,6 +220,10 @@ namespace DotNetMonitor.Common
 
                 return !isWow64;
             }
+        }
+        public static bool? IsProcess64Bit(Process process)
+        {
+            return IsProcess64Bit(process.Id);
         }
 
         private static bool IsProcessElevated(Process process)

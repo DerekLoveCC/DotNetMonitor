@@ -30,7 +30,7 @@ namespace DotNetMonitor.UI.ViewModels
 
         internal void ChangeProcess(ProcessInfoViewModel processInfoViewModel)
         {
-            _processId = processInfoViewModel?.Id;
+            _processId = processInfoViewModel?.ProcessId;
 
             StartTrace();
         }

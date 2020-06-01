@@ -1,31 +1,68 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace DotNetMonitor.Common.NativeMethod
 {
-    [Flags]
-    public enum ProcessAccessFlags : uint
-    {
-        All = 0x001F0FFF,
-        Terminate = 0x00000001,
-        CreateThread = 0x00000002,
-        VirtualMemoryOperation = 0x00000008,
-        VirtualMemoryRead = 0x00000010,
-        VirtualMemoryWrite = 0x00000020,
-        DuplicateHandle = 0x00000040,
-        CreateProcess = 0x000000080,
-        SetQuota = 0x00000100,
-        SetInformation = 0x00000200,
-        QueryInformation = 0x00000400,
-        QueryLimitedInformation = 0x00001000,
-        Synchronize = 0x00100000
-    }
-
     public static class ProcessNativeMethods
     {
         [DllImport("psapi")]
         private static extern bool EmptyWorkingSet(IntPtr hProcess);
+
+        [DllImport("psapi.dll")]
+        private static extern uint GetModuleFileNameEx(IntPtr hProcess,
+                                               IntPtr hModule, [Out] StringBuilder lpBaseName,
+                                               [In][MarshalAs(UnmanagedType.U4)] uint nSize);
+
+        [DllImport("psapi.dll", SetLastError = true)]
+        public static extern bool EnumProcessModulesEx(IntPtr hProcess,
+                                                     [Out] IntPtr lphModule,
+                                                     uint cb,
+                                                     [MarshalAs(UnmanagedType.U4)] out uint lpcbNeeded,
+                                                     uint flag);
+
+
+        public static IList<string> GetProcessModules(IntPtr processHandle)
+        {
+            var result = new List<string>();
+            // Setting up the variable for the second argument for EnumProcessModules
+            var hMods = new IntPtr[1024];
+
+            GCHandle gch = GCHandle.Alloc(hMods, GCHandleType.Pinned); // Don't forget to free this later
+            try
+            {
+                IntPtr pModules = gch.AddrOfPinnedObject();
+
+                // Setting up the rest of the parameters for EnumProcessModules
+                uint uiSize = (uint)(Marshal.SizeOf(typeof(IntPtr)) * (hMods.Length));
+
+                if (EnumProcessModulesEx(processHandle, pModules, uiSize, out uint cbNeeded, 0x03))
+                {
+                    int uiTotalNumberofModules = (int)(cbNeeded / (Marshal.SizeOf(typeof(IntPtr))));
+
+                    for (int i = 0; i < uiTotalNumberofModules; i++)
+                    {
+                        StringBuilder strbld = new StringBuilder(1024);
+                        GetModuleFileNameEx(processHandle, hMods[i], strbld, (uint)(strbld.Capacity));
+                        result.Add(strbld.ToString());
+                    }
+                }
+
+                return result;
+            }
+            finally
+            {
+                // Must free the GCHandle object
+                gch.Free();
+            }
+        }
+
+        public static IList<string> GetProcessModules(Process p)
+        {
+            return GetProcessModules(p.Handle);
+        }
 
         public static bool EmptyWorkingSet(Process process)
         {
@@ -44,7 +81,12 @@ namespace DotNetMonitor.Common.NativeMethod
 
         public static ProcessHandle OpenProcess(Process proc, ProcessAccessFlags flags)
         {
-            return OpenProcess(flags, false, proc.Id);
+            return OpenProcess(proc.Id, flags);
+        }
+
+        public static ProcessHandle OpenProcess(int processId, ProcessAccessFlags flags)
+        {
+            return OpenProcess(flags, false, processId);
         }
     }
 }

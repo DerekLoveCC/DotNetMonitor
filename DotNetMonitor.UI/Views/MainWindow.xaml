@@ -70,7 +70,7 @@
                              LayoutItemTemplateSelector="{StaticResource DockingManagerItemplateSelector}">
             <xcad:LayoutRoot x:Name="_layoutRoot">
                 <xcad:LayoutPanel Orientation="Horizontal">
-                    <xcad:LayoutAnchorablePane>
+                    <xcad:LayoutAnchorablePane DockWidth="2*">
                         <xcad:LayoutAnchorable Title="Process List"
                                                CanClose="False"
                                                CanDockAsTabbedDocument="False"
@@ -78,7 +78,7 @@
                             <localViews:ProcessListView DataContext="{Binding ProcessListViewModel}" />
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
-                    <xcad:LayoutAnchorablePane>
+                    <xcad:LayoutAnchorablePane DockWidth="1*">
                         <xcad:LayoutAnchorable Title="Process Detail"
                                                CanClose="False"
                                                CanDockAsTabbedDocument="False"

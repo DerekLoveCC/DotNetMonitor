@@ -10,11 +10,13 @@ using System.Windows.Input;
 
 namespace DotNetMonitor.UI.ViewModels
 {
-    [DebuggerDisplay("Id={Id}, Name={Name}")]
+    [DebuggerDisplay("Id={ProcessId}, Name={Name}")]
     public class ProcessInfoViewModel : BindableBase
     {
-        public ProcessInfoViewModel(int pid)
+        public ProcessInfoViewModel(int? pid = null)
         {
+            ProcessId = pid;
+
             TrimWorksetCommand = new DelegateCommand(OnTrimWorkset);
             RefreshCommand = new DelegateCommand(OnRefresh);
             KillCommand = new DelegateCommand<ProcessInfoViewModel>(OnKill);
@@ -22,32 +24,38 @@ namespace DotNetMonitor.UI.ViewModels
 
         private void OnKill(ProcessInfoViewModel p)
         {
-            Process.GetProcessById(p.Id)?.Kill();
+            Process.GetProcessById(p.ProcessId.Value)?.Kill();
         }
 
         private void OnRefresh()
         {
-            var process = Process.GetProcessById(Id);
+            var process = Process.GetProcessById(ProcessId.Value);
             ProcessUtil.PopulateInfo(this, process);
         }
 
         private void OnTrimWorkset()
         {
-            var p = Process.GetProcessById(Id);
+            var p = Process.GetProcessById(ProcessId.Value);
             var result = ProcessNativeMethods.EmptyWorkingSet(p);
             MessageBox.Show(result ? "Succeed" : "Failed");
         }
 
         public ICommand TrimWorksetCommand { get; }
-   
+
         public ICommand RefreshCommand { get; }
         public ICommand KillCommand { get; }
 
-        public int Id { get; internal set; }
+        public int? ProcessId { get; internal set; }
         public string Name { get; internal set; }
 
-        public int SessionId { get; internal set; }
-        public bool IsNetProcess { get; internal set; }
+        public string CommandLine { get; set; }
+
+        public string Description { get; set; }
+        public string ExecutablePath { get; set; }
+
+        public int? SessionId { get; internal set; }
+        public bool? IsNetProcess { get; internal set; }
+        public IntPtr? Handle { get; set; }
         public IList<ProcessModuleInfo> Modules { get; internal set; }
 
         public bool? IsX64 { get; internal set; }

@@ -71,7 +71,22 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <DataGrid AutoGenerateColumns="False"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="0,5,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center">Search:</TextBlock>
+            <TextBox Grid.Column="1"
+                     Margin="5,0,15,0"
+                     VerticalAlignment="Center" />
+        </Grid>
+        <DataGrid Grid.Row="1"
+                  AutoGenerateColumns="False"
                   ItemsSource="{Binding Processes}"
                   RowStyle="{StaticResource CustomizedRowStyle}"
                   SelectedItem="{Binding SelectedProcess}">
@@ -81,22 +96,35 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Id}"
+                <DataGridTextColumn Binding="{Binding ProcessId}"
                                     Header="Id"
                                     IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Name}"
+                                    Width="100"
                                     Header="Name"
                                     IsReadOnly="True" />
-                <DataGridTemplateColumn CanUserSort="True"
-                                        CellTemplate="{StaticResource IsNetCircleDataTemplate}"
-                                        Header=".Net"
-                                        IsReadOnly="True"
-                                        SortMemberPath="IsNetProcess" />
                 <DataGridTemplateColumn CanUserSort="True"
                                         CellTemplate="{StaticResource IsX64CircleDataTemplate}"
                                         Header="x64"
                                         IsReadOnly="True"
                                         SortMemberPath="IsX64" />
+                <DataGridTextColumn Binding="{Binding Description}"
+                                    Header="Description"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding ExecutablePath}"
+                                    Header="Path"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="150"
+                                    Binding="{Binding CommandLine}"
+                                    Header="Command Line"
+                                    IsReadOnly="True" />
+                <!--<DataGridTemplateColumn CanUserSort="True"
+                                        CellTemplate="{StaticResource IsNetCircleDataTemplate}"
+                                        Header=".Net"
+                                        IsReadOnly="True"
+                                        SortMemberPath="IsNetProcess" />-->
+
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

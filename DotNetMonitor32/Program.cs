@@ -1,4 +1,5 @@
-﻿using DotNetMonitor.Common;
+﻿using CSharpExtensionMethods;
+using DotNetMonitor.Common;
 using System;
 using System.Diagnostics;
 using System.Linq;

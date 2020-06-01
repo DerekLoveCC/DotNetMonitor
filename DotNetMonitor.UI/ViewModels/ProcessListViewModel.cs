@@ -40,6 +40,7 @@ namespace DotNetMonitor.UI.ViewModels
                 if (_selectedProcess != value)
                 {
                     _selectedProcess = value;
+                    ProcessUtil.SetIsDotNetFlag(value);
                     RaisePropertyChanged(nameof(SelectedProcess));
                     PerformanceCounterViewModel.ChangeProcess(SelectedProcess);
                 }

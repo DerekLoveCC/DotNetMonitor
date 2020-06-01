@@ -35,7 +35,7 @@
             <WrapPanel Orientation="Horizontal">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource txtBlockStyle}" Text="Id: " />
-                    <TextBlock Text="{Binding Id}" />
+                    <TextBlock Text="{Binding ProcessId}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource txtBlockStyle}" Text="Name: " />
@@ -53,7 +53,6 @@
                     <TextBlock Style="{StaticResource txtBlockStyle}" Text="X64: " />
                     <TextBlock Text="{Binding IsX64}" />
                 </StackPanel>
-
             </WrapPanel>
         </GroupBox>
         <GroupBox Grid.Row="2"

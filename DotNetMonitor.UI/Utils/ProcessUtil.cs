@@ -1,10 +1,14 @@
-﻿using DotNetMonitor.Common;
+﻿using CSharpExtensionMethods;
+using DotNetMonitor.Common;
+using DotNetMonitor.Common.NativeMethod;
 using DotNetMonitor.UI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Management;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 
 namespace DotNetMonitor.UI.Utils
 {
@@ -17,9 +21,13 @@ namespace DotNetMonitor.UI.Utils
 
         public static IList<ProcessInfoViewModel> LoadProcesses()
         {
-            var processInfoList = Process.GetProcesses().AsParallel()
-                                                        .Select(p => BuildProcessInfo(p))
-                                                        .OrderBy(p => p.Id);
+            var processInfoList = WmiUtil.QueryProcesses().AsParallel()
+                                                          .Select(mgmtObj => BuildProcessInfo(mgmtObj))
+                                                          .OrderBy(p => p.ProcessId);
+
+            //var processInfoList = Process.GetProcesses().AsParallel()
+            //                                            .Select(p => BuildProcessInfo(p))
+            //                                            .OrderBy(p => p.ProcessId);
 
             return new List<ProcessInfoViewModel>(processInfoList);
         }
@@ -31,24 +39,109 @@ namespace DotNetMonitor.UI.Utils
             return result;
         }
 
+        private static ProcessInfoViewModel BuildProcessInfo(ManagementObject mgmtObj)
+        {
+            var result = new ProcessInfoViewModel();
+            foreach (var property in mgmtObj.Properties)
+            {
+                switch (property.Name)
+                {
+                    case nameof(ProcessInfoViewModel.CommandLine):
+                        result.CommandLine = property.Value?.ToString();
+                        break;
+
+                    case nameof(ProcessInfoViewModel.ProcessId):
+                        result.ProcessId = property.Value.ToNullableInt().GetValueOrDefault();
+                        break;
+
+                    case nameof(ProcessInfoViewModel.SessionId):
+                        result.SessionId = property.Value.ToNullableInt();
+                        break;
+
+                    case nameof(ProcessInfoViewModel.Name):
+                        result.Name = property.Value?.ToString();
+                        break;
+
+                    case nameof(ProcessInfoViewModel.Description):
+                        result.Description = property.Value?.ToString();
+                        break;
+
+                    case nameof(ProcessInfoViewModel.ExecutablePath):
+                        result.ExecutablePath = property.Value?.ToString();
+                        break;
+                }
+            }
+            if (result.ProcessId != null)
+            {
+                result.IsX64 = CheckProcessBit(result.ProcessId.Value, out string error);
+                result.Error = error;
+            }
+
+            return result;
+        }
+
+
+        public static void SetIsDotNetFlag(ProcessInfoViewModel processInfo)
+        {
+            if (processInfo == null || processInfo.IsNetProcess != null)
+            {
+                return;
+            }
+
+            try
+            {
+                processInfo.Handle = Process.GetProcessById(processInfo.ProcessId.Value).Handle;
+            }
+            catch
+            {
+                processInfo.IsNetProcess = false;
+                return;
+            }
+
+            if (processInfo.Handle != null)
+            {
+                processInfo.Modules = GetProcessModuleInfos(processInfo);
+                processInfo.IsNetProcess = CheckDotNetProcess(processInfo);
+            }
+        }
+
+        private static IList<ProcessModuleInfo> GetProcessModuleInfos(ProcessInfoViewModel result)
+        {
+            if (result.Handle == null)
+            {
+                return new List<ProcessModuleInfo>();
+            }
+
+            var modules = ProcessNativeMethods.GetProcessModules(result.Handle.Value);
+            return modules.Select(m => new ProcessModuleInfo { Name = m }).ToList();
+        }
+
         public static void PopulateInfo(ProcessInfoViewModel processInfo, Process process)
         {
-            processInfo.Id = process.Id;
+            processInfo.ProcessId = process.Id;
             processInfo.Name = process.ProcessName;
             processInfo.SessionId = process.SessionId;
-            processInfo.IsX64 = CheckProcessBit(process);
+            processInfo.IsX64 = CheckProcessBit(process, out string error);
+            processInfo.Error = error;
             processInfo.Modules = GetProcessModuleInfos(process, processInfo);
             processInfo.IsNetProcess = CheckDotNetProcess(processInfo);
         }
 
-        private static bool? CheckProcessBit(Process p)
+        private static bool? CheckProcessBit(Process p, out string error)
         {
+            return CheckProcessBit(p.Id, out error);
+        }
+
+        private static bool? CheckProcessBit(int processId, out string error)
+        {
+            error = null;
             try
             {
-                return WindowInfo.IsProcess64Bit(p);
+                return WindowInfo.IsProcess64Bit(processId);
             }
             catch (Exception ex)
             {
+                error = ex.Message;
                 Debug.WriteLine(ex);
                 return null;
             }
