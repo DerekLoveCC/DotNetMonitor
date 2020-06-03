@@ -5,6 +5,7 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
@@ -20,6 +21,19 @@ namespace DotNetMonitor.UI.ViewModels
             TrimWorksetCommand = new DelegateCommand(OnTrimWorkset);
             RefreshCommand = new DelegateCommand(OnRefresh);
             KillCommand = new DelegateCommand<ProcessInfoViewModel>(OnKill);
+            ExplorerFolderCommand = new DelegateCommand<ProcessInfoViewModel>(OnExplorerFolder, CanExecuateExplorerFolder);
+        }
+
+        private bool CanExecuateExplorerFolder(ProcessInfoViewModel process)
+        {
+            return !string.IsNullOrWhiteSpace(this.ExecutablePath);
+        }
+
+        private void OnExplorerFolder(ProcessInfoViewModel process)
+        {
+            var folder = Path.GetDirectoryName(process.ExecutablePath);
+
+            Process.Start(folder);
         }
 
         private void OnKill(ProcessInfoViewModel p)
@@ -44,6 +58,8 @@ namespace DotNetMonitor.UI.ViewModels
 
         public ICommand RefreshCommand { get; }
         public ICommand KillCommand { get; }
+
+        public ICommand ExplorerFolderCommand { get; }
 
         public int? ProcessId { get; internal set; }
         public string Name { get; internal set; }

@@ -15,6 +15,9 @@
             <MenuItem Command="{Binding KillCommand}"
                       CommandParameter="{Binding}"
                       Header="Kill" />
+            <MenuItem Command="{Binding ExplorerFolderCommand}"
+                      CommandParameter="{Binding}"
+                      Header="Explorer Folder" />
         </ContextMenu>
         <Style x:Key="CustomizedRowStyle" TargetType="DataGridRow">
             <Setter Property="ContextMenu" Value="{StaticResource GridRowMenu}" />
@@ -110,6 +113,7 @@
                                         SortMemberPath="IsX64" />
                 <DataGridTextColumn Binding="{Binding Description}"
                                     Header="Description"
+                                    Width="150"
                                     IsReadOnly="True" />
                 <DataGridTextColumn Width="100"
                                     Binding="{Binding ExecutablePath}"
