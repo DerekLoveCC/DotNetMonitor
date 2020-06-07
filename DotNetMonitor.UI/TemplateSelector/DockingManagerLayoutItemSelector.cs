@@ -1,5 +1,4 @@
-﻿using DotNetMonitor.UI.ViewModels;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace DotNetMonitor.UI.TemplateSelector

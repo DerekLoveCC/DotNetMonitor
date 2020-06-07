@@ -136,8 +136,6 @@ namespace DotNetMonitor.UI.ViewModels
             return true;
         }
 
-
-
         #region Binding Properties
 
         private ObservableCollection<DMPerformanceCounter> _counters;

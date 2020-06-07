@@ -6,6 +6,5 @@ namespace DotNetMonitor.UI.ViewModels
     public class ProcessModuleInfo
     {
         public string Name { get; set; }
-
     }
 }

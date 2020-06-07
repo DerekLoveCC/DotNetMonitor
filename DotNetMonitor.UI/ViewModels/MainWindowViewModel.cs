@@ -103,16 +103,20 @@ namespace DotNetMonitor.UI.ViewModels
             ProcessListViewModel.PerformanceCounterViewModel?.Dispose();
 
             var selectedProcess = ProcessListViewModel.SelectedProcess;
-
+            var filter = ProcessListViewModel.CollectionView?.Filter;
             var loadProcessTask = ProcessListViewModel?.LoadProcessesAsync();
             var refreshInstanceTask = Task.Run(() => PerformanceCounterUtil.RefreshInstances());
 
             await loadProcessTask;
+
+            if (filter != null)
+            {
+                ProcessListViewModel.CollectionView.Filter = filter;
+            }
             if (keepSelectedProcess)
             {
-                ProcessListViewModel.Select(selectedProcess.ProcessId.Value);
+                ProcessListViewModel.Select(selectedProcess?.ProcessId);
             }
-
             await refreshInstanceTask;
         }
     }

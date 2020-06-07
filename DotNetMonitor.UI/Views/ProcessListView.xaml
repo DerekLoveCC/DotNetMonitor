@@ -4,9 +4,9 @@
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:localViews="clr-namespace:DotNetMonitor.UI.Views"
              xmlns:localConverters="clr-namespace:DotNetMonitor.UI.Converters"
              xmlns:localUtils="clr-namespace:DotNetMonitor.UI.Utils"
+             xmlns:localViews="clr-namespace:DotNetMonitor.UI.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com"
              d:DesignHeight="450"
@@ -34,12 +34,12 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style TargetType="{x:Type DataGridCell}" x:Key="CustomizedCellStyle">
+        <Style x:Key="CustomizedCellStyle" TargetType="{x:Type DataGridCell}">
             <Setter Property="localUtils:DataGridTextSearch.IsTextMatch">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource SearchValueConverter}">
-                        <Binding RelativeSource="{RelativeSource Self}" Path="Content.Text" />
-                        <Binding RelativeSource="{RelativeSource Self}" Path="(localUtils:DataGridTextSearch.SearchValue)" />
+                        <Binding Path="Content.Text" RelativeSource="{RelativeSource Self}" />
+                        <Binding Path="(localUtils:DataGridTextSearch.SearchValue)" RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
@@ -101,19 +101,20 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <TextBlock VerticalAlignment="Center">Search:</TextBlock>
-            <TextBox Grid.Column="1"
+            <TextBox x:Name="SearchBox"
+                     Grid.Column="1"
                      Margin="5,0,15,0"
-                     VerticalAlignment="Center" 
-                     x:Name="SearchBox"/>
+                     VerticalAlignment="Center"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
-        <DataGrid Grid.Row="1"
-                  x:Name="ProcessListDataGrid"
+        <DataGrid x:Name="ProcessListDataGrid"
+                  Grid.Row="1"
+                  localUtils:DataGridTextSearch.SearchValue="{Binding ElementName=SearchBox, Path=Text, UpdateSourceTrigger=PropertyChanged}"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding Processes}"
-                  CellStyle="{StaticResource CustomizedCellStyle}"
                   RowStyle="{StaticResource CustomizedRowStyle}"
-                  localUtils:DataGridTextSearch.SearchValue="{Binding ElementName=SearchBox, Path=Text, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedProcess}">
+            <!--  CellStyle="{StaticResource CustomizedCellStyle}">  -->
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding RowDoulbeClickCommand}" />
@@ -123,8 +124,8 @@
                 <DataGridTextColumn Binding="{Binding ProcessId}"
                                     Header="Id"
                                     IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding Name}"
-                                    Width="100"
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Name}"
                                     Header="Name"
                                     IsReadOnly="True" />
                 <DataGridTemplateColumn CanUserSort="True"
@@ -132,9 +133,9 @@
                                         Header="x64"
                                         IsReadOnly="True"
                                         SortMemberPath="IsX64" />
-                <DataGridTextColumn Binding="{Binding Description}"
+                <DataGridTextColumn Width="150"
+                                    Binding="{Binding Description}"
                                     Header="Description"
-                                    Width="150"
                                     IsReadOnly="True" />
                 <DataGridTextColumn Width="100"
                                     Binding="{Binding ExecutablePath}"

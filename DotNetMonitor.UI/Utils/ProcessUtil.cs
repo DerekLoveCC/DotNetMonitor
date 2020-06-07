@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
-using System.Xml.XPath;
 
 namespace DotNetMonitor.UI.Utils
 {
@@ -79,7 +78,6 @@ namespace DotNetMonitor.UI.Utils
 
             return result;
         }
-
 
         public static void SetIsDotNetFlag(ProcessInfoViewModel processInfo)
         {
