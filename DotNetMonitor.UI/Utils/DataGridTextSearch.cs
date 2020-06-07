@@ -4,8 +4,7 @@ namespace DotNetMonitor.UI.Utils
 {
     public static class DataGridTextSearch
     {
-        public static readonly DependencyProperty SearchValueProperty = DependencyProperty.RegisterAttached("SearchValue", typeof(string), typeof(DataGridTextSearch),
-                new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.Inherits));
+        public static readonly DependencyProperty SearchValueProperty = DependencyProperty.RegisterAttached("SearchValue", typeof(string), typeof(DataGridTextSearch), new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.Inherits));
 
         public static string GetSearchValue(DependencyObject obj)
         {
