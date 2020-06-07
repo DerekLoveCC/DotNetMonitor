@@ -89,6 +89,7 @@
                      VerticalAlignment="Center" />
         </Grid>
         <DataGrid Grid.Row="1"
+                  x:Name="ProcessListDataGrid"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding Processes}"
                   RowStyle="{StaticResource CustomizedRowStyle}"

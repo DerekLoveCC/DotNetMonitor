@@ -19,6 +19,14 @@ namespace DotNetMonitor.UI.Views
             InitializeComponent();
         }
 
+        public Action<WindowInfo> OnFindCommand
+        {
+            get { return (Action<WindowInfo>)GetValue(OnFindCommandProperty); }
+            set { SetValue(OnFindCommandProperty, value); }
+        }
+        public static readonly DependencyProperty OnFindCommandProperty =
+            DependencyProperty.Register("OnFindCommand", typeof(Action<WindowInfo>), typeof(WindonwFinder), new PropertyMetadata(new Action<WindowInfo>(Attach)));
+
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             StartSnoopTargetsSearch();
@@ -37,14 +45,13 @@ namespace DotNetMonitor.UI.Views
         {
             RestoreCursor();
             base.OnPreviewMouseLeftButtonUp(e);
-            Attach();
-        }
-
-        private void Attach()
-        {
             var windowUnderCursor = NativeMethods.GetWindowUnderMouse();
             var windowInfo = new WindowInfo(windowUnderCursor);
+            OnFindCommand?.Invoke(windowInfo);
+        }
 
+        private static void Attach(WindowInfo windowInfo)
+        {
             Mouse.OverrideCursor = Cursors.Wait;
             try
             {

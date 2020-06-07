@@ -47,7 +47,8 @@
 
             <localViews:WindonwFinder HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
-                                      ToolTip="Drag to spy" />
+                                      ToolTip="Drag to Find" 
+                                      OnFindCommand="{Binding OnFindAction, Mode=OneWay}"/>
             <Button x:Name="Settings"
                     Command="{Binding CustomizeCommand}"
                     ToolTip="Customize">

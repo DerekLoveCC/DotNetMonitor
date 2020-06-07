@@ -2,7 +2,9 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DotNetMonitor.UI.ViewModels
@@ -45,6 +47,18 @@ namespace DotNetMonitor.UI.ViewModels
                     PerformanceCounterViewModel.ChangeProcess(SelectedProcess);
                 }
             }
+        }
+
+        internal void Select(int processId)
+        {
+            var process = Processes.FirstOrDefault(p => p.ProcessId == processId);
+            if (process == null)
+            {
+                MessageBox.Show($"Cannot find process {processId}");
+                return;
+            }
+
+            SelectedProcess = process;
         }
 
         private PerformanceCounterViewModel _performanceCounterViewModel;

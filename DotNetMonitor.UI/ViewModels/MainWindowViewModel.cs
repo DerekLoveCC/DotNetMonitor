@@ -1,7 +1,9 @@
-﻿using DotNetMonitor.UI.Utils;
+﻿using DotNetMonitor.Common;
+using DotNetMonitor.UI.Utils;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
+using System.Data.SqlClient;
 using System.Runtime;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,6 +19,17 @@ namespace DotNetMonitor.UI.ViewModels
             RefreshProcessListCommand = new DelegateCommand(OnRefreshProcessList);
             CompactMemoryCommand = new DelegateCommand(OnCompactMemory);
             CustomizeCommand = new DelegateCommand(OnCustomize);
+            OnFindAction = new Action<WindowInfo>(OnFind);
+        }
+
+        private void OnFind(WindowInfo windowInfo)
+        {
+            if (windowInfo.HWnd != IntPtr.Zero)
+            {
+                NativeMethods.GetWindowThreadProcessId(windowInfo.HWnd, out int processId);
+
+                ProcessListViewModel.Select(processId);
+            }
         }
 
         private void OnCustomize()
@@ -58,10 +71,16 @@ namespace DotNetMonitor.UI.ViewModels
             await Task.WhenAll(loadProcessTask, refreshInstanceTask);
         }
 
+        #region Binding command
+
         public ICommand RefreshProcessListCommand { get; }
         public ICommand CompactMemoryCommand { get; }
 
         public ICommand CustomizeCommand { get; }
+        public Action<WindowInfo> OnFindAction { get; }
+
+        #endregion Binding command
+
         private async void OnRefreshProcessList()
         {
             if (ProcessListViewModel?.Processes == null)
