@@ -4,7 +4,9 @@
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:local="clr-namespace:DotNetMonitor.UI.Views"
+             xmlns:localViews="clr-namespace:DotNetMonitor.UI.Views"
+             xmlns:localConverters="clr-namespace:DotNetMonitor.UI.Converters"
+             xmlns:localUtils="clr-namespace:DotNetMonitor.UI.Utils"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com"
              d:DesignHeight="450"
@@ -19,6 +21,7 @@
                       CommandParameter="{Binding}"
                       Header="Explorer Folder" />
         </ContextMenu>
+        <localConverters:SearchValueConverter x:Key="SearchValueConverter" />
         <Style x:Key="CustomizedRowStyle" TargetType="DataGridRow">
             <Setter Property="ContextMenu" Value="{StaticResource GridRowMenu}" />
             <Style.Triggers>
@@ -31,7 +34,21 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
+        <Style TargetType="{x:Type DataGridCell}" x:Key="CustomizedCellStyle">
+            <Setter Property="localUtils:DataGridTextSearch.IsTextMatch">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource SearchValueConverter}">
+                        <Binding RelativeSource="{RelativeSource Self}" Path="Content.Text" />
+                        <Binding RelativeSource="{RelativeSource Self}" Path="(localUtils:DataGridTextSearch.SearchValue)" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="localUtils:DataGridTextSearch.IsTextMatch" Value="True">
+                    <Setter Property="Background" Value="Orange" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <DataTemplate x:Key="IsNetCircleDataTemplate">
             <Ellipse Width="10" Height="10">
                 <Ellipse.Style>
@@ -86,13 +103,16 @@
             <TextBlock VerticalAlignment="Center">Search:</TextBlock>
             <TextBox Grid.Column="1"
                      Margin="5,0,15,0"
-                     VerticalAlignment="Center" />
+                     VerticalAlignment="Center" 
+                     x:Name="SearchBox"/>
         </Grid>
         <DataGrid Grid.Row="1"
                   x:Name="ProcessListDataGrid"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding Processes}"
+                  CellStyle="{StaticResource CustomizedCellStyle}"
                   RowStyle="{StaticResource CustomizedRowStyle}"
+                  localUtils:DataGridTextSearch.SearchValue="{Binding ElementName=SearchBox, Path=Text, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedProcess}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">

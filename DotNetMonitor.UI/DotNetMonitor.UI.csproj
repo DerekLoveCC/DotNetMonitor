@@ -186,10 +186,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\SearchValueConverter.cs" />
     <Compile Include="Event\LoadProcessDetailEvent.cs" />
     <Compile Include="Model\DMPerformanceCounter.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="TemplateSelector\DockingManagerLayoutItemSelector.cs" />
+    <Compile Include="Utils\DataGridTextSearch.cs" />
     <Compile Include="Utils\PerformanceCounterUtil.cs" />
     <Compile Include="Utils\ProcessUtil.cs" />
     <Compile Include="Utils\UIDispatcher.cs" />
