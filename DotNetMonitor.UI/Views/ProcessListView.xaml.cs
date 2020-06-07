@@ -15,7 +15,10 @@ namespace DotNetMonitor.UI.Views
 
         private void ProcessListDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ProcessListDataGrid.ScrollIntoView(ProcessListDataGrid.SelectedValue);
+            if (ProcessListDataGrid.SelectedItem != null)
+            {
+                ProcessListDataGrid.ScrollIntoView(ProcessListDataGrid.SelectedItem);
+            }
         }
     }
 }

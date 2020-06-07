@@ -3,7 +3,6 @@ using DotNetMonitor.UI.Utils;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
-using System.Data.SqlClient;
 using System.Runtime;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,7 +18,13 @@ namespace DotNetMonitor.UI.ViewModels
             RefreshProcessListCommand = new DelegateCommand(OnRefreshProcessList);
             CompactMemoryCommand = new DelegateCommand(OnCompactMemory);
             CustomizeCommand = new DelegateCommand(OnCustomize);
+            MouseDownCommand = new DelegateCommand(OnMouseDown);
             OnFindAction = new Action<WindowInfo>(OnFind);
+        }
+
+        private async void OnMouseDown()
+        {
+            await RefreshProcessListAsync(true);
         }
 
         private void OnFind(WindowInfo windowInfo)
@@ -77,11 +82,18 @@ namespace DotNetMonitor.UI.ViewModels
         public ICommand CompactMemoryCommand { get; }
 
         public ICommand CustomizeCommand { get; }
+
+        public ICommand MouseDownCommand { get; }
         public Action<WindowInfo> OnFindAction { get; }
 
         #endregion Binding command
 
         private async void OnRefreshProcessList()
+        {
+            await RefreshProcessListAsync(false);
+        }
+
+        private async Task RefreshProcessListAsync(bool keepSelectedProcess)
         {
             if (ProcessListViewModel?.Processes == null)
             {
@@ -90,9 +102,18 @@ namespace DotNetMonitor.UI.ViewModels
 
             ProcessListViewModel.PerformanceCounterViewModel?.Dispose();
 
+            var selectedProcess = ProcessListViewModel.SelectedProcess;
+
             var loadProcessTask = ProcessListViewModel?.LoadProcessesAsync();
             var refreshInstanceTask = Task.Run(() => PerformanceCounterUtil.RefreshInstances());
-            await Task.WhenAll(loadProcessTask, refreshInstanceTask);
+
+            await loadProcessTask;
+            if (keepSelectedProcess)
+            {
+                ProcessListViewModel.Select(selectedProcess.ProcessId.Value);
+            }
+
+            await refreshInstanceTask;
         }
     }
 }

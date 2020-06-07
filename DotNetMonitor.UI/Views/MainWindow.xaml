@@ -3,7 +3,9 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:prism="http://prismlibrary.com/"
                       xmlns:localVM="clr-namespace:DotNetMonitor.UI.ViewModels"
                       xmlns:localViews="clr-namespace:DotNetMonitor.UI.Views"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,6 +16,10 @@
                       Title="Dotnet Monitor"
                       ShowTitleBar="True"
                       mc:Ignorable="d">
+    <Controls:MetroWindow.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding MouseDownCommand}" />
+    </Controls:MetroWindow.InputBindings>
+
     <Controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -47,8 +53,8 @@
 
             <localViews:WindonwFinder HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
-                                      ToolTip="Drag to Find" 
-                                      OnFindCommand="{Binding OnFindAction, Mode=OneWay}"/>
+                                      OnFindCommand="{Binding OnFindAction, Mode=OneWay}"
+                                      ToolTip="Drag to Find" />
             <Button x:Name="Settings"
                     Command="{Binding CustomizeCommand}"
                     ToolTip="Customize">
