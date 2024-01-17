@@ -1,19 +1,19 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetMonitor.UI", "DotNetMonitor.UI\DotNetMonitor.UI.csproj", "{3A7B4220-0414-4C95-BBA2-57E42802E7F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetMonitor.UI", "DotNetMonitor.UI\DotNetMonitor.UI.csproj", "{3A7B4220-0414-4C95-BBA2-57E42802E7F9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetMonitor.Common", "DotNetMonitor.Common\DotNetMonitor.Common.csproj", "{2CDC774E-EDDE-4425-BBE3-D4A82795D9B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetMonitor.Model", "DotNetMonitor.Model\DotNetMonitor.Model.csproj", "{7DE5E86E-9EF5-4E2C-ACF1-36F1917AE93A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetMonitor32", "DotNetMonitor32\DotNetMonitor32.csproj", "{7659B45F-A6BB-475C-92A8-95F9BF132E53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetMonitor32", "DotNetMonitor32\DotNetMonitor32.csproj", "{7659B45F-A6BB-475C-92A8-95F9BF132E53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetMonitor.ManagedInjectorLauncher32", "DotNetMonitor.ManagedInjectorLauncher\DotNetMonitor.ManagedInjectorLauncher32.csproj", "{837EED94-D254-4F58-8949-635015DE371D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetMonitor.ManagedInjectorLauncher32", "DotNetMonitor.ManagedInjectorLauncher\DotNetMonitor.ManagedInjectorLauncher32.csproj", "{837EED94-D254-4F58-8949-635015DE371D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetMonitor.ManagedInjectorLauncher64", "DotNetMonitor.ManagedInjectorLauncher\DotNetMonitor.ManagedInjectorLauncher64.csproj", "{21E131D3-760F-4E93-8BDD-502591BD1F97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetMonitor.ManagedInjectorLauncher64", "DotNetMonitor.ManagedInjectorLauncher\DotNetMonitor.ManagedInjectorLauncher64.csproj", "{21E131D3-760F-4E93-8BDD-502591BD1F97}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ManagedInjector", "ManagedInjector", "{D6403F3A-E15C-457A-9608-C46986AACDBE}"
 EndProject
@@ -21,7 +21,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DotNetMonitor.ManagedInject
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DotNetMonitor.ManagedInjector64", "DotNetMonitor.ManagedInjector\DotNetMonitor.ManagedInjector64.vcxproj", "{A27C8B34-2527-4258-8C07-D2720C576B90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetMonitor.SpyModule", "DotNetMonitor.SpyModule\DotNetMonitor.SpyModule.csproj", "{CFD0D62B-3C2F-435A-96BC-880DE89F9792}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetMonitor.SpyModule", "DotNetMonitor.SpyModule\DotNetMonitor.SpyModule.csproj", "{CFD0D62B-3C2F-435A-96BC-880DE89F9792}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

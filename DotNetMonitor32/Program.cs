@@ -22,8 +22,8 @@ namespace DotNetMonitor64
                     return;
                 }
                 //ProcessInfoCollector.Test(processId.Value);
-                var processInfoCollector = new ProcessInfoCollector(processId.Value);
-                var model = processInfoCollector.Collect();
+                //var processInfoCollector = new ProcessInfoCollector(processId.Value);
+                //var model = processInfoCollector.Collect();
             }
             catch (Exception ex)
             {
