@@ -33,7 +33,7 @@ namespace DotNetMonitor.UI.ViewModels
         {
             var folder = Path.GetDirectoryName(process.ExecutablePath);
 
-            Process.Start(folder);
+            Process.Start("explorer.exe", folder);
         }
 
         private void OnKill(ProcessInfoViewModel p)
