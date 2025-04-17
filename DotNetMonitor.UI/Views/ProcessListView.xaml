@@ -38,6 +38,23 @@
         </Style>
         <Style x:Key="CustomizedCellStyle"
                TargetType="{x:Type DataGridCell}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border x:Name="CellBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Setter Property="localUtils:DataGridTextSearch.IsTextMatch">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource SearchValueConverter}">
@@ -49,6 +66,11 @@
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="DarkBlue" />
+                    <Setter Property="BorderBrush" Value="DarkBlue" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
                 <Trigger Property="localUtils:DataGridTextSearch.IsTextMatch" Value="True">
                     <Setter Property="Background" Value="Orange" />
                 </Trigger>
@@ -124,6 +146,7 @@
                   Grid.Row="1"
                   localUtils:DataGridTextSearch.SearchValue="{Binding ElementName=SearchBox, Path=Text, UpdateSourceTrigger=PropertyChanged}"
                   AutoGenerateColumns="False"
+                  CellStyle="{StaticResource CustomizedCellStyle}"
                   ItemsSource="{Binding Processes}"
                   RowStyle="{StaticResource CustomizedRowStyle}"
                   SelectedItem="{Binding SelectedProcess}">
