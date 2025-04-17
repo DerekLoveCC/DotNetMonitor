@@ -10,13 +10,23 @@
         <OutputPath>..\bin\Debug\</OutputPath>
     </PropertyGroup>
     <PropertyGroup>
-        <ApplicationIcon>ico2.ico</ApplicationIcon>
+        <ApplicationIcon>dotnet.ico</ApplicationIcon>
+        <PackageIcon>dotnet.png</PackageIcon>
     </PropertyGroup>
     <ItemGroup>
       <Compile Remove="Controls\**" />
       <EmbeddedResource Remove="Controls\**" />
       <None Remove="Controls\**" />
       <Page Remove="Controls\**" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="dotnet.ico" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="C:\Users\zhaom\Downloads\dotnet.png">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
     </ItemGroup>
     <ItemGroup>
         <Resource Include="Images\address-book--pencil.png" />
@@ -60,5 +70,11 @@
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="ico1.ico">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
     </ItemGroup>
 </Project>

@@ -12,7 +12,8 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <ContextMenu x:Key="GridRowMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+        <ContextMenu x:Key="GridRowMenu"
+                     DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
             <MenuItem Command="{Binding KillCommand}"
                       CommandParameter="{Binding}"
                       Header="Kill" />
@@ -21,10 +22,12 @@
                       Header="Explorer Folder" />
         </ContextMenu>
         <localConverters:SearchValueConverter x:Key="SearchValueConverter" />
-        <Style x:Key="CustomizedRowStyle" TargetType="DataGridRow">
+        <Style x:Key="CustomizedRowStyle"
+               TargetType="DataGridRow">
             <Setter Property="ContextMenu" Value="{StaticResource GridRowMenu}" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsNetProcess}" Value="True">
+                <DataTrigger Binding="{Binding IsNetProcess}"
+                             Value="True">
                     <Setter Property="Foreground" Value="Green" />
                 </DataTrigger>
 
@@ -33,12 +36,15 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="CustomizedCellStyle" TargetType="{x:Type DataGridCell}">
+        <Style x:Key="CustomizedCellStyle"
+               TargetType="{x:Type DataGridCell}">
             <Setter Property="localUtils:DataGridTextSearch.IsTextMatch">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource SearchValueConverter}">
-                        <Binding Path="Content.Text" RelativeSource="{RelativeSource Self}" />
-                        <Binding Path="(localUtils:DataGridTextSearch.SearchValue)" RelativeSource="{RelativeSource Self}" />
+                        <Binding Path="Content.Text"
+                                 RelativeSource="{RelativeSource Self}" />
+                        <Binding Path="(localUtils:DataGridTextSearch.SearchValue)"
+                                 RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
@@ -49,15 +55,18 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="IsNetCircleDataTemplate">
-            <Ellipse Width="10" Height="10">
+            <Ellipse Width="10"
+                     Height="10">
                 <Ellipse.Style>
                     <Style TargetType="{x:Type Ellipse}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsNetProcess}" Value="True">
+                            <DataTrigger Binding="{Binding IsNetProcess}"
+                                         Value="True">
                                 <Setter Property="Fill" Value="Green" />
                                 <Setter Property="ToolTip" Value=".Net Process" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsNetProcess}" Value="False">
+                            <DataTrigger Binding="{Binding IsNetProcess}"
+                                         Value="False">
                                 <Setter Property="Fill" Value="Red" />
                                 <Setter Property="ToolTip" Value="Not .Net Process" />
                             </DataTrigger>
@@ -67,19 +76,23 @@
             </Ellipse>
         </DataTemplate>
         <DataTemplate x:Key="IsX64CircleDataTemplate">
-            <Ellipse Width="10" Height="10">
+            <Ellipse Width="10"
+                     Height="10">
                 <Ellipse.Style>
                     <Style TargetType="{x:Type Ellipse}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsX64}" Value="True">
+                            <DataTrigger Binding="{Binding IsX64}"
+                                         Value="True">
                                 <Setter Property="Fill" Value="Green" />
                                 <Setter Property="ToolTip" Value="x64 Process" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsX64}" Value="False">
+                            <DataTrigger Binding="{Binding IsX64}"
+                                         Value="False">
                                 <Setter Property="Fill" Value="Red" />
                                 <Setter Property="ToolTip" Value="x86 Process" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsX64}" Value="{x:Null}">
+                            <DataTrigger Binding="{Binding IsX64}"
+                                         Value="{x:Null}">
                                 <Setter Property="Fill" Value="BurlyWood" />
                                 <Setter Property="ToolTip" Value="{Binding Error}" />
                             </DataTrigger>
@@ -94,7 +107,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="0,5,0,5">
+        <Grid Grid.Row="0"
+              Margin="0,5,0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
@@ -113,7 +127,6 @@
                   ItemsSource="{Binding Processes}"
                   RowStyle="{StaticResource CustomizedRowStyle}"
                   SelectedItem="{Binding SelectedProcess}">
-            <!--  CellStyle="{StaticResource CustomizedCellStyle}">  -->
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding ProcessId}"
                                     Header="Id"
@@ -124,7 +137,7 @@
                                     IsReadOnly="True" />
                 <DataGridTemplateColumn CanUserSort="True"
                                         CellTemplate="{StaticResource IsX64CircleDataTemplate}"
-                                        Header="x64"
+                                        Header="Arch"
                                         IsReadOnly="True"
                                         SortMemberPath="IsX64" />
                 <DataGridTextColumn Width="150"
@@ -139,11 +152,6 @@
                                     Binding="{Binding CommandLine}"
                                     Header="Command Line"
                                     IsReadOnly="True" />
-                <!--<DataGridTemplateColumn CanUserSort="True"
-                                        CellTemplate="{StaticResource IsNetCircleDataTemplate}"
-                                        Header=".Net"
-                                        IsReadOnly="True"
-                                        SortMemberPath="IsNetProcess" />-->
 
             </DataGrid.Columns>
         </DataGrid>
