@@ -14,7 +14,8 @@
             <Style TargetType="StackPanel">
                 <Setter Property="Margin" Value="5,0" />
             </Style>
-            <Style x:Key="txtBlockStyle" TargetType="TextBlock">
+            <Style x:Key="txtBlockStyle"
+                   TargetType="TextBlock">
                 <Setter Property="FontWeight" Value="Bold" />
             </Style>
         </Grid.Resources>
@@ -24,33 +25,38 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0"
+                    Margin="0,0,0,5"
                     DataContext="{Binding SelectedProcess}"
                     Orientation="Horizontal">
-            <Button Command="{Binding TrimWorksetCommand}">Trim Working Set</Button>
-            <Button Command="{Binding RefreshCommand}">Refresh</Button>
+            <Button Width="50"
+                    Margin="0,0,5,0"
+                    Command="{Binding TrimWorksetCommand}"
+                    ToolTip="Trim Working Set">
+                Trim
+            </Button>
+            <Button Width="50"
+                    Command="{Binding RefreshCommand}"
+                    ToolTip="Refresh Process Info">
+                Refresh
+            </Button>
         </StackPanel>
         <GroupBox Grid.Row="1"
                   DataContext="{Binding SelectedProcess}"
                   Header="Basic">
             <WrapPanel Orientation="Horizontal">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource txtBlockStyle}" Text="Id: " />
-                    <TextBlock Text="{Binding ProcessId}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource txtBlockStyle}" Text="Name: " />
-                    <TextBlock Text="{Binding Name}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource txtBlockStyle}" Text="Session Id: " />
+                    <TextBlock Style="{StaticResource txtBlockStyle}"
+                               Text="Session Id: " />
                     <TextBlock Text="{Binding SessionId}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource txtBlockStyle}" Text="Is .Net Process: " />
+                    <TextBlock Style="{StaticResource txtBlockStyle}"
+                               Text=".Net?: " />
                     <TextBlock Text="{Binding IsNetProcess}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource txtBlockStyle}" Text="X64: " />
+                    <TextBlock Style="{StaticResource txtBlockStyle}"
+                               Text="X64?: " />
                     <TextBlock Text="{Binding IsX64}" />
                 </StackPanel>
             </WrapPanel>
@@ -62,7 +68,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Counters}">
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding Counters}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding CounterName}"
                                             Header="Counter Name"
