@@ -22,6 +22,12 @@ namespace DotNetMonitor.UI.ViewModels
             RefreshCommand = new DelegateCommand(OnRefresh);
             KillCommand = new DelegateCommand<ProcessInfoViewModel>(OnKill);
             ExplorerFolderCommand = new DelegateCommand<ProcessInfoViewModel>(OnExplorerFolder, CanExecuateExplorerFolder);
+            CopyPIDCommand = new DelegateCommand<ProcessInfoViewModel>(OnCopyPID);
+        }
+
+        private void OnCopyPID(ProcessInfoViewModel model)
+        {
+            Clipboard.SetText(model.ProcessId.ToString());
         }
 
         private bool CanExecuateExplorerFolder(ProcessInfoViewModel process)
@@ -60,6 +66,7 @@ namespace DotNetMonitor.UI.ViewModels
         public ICommand KillCommand { get; }
 
         public ICommand ExplorerFolderCommand { get; }
+        public ICommand CopyPIDCommand { get; }
 
         public int? ProcessId { get; internal set; }
         public string Name { get; internal set; }

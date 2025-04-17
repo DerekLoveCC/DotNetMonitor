@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:localConverters="clr-namespace:DotNetMonitor.UI.Converters"
              xmlns:localUtils="clr-namespace:DotNetMonitor.UI.Utils"
              xmlns:localViews="clr-namespace:DotNetMonitor.UI.Views"
@@ -20,6 +21,9 @@
             <MenuItem Command="{Binding ExplorerFolderCommand}"
                       CommandParameter="{Binding}"
                       Header="Explorer Folder" />
+            <MenuItem Command="{Binding CopyPIDCommand}"
+                      CommandParameter="{Binding}"
+                      Header="Copy PID" />
         </ContextMenu>
         <localConverters:SearchValueConverter x:Key="SearchValueConverter" />
         <Style x:Key="CustomizedRowStyle"
@@ -150,6 +154,12 @@
                   ItemsSource="{Binding Processes}"
                   RowStyle="{StaticResource CustomizedRowStyle}"
                   SelectedItem="{Binding SelectedProcess}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding ProcessId}"
                                     Header="Id"
