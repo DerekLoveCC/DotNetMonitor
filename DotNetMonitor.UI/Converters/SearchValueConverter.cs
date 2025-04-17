@@ -12,7 +12,7 @@ namespace DotNetMonitor.UI.Converters
 
             if (!string.IsNullOrEmpty(searchText) && !string.IsNullOrEmpty(cellText))
             {
-                return cellText.ToLower().StartsWith(searchText.ToLower());
+                return cellText.StartsWith(searchText, StringComparison.OrdinalIgnoreCase);
             }
             return false;
         }
