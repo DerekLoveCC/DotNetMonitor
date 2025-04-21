@@ -5,16 +5,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace DotNetMonitor.UI.Views
+namespace DotNetMonitor.UI.Controls
 {
     /// <summary>
     /// Interaction logic for WindonwFinder.xaml
     /// </summary>
-    public partial class WindonwFinder : UserControl
+    public partial class WindowFinder : UserControl
     {
         private Cursor _storedCursor;
 
-        public WindonwFinder()
+        public WindowFinder()
         {
             InitializeComponent();
         }
@@ -25,7 +25,7 @@ namespace DotNetMonitor.UI.Views
             set { SetValue(OnFindCommandProperty, value); }
         }
         public static readonly DependencyProperty OnFindCommandProperty =
-            DependencyProperty.Register("OnFindCommand", typeof(Action<WindowInfo>), typeof(WindonwFinder), new PropertyMetadata(new Action<WindowInfo>(Attach)));
+            DependencyProperty.Register("OnFindCommand", typeof(Action<WindowInfo>), typeof(WindowFinder), new PropertyMetadata(new Action<WindowInfo>(Attach)));
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {

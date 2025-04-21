@@ -14,12 +14,6 @@
         <PackageIcon>dotnet.png</PackageIcon>
     </PropertyGroup>
     <ItemGroup>
-      <Compile Remove="Controls\**" />
-      <EmbeddedResource Remove="Controls\**" />
-      <None Remove="Controls\**" />
-      <Page Remove="Controls\**" />
-    </ItemGroup>
-    <ItemGroup>
       <None Remove="Images\focus-icon.cur" />
       <None Remove="Images\focus_icon.png" />
       <None Remove="Images\location_select.cur" />

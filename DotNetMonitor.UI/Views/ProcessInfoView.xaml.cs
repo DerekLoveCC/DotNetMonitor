@@ -5,9 +5,9 @@ namespace DotNetMonitor.UI.Views
     /// <summary>
     /// Interaction logic for ProcessDetailView.xaml
     /// </summary>
-    public partial class ProcessDetailView : UserControl
+    public partial class ProcessInfoView : UserControl
     {
-        public ProcessDetailView()
+        public ProcessInfoView()
         {
             InitializeComponent();
         }

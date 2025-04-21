@@ -4,6 +4,7 @@
                       xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:localCtrls="clr-namespace:DotNetMonitor.UI.Controls"
                       xmlns:localVM="clr-namespace:DotNetMonitor.UI.ViewModels"
                       xmlns:localViews="clr-namespace:DotNetMonitor.UI.Views"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -16,7 +17,8 @@
                       ShowTitleBar="True"
                       mc:Ignorable="d">
     <Controls:MetroWindow.InputBindings>
-        <KeyBinding Key="F5" Command="{Binding MouseDownCommand}" />
+        <KeyBinding Key="F5"
+                    Command="{Binding MouseDownCommand}" />
     </Controls:MetroWindow.InputBindings>
 
     <Controls:MetroWindow.Resources>
@@ -25,7 +27,8 @@
                 <ResourceDictionary Source="pack://application:,,,/DotNetMonitor.UI;component/Resources/DataTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <selectors:DockingManagerLayoutItemSelector x:Key="DockingManagerItemplateSelector" />
-            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+            <Style BasedOn="{StaticResource {x:Type Button}}"
+                   TargetType="{x:Type Button}">
                 <Setter Property="Controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
             </Style>
             <!--<Style BasedOn="{StaticResource MetroDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
@@ -50,10 +53,10 @@
                                     Kind="RegularCompass" />
             </Button>
 
-            <localViews:WindonwFinder HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"
-                                      OnFindCommand="{Binding OnFindAction, Mode=OneWay}"
-                                      ToolTip="Drag to Find" />
+            <localCtrls:WindowFinder HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     OnFindCommand="{Binding OnFindAction, Mode=OneWay}"
+                                     ToolTip="Drag to Find" />
             <Button x:Name="Settings"
                     Command="{Binding CustomizeCommand}"
                     ToolTip="Customize">
@@ -89,7 +92,7 @@
                                                CanClose="False"
                                                CanDockAsTabbedDocument="False"
                                                CanHide="False">
-                            <localViews:ProcessDetailView DataContext="{Binding ProcessListViewModel}" />
+                            <localViews:ProcessInfoView DataContext="{Binding ProcessListViewModel}" />
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
                 </xcad:LayoutPanel>
