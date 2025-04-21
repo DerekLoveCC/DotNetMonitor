@@ -20,6 +20,12 @@
       <Page Remove="Controls\**" />
     </ItemGroup>
     <ItemGroup>
+      <None Remove="Images\focus-icon.cur" />
+      <None Remove="Images\focus_icon.png" />
+      <None Remove="Images\location_select.cur" />
+      <None Remove="Images\precision_select.cur" />
+    </ItemGroup>
+    <ItemGroup>
       <Content Include="dotnet.ico" />
     </ItemGroup>
     <ItemGroup>
@@ -33,6 +39,18 @@
         <Resource Include="Images\address-book-open.png" />
         <Resource Include="Images\alarm-clock-blue.png" />
         <Resource Include="Images\document.png" />
+        <Resource Include="Images\focus-icon.cur">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Images\focus_icon.png">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Images\location_select.cur">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Images\precision_select.cur">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Resource>
         <Resource Include="Images\property-blue.png" />
     </ItemGroup>
     <ItemGroup>
@@ -52,24 +70,24 @@
         <Resource Include="ico2.ico" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="8.0.0" />
+        <PackageReference Include="Autofac" Version="8.2.1" />
         <PackageReference Include="CommonServiceLocator" Version="2.0.7" />
-        <PackageReference Include="ControlzEx" Version="7.0.0-alpha0018" />
-        <PackageReference Include="CSharpExtensionMethods" Version="2.0.0" />
-        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.1" />
+        <PackageReference Include="ControlzEx" Version="7.0.0" />
+        <PackageReference Include="CSharpExtensionMethods" Version="3.0.2" />
+        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.7.25104.5739" />
         <PackageReference Include="MahApps.Metro" Version="3.0.0-alpha0476" />
-        <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+        <PackageReference Include="MahApps.Metro.IconPacks" Version="5.1.0" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
-        <PackageReference Include="Prism.Core" Version="9.0.271-pre" />
-        <PackageReference Include="Prism.Wpf" Version="9.0.271-pre" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+        <PackageReference Include="Prism.Core" Version="9.0.537" />
+        <PackageReference Include="Prism.Wpf" Version="9.0.537" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-        <PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" />
+        <PackageReference Include="System.ComponentModel.Composition" Version="9.0.4" />
         <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
-        <PackageReference Include="System.Management" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
-        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+        <PackageReference Include="System.Management" Version="9.0.4" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.4" />
     </ItemGroup>
     <ItemGroup>
       <None Update="ico1.ico">

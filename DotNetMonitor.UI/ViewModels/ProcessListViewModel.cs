@@ -16,7 +16,7 @@ namespace DotNetMonitor.UI.ViewModels
     {
         public ProcessListViewModel()
         {
-            RowDoubleClickCommand = new DelegateCommand(OnRowDouleClick);
+            RowDoubleClickCommand = new DelegateCommand<object>(OnRowDouleClick);
             PerformanceCounterViewModel = new PerformanceCounterViewModel();
         }
 
@@ -121,7 +121,7 @@ namespace DotNetMonitor.UI.ViewModels
 
         public ICommand RowDoubleClickCommand { get; }
 
-        private void OnRowDouleClick()
+        private void OnRowDouleClick(object arg)
         {
         }
 

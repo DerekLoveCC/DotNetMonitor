@@ -156,7 +156,8 @@
                   SelectedItem="{Binding SelectedProcess}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" />
+                    <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}"
+                                           CommandParameter="{Binding SelectedProcess}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
 

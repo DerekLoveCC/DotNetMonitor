@@ -73,7 +73,16 @@ namespace DotNetMonitor.UI.Views
         private void UpdateCursor()
         {
             _storedCursor = Cursor;
-            Cursor = Cursors.Cross;
+
+            try
+            {
+                var stream = Application.GetResourceStream(new Uri("pack://application:,,,/Images/location_select.cur", UriKind.RelativeOrAbsolute)).Stream;
+                Cursor = new Cursor(stream);
+            }
+            catch
+            {
+                Cursor = Cursors.Cross;
+            }
         }
 
         private void RestoreCursor()
