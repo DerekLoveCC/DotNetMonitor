@@ -1,4 +1,5 @@
 ﻿using DotNetMonitor.UI.Utils;
+using DotNetMonitor.UI.Views;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -123,6 +124,15 @@ namespace DotNetMonitor.UI.ViewModels
 
         private void OnRowDouleClick(object arg)
         {
+            if (arg is ProcessInfoViewModel process)
+            {
+                var processDetailWindow = new ProcessDetailView
+                {
+                    DataContext = new ProcessDetailViewModel(process.ProcessId)
+                };
+
+                processDetailWindow.Show();
+            }
         }
 
         internal async Task LoadProcessesAsync()
