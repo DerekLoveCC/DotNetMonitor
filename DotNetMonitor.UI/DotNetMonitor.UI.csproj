@@ -23,12 +23,6 @@
       <Content Include="dotnet.ico" />
     </ItemGroup>
     <ItemGroup>
-      <None Include="C:\Users\zhaom\Downloads\dotnet.png">
-        <Pack>True</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
-    </ItemGroup>
-    <ItemGroup>
         <Resource Include="Images\address-book--pencil.png" />
         <Resource Include="Images\address-book-open.png" />
         <Resource Include="Images\alarm-clock-blue.png" />
@@ -51,17 +45,8 @@
         <Resource Include="Images\DotnetMonitor.ico" />
     </ItemGroup>
     <ItemGroup>
-        <Resource Include="DotnetMonitor.ico" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\DotNetMonitor.Common\DotNetMonitor.Common.csproj" />
         <ProjectReference Include="..\DotNetMonitor.SpyModule\DotNetMonitor.SpyModule.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <Resource Include="ico1.ico" />
-    </ItemGroup>
-    <ItemGroup>
-        <Resource Include="ico2.ico" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Autofac" Version="8.2.1" />
