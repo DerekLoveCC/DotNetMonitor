@@ -124,11 +124,14 @@ namespace DotNetMonitor.UI.ViewModels
 
         private void OnRowDouleClick(object arg)
         {
-            if (arg is ProcessInfoViewModel process)
+            if (arg is ProcessInfoViewModel process && process.ProcessId.HasValue)
             {
+                var processDetailViewModel = new ProcessDetailViewModel(process.ProcessId.Value);
+                processDetailViewModel.Init();
+
                 var processDetailWindow = new ProcessDetailView
                 {
-                    DataContext = new ProcessDetailViewModel(process.ProcessId)
+                    DataContext = processDetailViewModel
                 };
 
                 processDetailWindow.Show();

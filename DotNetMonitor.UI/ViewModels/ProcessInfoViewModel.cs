@@ -1,4 +1,5 @@
-﻿using DotNetMonitor.Common.NativeMethod;
+﻿using DotNetMonitor.Common.Analyzer;
+using DotNetMonitor.Common.NativeMethod;
 using DotNetMonitor.UI.Utils;
 using Prism.Commands;
 using Prism.Mvvm;

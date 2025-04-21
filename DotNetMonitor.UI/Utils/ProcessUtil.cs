@@ -1,5 +1,6 @@
 ﻿using CSharpExtensionMethods;
 using DotNetMonitor.Common;
+using DotNetMonitor.Common.Analyzer;
 using DotNetMonitor.Common.NativeMethod;
 using DotNetMonitor.UI.ViewModels;
 using System;
