@@ -4,7 +4,7 @@ namespace DotNetMonitor.UI.ViewModels
 {
     public class ProcessDetailViewModel : BindableBase
     {
-        private int? _processId;
+        private readonly int? _processId;
 
         public ProcessDetailViewModel(int? processId)
         {
