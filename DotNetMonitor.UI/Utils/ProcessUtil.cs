@@ -42,39 +42,42 @@ namespace DotNetMonitor.UI.Utils
         private static ProcessInfoViewModel BuildProcessInfo(ManagementObject mgmtObj)
         {
             var result = new ProcessInfoViewModel();
-            foreach (var property in mgmtObj.Properties)
+            if (OperatingSystem.IsWindows())
             {
-                switch (property.Name)
+                foreach (var property in mgmtObj.Properties)
                 {
-                    case nameof(ProcessInfoViewModel.CommandLine):
-                        result.CommandLine = property.Value?.ToString();
-                        break;
+                    switch (property.Name)
+                    {
+                        case nameof(ProcessInfoViewModel.CommandLine):
+                            result.CommandLine = property.Value?.ToString();
+                            break;
 
-                    case nameof(ProcessInfoViewModel.ProcessId):
-                        result.ProcessId = property.Value.ToNullableInt().GetValueOrDefault();
-                        break;
+                        case nameof(ProcessInfoViewModel.ProcessId):
+                            result.ProcessId = property.Value.ToNullableInt().GetValueOrDefault();
+                            break;
 
-                    case nameof(ProcessInfoViewModel.SessionId):
-                        result.SessionId = property.Value.ToNullableInt();
-                        break;
+                        case nameof(ProcessInfoViewModel.SessionId):
+                            result.SessionId = property.Value.ToNullableInt();
+                            break;
 
-                    case nameof(ProcessInfoViewModel.Name):
-                        result.Name = property.Value?.ToString();
-                        break;
+                        case nameof(ProcessInfoViewModel.Name):
+                            result.Name = property.Value?.ToString();
+                            break;
 
-                    case nameof(ProcessInfoViewModel.Description):
-                        result.Description = property.Value?.ToString();
-                        break;
+                        case nameof(ProcessInfoViewModel.Description):
+                            result.Description = property.Value?.ToString();
+                            break;
 
-                    case nameof(ProcessInfoViewModel.ExecutablePath):
-                        result.ExecutablePath = property.Value?.ToString();
-                        break;
+                        case nameof(ProcessInfoViewModel.ExecutablePath):
+                            result.ExecutablePath = property.Value?.ToString();
+                            break;
+                    }
                 }
-            }
-            if (result.ProcessId != null)
-            {
-                result.IsX64 = CheckProcessBit(result.ProcessId.Value, out string error);
-                result.Error = error;
+                if (result.ProcessId != null)
+                {
+                    result.IsX64 = CheckProcessBit(result.ProcessId.Value, out string error);
+                    result.Error = error;
+                }
             }
 
             return result;

@@ -14,7 +14,7 @@ namespace DotNetMonitor.UI
     {
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            MessageBox.Show($"Unhandled exception happens. Error{e.Exception?.Message}");
+            MessageBox.Show($"Unhandled exception happens. Error: {e.Exception?.Message}");
             e.Handled = true;
         }
 

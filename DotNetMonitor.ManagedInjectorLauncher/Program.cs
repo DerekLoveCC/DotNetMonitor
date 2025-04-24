@@ -9,7 +9,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace DotNetMonitorManagedInjectorLauncher
+namespace ManagedInjectorLauncher
 {
     public static class Program
     {
@@ -55,46 +55,50 @@ namespace DotNetMonitorManagedInjectorLauncher
 
         private static void Inject(string[] args)
         {
-            var windowHandle = (IntPtr)long.Parse(args[1]);
-            var assemblyName = args[2];
-            var className = args[3];
-            var methodName = args[4];
-
-            var injectorData = new InjectorData
+            checked
             {
-                AssemblyName = assemblyName,
-                ClassName = className,
-                MethodName = methodName
-            };
+                var windowHandle = (IntPtr)long.Parse(args[1]);
+                var assemblyName = args[2];
+                var className = args[3];
+                var methodName = args[4];
 
-            Injector.Launch(windowHandle, injectorData);
+                var injectorData = new InjectorData
+                {
+                    AssemblyName = assemblyName,
+                    ClassName = className,
+                    MethodName = methodName
+                };
 
-            //check to see that it was injected, and if not, retry with the main window handle.
-            var process = GetProcessFromWindowHandle(windowHandle);
-            if (process != null && !CheckInjectedStatus(process) && process.MainWindowHandle != windowHandle)
-            {
-                Injector.LogMessage("Could not inject with current handle... retrying with MainWindowHandle", true);
-                Injector.Launch(process.MainWindowHandle, injectorData);
-                CheckInjectedStatus(process);
+                Injector.Launch(windowHandle, injectorData);
+
+                //check to see that it was injected, and if not, retry with the main window handle.
+                var process = GetProcessFromWindowHandle(windowHandle);
+                if (process != null && !CheckInjectedStatus(process) && process.MainWindowHandle != windowHandle)
+                {
+                    Injector.LogMessage("Could not inject with current handle... retrying with MainWindowHandle", true);
+                    Injector.Launch(process.MainWindowHandle, injectorData);
+                    CheckInjectedStatus(process);
+                }
             }
         }
 
         private static Process GetProcessFromWindowHandle(IntPtr windowHandle)
         {
-            NativeMethods.GetWindowThreadProcessId(windowHandle, out int processId);
-            if (processId == 0)
+            if (NativeMethods.GetWindowThreadProcessId(windowHandle, out int processId) == 0 || processId == 0)
             {
-                Injector.LogMessage(string.Format("could not get process for window handle {0}", windowHandle), true);
+                Injector.LogMessage($"Failed to get process ID for window handle {windowHandle}.", true);
                 return null;
             }
 
-            var process = Process.GetProcessById(processId);
-            if (process == null)
+            try
             {
-                Injector.LogMessage(string.Format("could not get process for PID = {0}", processId), true);
+                return Process.GetProcessById(processId);
+            }
+            catch (ArgumentException)
+            {
+                Injector.LogMessage($"No process found for PID = {processId}.", true);
                 return null;
             }
-            return process;
         }
 
         private static bool CheckInjectedStatus(Process process)

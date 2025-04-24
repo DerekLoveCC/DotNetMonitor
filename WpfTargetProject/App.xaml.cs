@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using WpfTargetProject.Models;
 
 namespace WpfTargetProject
@@ -27,8 +21,9 @@ namespace WpfTargetProject
                 Name = "David"
             };
 
+            // Ensure the App.xaml file exists and is properly linked to the project.
             WpfTargetProject.App app = new WpfTargetProject.App();
-            app.InitializeComponent();
+            app.InitializeComponent(); // This initializes the XAML resources.
             app.Run();
         }
     }

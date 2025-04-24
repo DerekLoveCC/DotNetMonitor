@@ -8,4 +8,9 @@
     <PackageReference Include="System.Management" Version="9.0.4" />
     <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="CSharpExtensionMethods">
+      <HintPath>..\ThirdDlls\CSharpExtensionMethods.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSharpExtensionMethods;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -16,8 +17,7 @@ namespace DotNetMonitor.UI.Utils
             const string processCategory = "Process";
             var cat = new PerformanceCounterCategory(processCategory);
 
-            string[] instances = cat.GetInstanceNames();
-            foreach (string instance in instances)
+            foreach (string instance in cat.GetInstanceNames())
             {
                 try
                 {
@@ -46,10 +46,7 @@ namespace DotNetMonitor.UI.Utils
 
         public static IList<PerformanceCounterCategory> GetDotNetPerformanceCategories()
         {
-            var result = PerformanceCounterCategory.GetCategories().Where(c => c.CategoryName.StartsWith(".Net", StringComparison.OrdinalIgnoreCase))
-                                                                   .ToList();
-
-            return result;
+            return [.. PerformanceCounterCategory.GetCategories().Where(predicate: static c => c.CategoryName.StartsWithIgnoreCase(".Net"))];
         }
     }
 }

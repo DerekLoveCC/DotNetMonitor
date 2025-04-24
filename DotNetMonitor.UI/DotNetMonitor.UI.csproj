@@ -52,7 +52,6 @@
         <PackageReference Include="Autofac" Version="8.2.1" />
         <PackageReference Include="CommonServiceLocator" Version="2.0.7" />
         <PackageReference Include="ControlzEx" Version="7.0.0" />
-        <PackageReference Include="CSharpExtensionMethods" Version="3.0.2" />
         <PackageReference Include="Extended.Wpf.Toolkit" Version="4.7.25104.5739" />
         <PackageReference Include="MahApps.Metro" Version="3.0.0-alpha0476" />
         <PackageReference Include="MahApps.Metro.IconPacks" Version="5.1.0" />
@@ -67,6 +66,11 @@
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.4" />
+    </ItemGroup>
+    <ItemGroup>
+      <Reference Include="CSharpExtensionMethods">
+        <HintPath>..\ThirdDlls\CSharpExtensionMethods.dll</HintPath>
+      </Reference>
     </ItemGroup>
     <ItemGroup>
       <None Update="ico1.ico">

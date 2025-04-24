@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace DotNetMonitor.Common.Analyzer
 {
@@ -9,5 +7,7 @@ namespace DotNetMonitor.Common.Analyzer
         void Init();
 
         ProcessBasicInfo GetProcessBasicInfo();
+
+        IList<ProcessModuleInfo> GetModules();
     }
 }

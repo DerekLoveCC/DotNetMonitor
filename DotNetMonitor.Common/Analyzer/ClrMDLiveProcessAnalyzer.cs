@@ -1,5 +1,9 @@
-﻿using Microsoft.Diagnostics.Runtime;
-using System;
+﻿using CSharpExtensionMethods;
+using Microsoft.Diagnostics.Runtime;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
 namespace DotNetMonitor.Common.Analyzer
 {
@@ -18,6 +22,46 @@ namespace DotNetMonitor.Common.Analyzer
         public override void Dispose()
         {
             _dataTarget.Dispose();
+        }
+
+        public IList<ProcessModuleInfo> GetModules()
+        {
+            var fileNameToModuleMap = new Dictionary<string, ProcessModuleInfo>();
+
+            foreach (var module in _dataTarget.EnumerateModules())
+            {
+                fileNameToModuleMap[module.FileName] = new ProcessModuleInfo
+                {
+                    Name = Path.GetFileName(module.FileName),
+                    Version = module.Version.ToString(),
+                    Path = module.FileName
+                };
+            }
+
+            using (var runtime = CreateClrRuntime(_dataTarget))
+            {
+                foreach (var module in runtime.EnumerateModules())
+                {
+                    if (!fileNameToModuleMap.HasKey(module.AssemblyName))
+                    {
+                        fileNameToModuleMap[module.AssemblyName] = new ProcessModuleInfo
+                        {
+                            Name = Path.GetFileName(module.AssemblyName),
+                            Version = GetFileVersion(module.AssemblyName),
+                            Path = module.AssemblyName
+                        };
+                    }
+                }
+            }
+
+            return fileNameToModuleMap.Values.ToList();
+        }
+
+        private string GetFileVersion(string fileName)
+        {
+            var version = FileVersionInfo.GetVersionInfo(fileName);
+
+            return version.ToString();
         }
 
         #endregion ClrMDAnalyzer Override Methods

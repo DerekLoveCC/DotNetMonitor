@@ -1,7 +1,6 @@
 ﻿using DotNetMonitor.Common.Analyzer;
 using Prism.Mvvm;
-using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace DotNetMonitor.UI.ViewModels
 {
@@ -18,6 +17,7 @@ namespace DotNetMonitor.UI.ViewModels
         #region Binding Properties
 
         private readonly int _processId;
+
         public int ProcessId
         { get { return _processId; } }
 
@@ -29,9 +29,9 @@ namespace DotNetMonitor.UI.ViewModels
             set { SetProperty(ref _gcMode, value); }
         }
 
-        private ObservableCollection<ProcessModuleInfo> _modules;
+        private IList<ProcessModuleInfo> _modules;
 
-        public ObservableCollection<ProcessModuleInfo> Modules
+        public IList<ProcessModuleInfo> Modules
         {
             get { return _modules; }
             set { SetProperty(ref _modules, value); }
@@ -44,6 +44,7 @@ namespace DotNetMonitor.UI.ViewModels
             _processAnalyzer.Init();
             var processBasicInfo = _processAnalyzer.GetProcessBasicInfo();
             GCMode = processBasicInfo.GCMode;
+            Modules = _processAnalyzer.GetModules();
         }
     }
 }
