@@ -1,19 +1,32 @@
 ﻿using Autofac;
+using DotNetMonitor.UI.Services;
 using DotNetMonitor.UI.ViewModels;
 using DotNetMonitor.UI.Views;
 using Prism.Events;
 
 namespace DotNetMonitor.UI.Startup
 {
-    public class Bootstrapper
+    public static class Bootstrapper
     {
-        public IContainer Bootstrap()
+        private static IContainer _instance = CreateContainer();
+
+        public static IContainer Container
+        {
+            get
+            {
+                return _instance;
+            }
+        }
+
+        private static IContainer CreateContainer()
         {
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder.RegisterType<MainWindowViewModel>().AsSelf();
             containerBuilder.RegisterType<ProcessListViewModel>().AsSelf();
-            containerBuilder.RegisterType<MainWindow>().AsSelf();
+            containerBuilder.RegisterType<MainWindow>().SingleInstance();
+
+            containerBuilder.RegisterType<DialogService>().As<IDialogService>().SingleInstance();
 
             containerBuilder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
 
