@@ -24,6 +24,10 @@ namespace DotNetMonitor.Common.Analyzer
             _dataTarget.Dispose();
         }
 
+        #endregion ClrMDAnalyzer Override Methods
+
+        #region IProcessAnalyzer Members
+
         public IList<ProcessModuleInfo> GetModules()
         {
             var fileNameToModuleMap = new Dictionary<string, ProcessModuleInfo>();
@@ -57,17 +61,6 @@ namespace DotNetMonitor.Common.Analyzer
             return fileNameToModuleMap.Values.ToList();
         }
 
-        private string GetFileVersion(string fileName)
-        {
-            var version = FileVersionInfo.GetVersionInfo(fileName);
-
-            return version.ToString();
-        }
-
-        #endregion ClrMDAnalyzer Override Methods
-
-        #region IProcessAnalyzer Members
-
         public ProcessBasicInfo GetProcessBasicInfo()
         {
             var processBasicInfo = new ProcessBasicInfo();
@@ -84,6 +77,12 @@ namespace DotNetMonitor.Common.Analyzer
         {
             _dataTarget = DataTarget.AttachToProcess(_processId, false);
             VerifyDataTarget(_dataTarget);
+        }
+        private string GetFileVersion(string fileName)
+        {
+            var version = FileVersionInfo.GetVersionInfo(fileName);
+
+            return version.ToString();
         }
 
         #endregion IProcessAnalyzer Members

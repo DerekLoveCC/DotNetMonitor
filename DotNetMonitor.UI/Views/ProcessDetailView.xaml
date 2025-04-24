@@ -51,6 +51,24 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
+            <TabItem Header="Threads">
+                <DataGrid AutoGenerateColumns="False"
+                          ItemsSource="{Binding Threads}">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding ThreadId}"
+                                            Header="Thread ID" />
+                        <DataGridTextColumn Binding="{Binding Priority}"
+                                            Header="Priority" />
+                        <DataGridTextColumn Binding="{Binding StartAddress}"
+                                            Header="Start Address" />
+                        <DataGridTextColumn Binding="{Binding AffinityMask}"
+                                            Header="Affinity Mask" />
+                        <DataGridTextColumn Binding="{Binding State}"
+                                            Header="State" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Controls:MetroWindow>

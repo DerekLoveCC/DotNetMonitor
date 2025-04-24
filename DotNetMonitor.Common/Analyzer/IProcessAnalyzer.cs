@@ -4,10 +4,10 @@ namespace DotNetMonitor.Common.Analyzer
 {
     public interface IProcessAnalyzer
     {
-        void Init();
+        IList<ProcessModuleInfo> GetModules();
 
         ProcessBasicInfo GetProcessBasicInfo();
 
-        IList<ProcessModuleInfo> GetModules();
+        void Init();
     }
 }
