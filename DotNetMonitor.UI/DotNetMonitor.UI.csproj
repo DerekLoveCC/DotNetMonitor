@@ -49,23 +49,23 @@
         <ProjectReference Include="..\DotNetMonitor.SpyModule\DotNetMonitor.SpyModule.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="8.2.1" />
+        <PackageReference Include="Autofac" Version="9.0.0" />
         <PackageReference Include="CommonServiceLocator" Version="2.0.7" />
-        <PackageReference Include="ControlzEx" Version="7.0.0" />
-        <PackageReference Include="Extended.Wpf.Toolkit" Version="4.7.25104.5739" />
+        <PackageReference Include="ControlzEx" Version="7.0.2" />
+        <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
         <PackageReference Include="MahApps.Metro" Version="3.0.0-alpha0476" />
-        <PackageReference Include="MahApps.Metro.IconPacks" Version="5.1.0" />
+        <PackageReference Include="MahApps.Metro.IconPacks" Version="6.2.1" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
         <PackageReference Include="Prism.Core" Version="9.0.537" />
         <PackageReference Include="Prism.Wpf" Version="9.0.537" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-        <PackageReference Include="System.ComponentModel.Composition" Version="9.0.4" />
+        <PackageReference Include="System.ComponentModel.Composition" Version="10.0.0" />
         <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
-        <PackageReference Include="System.Management" Version="9.0.4" />
-        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />
+        <PackageReference Include="System.Management" Version="10.0.0" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.0" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.4" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.0" />
     </ItemGroup>
     <ItemGroup>
       <Reference Include="CSharpExtensionMethods">
