@@ -10,73 +10,72 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
-namespace DotNetMonitor.UI.ViewModels
+namespace DotNetMonitor.UI.ViewModels;
+
+[DebuggerDisplay("Id={ProcessId}, Name={Name}")]
+public class ProcessInfoViewModel : BindableBase
 {
-    [DebuggerDisplay("Id={ProcessId}, Name={Name}")]
-    public class ProcessInfoViewModel : BindableBase
+    public ProcessInfoViewModel(int? pid = null)
     {
-        public ProcessInfoViewModel(int? pid = null)
-        {
-            ProcessId = pid;
+        ProcessId = pid;
 
-            TrimWorksetCommand = new DelegateCommand(OnTrimWorkset);
-            RefreshCommand = new DelegateCommand(OnRefresh);
-            ExplorerFolderCommand = new DelegateCommand<ProcessInfoViewModel>(OnExplorerFolder, CanExecuateExplorerFolder);
-            CopyPIDCommand = new DelegateCommand<ProcessInfoViewModel>(OnCopyPID);
-        }
-
-        private void OnCopyPID(ProcessInfoViewModel model)
-        {
-            Clipboard.SetText(model.ProcessId.ToString());
-        }
-
-        private bool CanExecuateExplorerFolder(ProcessInfoViewModel process)
-        {
-            return !string.IsNullOrWhiteSpace(this.ExecutablePath);
-        }
-
-        private void OnExplorerFolder(ProcessInfoViewModel process)
-        {
-            var folder = Path.GetDirectoryName(process.ExecutablePath);
-
-            Process.Start("explorer.exe", folder);
-        }
-
-        private void OnRefresh()
-        {
-            var process = Process.GetProcessById(ProcessId.Value);
-            ProcessUtil.PopulateInfo(this, process);
-        }
-
-        private void OnTrimWorkset()
-        {
-            var p = Process.GetProcessById(ProcessId.Value);
-            var result = ProcessNativeMethods.EmptyWorkingSet(p);
-            MessageBox.Show(result ? "Succeed" : "Failed");
-        }
-
-        public ICommand TrimWorksetCommand { get; }
-
-        public ICommand RefreshCommand { get; }
-
-        public ICommand ExplorerFolderCommand { get; }
-        public ICommand CopyPIDCommand { get; }
-
-        public int? ProcessId { get; internal set; }
-        public string Name { get; internal set; }
-
-        public string CommandLine { get; set; }
-
-        public string Description { get; set; }
-        public string ExecutablePath { get; set; }
-
-        public int? SessionId { get; internal set; }
-        public bool? IsNetProcess { get; internal set; }
-        public IntPtr? Handle { get; set; }
-        public IList<ProcessModuleInfo> Modules { get; internal set; }
-
-        public bool? IsX64 { get; internal set; }
-
-        public string Error { get; set; }
+        TrimWorksetCommand = new DelegateCommand(OnTrimWorkset);
+        RefreshCommand = new DelegateCommand(OnRefresh);
+        ExplorerFolderCommand = new DelegateCommand<ProcessInfoViewModel>(OnExplorerFolder, CanExecuateExplorerFolder);
+        CopyPIDCommand = new DelegateCommand<ProcessInfoViewModel>(OnCopyPID);
     }
+
+    private static void OnCopyPID(ProcessInfoViewModel model)
+    {
+        Clipboard.SetText(model.ProcessId.ToString());
+    }
+
+    private bool CanExecuateExplorerFolder(ProcessInfoViewModel process)
+    {
+        return !string.IsNullOrWhiteSpace(this.ExecutablePath);
+    }
+
+    private static void OnExplorerFolder(ProcessInfoViewModel process)
+    {
+        var folder = Path.GetDirectoryName(process.ExecutablePath);
+
+        Process.Start("explorer.exe", folder);
+    }
+
+    private void OnRefresh()
+    {
+        var process = Process.GetProcessById(ProcessId.Value);
+        ProcessUtil.PopulateInfo(this, process);
+    }
+
+    private void OnTrimWorkset()
+    {
+        var p = Process.GetProcessById(ProcessId.Value);
+        var result = ProcessNativeMethods.EmptyWorkingSet(p);
+        MessageBox.Show(result ? "Succeed" : "Failed");
+    }
+
+    public ICommand TrimWorksetCommand { get; }
+
+    public ICommand RefreshCommand { get; }
+
+    public ICommand ExplorerFolderCommand { get; }
+    public ICommand CopyPIDCommand { get; }
+
+    public int? ProcessId { get; internal set; }
+    public string Name { get; internal set; }
+
+    public string CommandLine { get; set; }
+
+    public string Description { get; set; }
+    public string ExecutablePath { get; set; }
+
+    public int? SessionId { get; internal set; }
+    public bool? IsNetProcess { get; internal set; }
+    public IntPtr? Handle { get; set; }
+    public IList<ProcessModuleInfo> Modules { get; internal set; }
+
+    public bool? IsX64 { get; internal set; }
+
+    public string Error { get; set; }
 }

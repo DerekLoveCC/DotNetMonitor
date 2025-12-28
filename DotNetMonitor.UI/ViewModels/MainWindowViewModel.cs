@@ -105,7 +105,7 @@ namespace DotNetMonitor.UI.ViewModels
             var selectedProcess = ProcessListViewModel.SelectedProcess;
             var filter = ProcessListViewModel.CollectionView?.Filter;
             var loadProcessTask = ProcessListViewModel?.LoadProcessesAsync();
-            var refreshInstanceTask = Task.Run(() => PerformanceCounterUtil.RefreshInstances());
+            var refreshInstanceTask = Task.Run(action: () => PerformanceCounterUtil.RefreshInstances());
 
             await loadProcessTask;
 

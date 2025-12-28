@@ -21,6 +21,7 @@ namespace DotNetMonitor.UI.ViewModels
             RowDoubleClickCommand = new DelegateCommand<object>(OnRowDouleClick);
             PerformanceCounterViewModel = new PerformanceCounterViewModel();
             KillCommand = new DelegateCommand<ProcessInfoViewModel>(OnKill);
+            KeyDownCommand = new DelegateCommand<KeyEventArgs>(OnKeyDown);
         }
 
         public ICollectionView CollectionView
@@ -124,6 +125,7 @@ namespace DotNetMonitor.UI.ViewModels
 
         public ICommand RowDoubleClickCommand { get; }
         public ICommand KillCommand { get; }
+        public ICommand KeyDownCommand { get; }
 
         private void OnRowDouleClick(object arg)
         {
@@ -141,6 +143,18 @@ namespace DotNetMonitor.UI.ViewModels
             }
         }
 
+        private void OnKeyDown(KeyEventArgs keyEventArgs)
+        {
+            if (keyEventArgs.Key != Key.Delete)
+            {
+                return;
+            }
+
+            OnKill(SelectedProcess);
+
+            keyEventArgs.Handled = true;
+        }
+
         internal async Task LoadProcessesAsync()
         {
             var processInfoList = await ProcessUtil.LoadProcessesAsync();
@@ -149,6 +163,11 @@ namespace DotNetMonitor.UI.ViewModels
 
         private void OnKill(ProcessInfoViewModel p)
         {
+            if (p == null)
+            {
+                return;
+            }
+
             Process.GetProcessById(p.ProcessId.Value)?.Kill();
             Processes.Remove(p);
         }

@@ -152,6 +152,9 @@
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" CommandParameter="{Binding SelectedProcess}" />
                 </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewKeyDown">
+                    <i:InvokeCommandAction Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
             </i:Interaction.Triggers>
 
             <DataGrid.Columns>
