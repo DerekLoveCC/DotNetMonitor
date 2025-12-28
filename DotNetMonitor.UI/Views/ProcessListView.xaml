@@ -1,37 +1,38 @@
-﻿<UserControl x:Class="DotNetMonitor.UI.Views.ProcessListView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:localConverters="clr-namespace:DotNetMonitor.UI.Converters"
-             xmlns:localUtils="clr-namespace:DotNetMonitor.UI.Utils"
-             xmlns:localViews="clr-namespace:DotNetMonitor.UI.Views"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:prism="http://prismlibrary.com"
-             d:DesignHeight="450"
-             d:DesignWidth="800"
-             mc:Ignorable="d">
+﻿<UserControl
+    x:Class="DotNetMonitor.UI.Views.ProcessListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:localConverters="clr-namespace:DotNetMonitor.UI.Converters"
+    xmlns:localUtils="clr-namespace:DotNetMonitor.UI.Utils"
+    xmlns:localViews="clr-namespace:DotNetMonitor.UI.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
     <UserControl.Resources>
-        <ContextMenu x:Key="GridRowMenu"
-                     DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-            <MenuItem Command="{Binding KillCommand}"
-                      CommandParameter="{Binding}"
-                      Header="Kill" />
-            <MenuItem Command="{Binding ExplorerFolderCommand}"
-                      CommandParameter="{Binding}"
-                      Header="Explorer Folder" />
-            <MenuItem Command="{Binding CopyPIDCommand}"
-                      CommandParameter="{Binding}"
-                      Header="Copy PID" />
+        <ContextMenu x:Key="GridRowMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+            <MenuItem
+                Command="{Binding DataContext.KillCommand, RelativeSource={RelativeSource AncestorType=localViews:ProcessListView}}"
+                CommandParameter="{Binding}"
+                Header="Kill" />
+            <MenuItem
+                Command="{Binding ExplorerFolderCommand}"
+                CommandParameter="{Binding}"
+                Header="Explorer Folder" />
+            <MenuItem
+                Command="{Binding CopyPIDCommand}"
+                CommandParameter="{Binding}"
+                Header="Copy PID" />
         </ContextMenu>
         <localConverters:SearchValueConverter x:Key="SearchValueConverter" />
-        <Style x:Key="CustomizedRowStyle"
-               TargetType="DataGridRow">
+        <Style x:Key="CustomizedRowStyle" TargetType="DataGridRow">
             <Setter Property="ContextMenu" Value="{StaticResource GridRowMenu}" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsNetProcess}"
-                             Value="True">
+                <DataTrigger Binding="{Binding IsNetProcess}" Value="True">
                     <Setter Property="Foreground" Value="Green" />
                 </DataTrigger>
 
@@ -40,21 +41,22 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="CustomizedCellStyle"
-               TargetType="{x:Type DataGridCell}">
+        <Style x:Key="CustomizedCellStyle" TargetType="{x:Type DataGridCell}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DataGridCell}">
-                        <Border x:Name="CellBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Stretch"
-                                              VerticalAlignment="Center"
-                                              Content="{TemplateBinding Content}"
-                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" />
+                        <Border
+                            x:Name="CellBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}"
+                                ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -62,10 +64,8 @@
             <Setter Property="localUtils:DataGridTextSearch.IsTextMatch">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource SearchValueConverter}">
-                        <Binding Path="Content.Text"
-                                 RelativeSource="{RelativeSource Self}" />
-                        <Binding Path="(localUtils:DataGridTextSearch.SearchValue)"
-                                 RelativeSource="{RelativeSource Self}" />
+                        <Binding Path="Content.Text" RelativeSource="{RelativeSource Self}" />
+                        <Binding Path="(localUtils:DataGridTextSearch.SearchValue)" RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
@@ -81,18 +81,15 @@
             </Style.Triggers>
         </Style>
         <DataTemplate x:Key="IsNetCircleDataTemplate">
-            <Ellipse Width="10"
-                     Height="10">
+            <Ellipse Width="10" Height="10">
                 <Ellipse.Style>
                     <Style TargetType="{x:Type Ellipse}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsNetProcess}"
-                                         Value="True">
+                            <DataTrigger Binding="{Binding IsNetProcess}" Value="True">
                                 <Setter Property="Fill" Value="Green" />
                                 <Setter Property="ToolTip" Value=".Net Process" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsNetProcess}"
-                                         Value="False">
+                            <DataTrigger Binding="{Binding IsNetProcess}" Value="False">
                                 <Setter Property="Fill" Value="Red" />
                                 <Setter Property="ToolTip" Value="Not .Net Process" />
                             </DataTrigger>
@@ -102,23 +99,19 @@
             </Ellipse>
         </DataTemplate>
         <DataTemplate x:Key="IsX64CircleDataTemplate">
-            <Ellipse Width="10"
-                     Height="10">
+            <Ellipse Width="10" Height="10">
                 <Ellipse.Style>
                     <Style TargetType="{x:Type Ellipse}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsX64}"
-                                         Value="True">
+                            <DataTrigger Binding="{Binding IsX64}" Value="True">
                                 <Setter Property="Fill" Value="Green" />
                                 <Setter Property="ToolTip" Value="x64 Process" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsX64}"
-                                         Value="False">
+                            <DataTrigger Binding="{Binding IsX64}" Value="False">
                                 <Setter Property="Fill" Value="Red" />
                                 <Setter Property="ToolTip" Value="x86 Process" />
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsX64}"
-                                         Value="{x:Null}">
+                            <DataTrigger Binding="{Binding IsX64}" Value="{x:Null}">
                                 <Setter Property="Fill" Value="BurlyWood" />
                                 <Setter Property="ToolTip" Value="{Binding Error}" />
                             </DataTrigger>
@@ -133,59 +126,65 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0"
-              Margin="0,5,0,5">
+        <Grid Grid.Row="0" Margin="0,5,0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <TextBlock VerticalAlignment="Center">Search:</TextBlock>
-            <TextBox x:Name="SearchBox"
-                     Grid.Column="1"
-                     Margin="5,0,15,0"
-                     VerticalAlignment="Center"
-                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox
+                x:Name="SearchBox"
+                Grid.Column="1"
+                Margin="5,0,15,0"
+                VerticalAlignment="Center"
+                Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
-        <DataGrid x:Name="ProcessListDataGrid"
-                  Grid.Row="1"
-                  localUtils:DataGridTextSearch.SearchValue="{Binding ElementName=SearchBox, Path=Text, UpdateSourceTrigger=PropertyChanged}"
-                  AutoGenerateColumns="False"
-                  CellStyle="{StaticResource CustomizedCellStyle}"
-                  ItemsSource="{Binding Processes}"
-                  RowStyle="{StaticResource CustomizedRowStyle}"
-                  SelectedItem="{Binding SelectedProcess}">
+        <DataGrid
+            x:Name="ProcessListDataGrid"
+            Grid.Row="1"
+            localUtils:DataGridTextSearch.SearchValue="{Binding ElementName=SearchBox, Path=Text, UpdateSourceTrigger=PropertyChanged}"
+            AutoGenerateColumns="False"
+            CellStyle="{StaticResource CustomizedCellStyle}"
+            ItemsSource="{Binding Processes}"
+            RowStyle="{StaticResource CustomizedRowStyle}"
+            SelectedItem="{Binding SelectedProcess}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}"
-                                           CommandParameter="{Binding SelectedProcess}" />
+                    <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" CommandParameter="{Binding SelectedProcess}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding ProcessId}"
-                                    Header="Id"
-                                    IsReadOnly="True" />
-                <DataGridTextColumn Width="100"
-                                    Binding="{Binding Name}"
-                                    Header="Name"
-                                    IsReadOnly="True" />
-                <DataGridTemplateColumn CanUserSort="True"
-                                        CellTemplate="{StaticResource IsX64CircleDataTemplate}"
-                                        Header="Arch"
-                                        IsReadOnly="True"
-                                        SortMemberPath="IsX64" />
-                <DataGridTextColumn Width="150"
-                                    Binding="{Binding Description}"
-                                    Header="Description"
-                                    IsReadOnly="True" />
-                <DataGridTextColumn Width="100"
-                                    Binding="{Binding ExecutablePath}"
-                                    Header="Path"
-                                    IsReadOnly="True" />
-                <DataGridTextColumn Width="150"
-                                    Binding="{Binding CommandLine}"
-                                    Header="Command Line"
-                                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding ProcessId}"
+                    Header="Id"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="100"
+                    Binding="{Binding Name}"
+                    Header="Name"
+                    IsReadOnly="True" />
+                <DataGridTemplateColumn
+                    CanUserSort="True"
+                    CellTemplate="{StaticResource IsX64CircleDataTemplate}"
+                    Header="Arch"
+                    IsReadOnly="True"
+                    SortMemberPath="IsX64" />
+                <DataGridTextColumn
+                    Width="150"
+                    Binding="{Binding Description}"
+                    Header="Description"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="100"
+                    Binding="{Binding ExecutablePath}"
+                    Header="Path"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Width="150"
+                    Binding="{Binding CommandLine}"
+                    Header="Command Line"
+                    IsReadOnly="True" />
 
             </DataGrid.Columns>
         </DataGrid>

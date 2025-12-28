@@ -5,6 +5,7 @@ using Prism.Mvvm;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +20,7 @@ namespace DotNetMonitor.UI.ViewModels
         {
             RowDoubleClickCommand = new DelegateCommand<object>(OnRowDouleClick);
             PerformanceCounterViewModel = new PerformanceCounterViewModel();
+            KillCommand = new DelegateCommand<ProcessInfoViewModel>(OnKill);
         }
 
         public ICollectionView CollectionView
@@ -121,6 +123,7 @@ namespace DotNetMonitor.UI.ViewModels
         }
 
         public ICommand RowDoubleClickCommand { get; }
+        public ICommand KillCommand { get; }
 
         private void OnRowDouleClick(object arg)
         {
@@ -142,6 +145,12 @@ namespace DotNetMonitor.UI.ViewModels
         {
             var processInfoList = await ProcessUtil.LoadProcessesAsync();
             Processes = new ObservableCollection<ProcessInfoViewModel>(processInfoList);
+        }
+
+        private void OnKill(ProcessInfoViewModel p)
+        {
+            Process.GetProcessById(p.ProcessId.Value)?.Kill();
+            Processes.Remove(p);
         }
     }
 }

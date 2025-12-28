@@ -21,7 +21,6 @@ namespace DotNetMonitor.UI.ViewModels
 
             TrimWorksetCommand = new DelegateCommand(OnTrimWorkset);
             RefreshCommand = new DelegateCommand(OnRefresh);
-            KillCommand = new DelegateCommand<ProcessInfoViewModel>(OnKill);
             ExplorerFolderCommand = new DelegateCommand<ProcessInfoViewModel>(OnExplorerFolder, CanExecuateExplorerFolder);
             CopyPIDCommand = new DelegateCommand<ProcessInfoViewModel>(OnCopyPID);
         }
@@ -43,11 +42,6 @@ namespace DotNetMonitor.UI.ViewModels
             Process.Start("explorer.exe", folder);
         }
 
-        private void OnKill(ProcessInfoViewModel p)
-        {
-            Process.GetProcessById(p.ProcessId.Value)?.Kill();
-        }
-
         private void OnRefresh()
         {
             var process = Process.GetProcessById(ProcessId.Value);
@@ -64,7 +58,6 @@ namespace DotNetMonitor.UI.ViewModels
         public ICommand TrimWorksetCommand { get; }
 
         public ICommand RefreshCommand { get; }
-        public ICommand KillCommand { get; }
 
         public ICommand ExplorerFolderCommand { get; }
         public ICommand CopyPIDCommand { get; }
