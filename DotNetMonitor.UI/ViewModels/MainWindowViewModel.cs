@@ -7,11 +7,14 @@ using System.Runtime;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace DotNetMonitor.UI.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
+        private DispatcherTimer _dispatcherTimer;
+
         public MainWindowViewModel(ProcessListViewModel processListViewModel)
         {
             ProcessListViewModel = processListViewModel;
@@ -20,6 +23,20 @@ namespace DotNetMonitor.UI.ViewModels
             CustomizeCommand = new DelegateCommand(OnCustomize);
             MouseDownCommand = new DelegateCommand(OnMouseDown);
             OnFindAction = new Action<WindowInfo>(OnFind);
+
+
+            //_dispatcherTimer = new DispatcherTimer();
+            //_dispatcherTimer.Tick += DispatcherTimer_Tick;
+            //_dispatcherTimer.Interval = new TimeSpan(0, 0, 3);
+            //_dispatcherTimer.Start();
+        }
+
+        private void DispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            UIDispatcher.Dispatcher.BeginInvoke(DispatcherPriority.Background, () =>
+            {
+                OnRefreshProcessList();
+            });
         }
 
         private async void OnMouseDown()
