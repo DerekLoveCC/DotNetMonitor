@@ -46,7 +46,7 @@ namespace DotNetMonitor.Common.Analyzer
             {
                 foreach (var module in runtime.EnumerateModules())
                 {
-                    if (!fileNameToModuleMap.HasKey(module.AssemblyName))
+                    if (module.AssemblyName != null && !fileNameToModuleMap.HasKey(module.AssemblyName))
                     {
                         fileNameToModuleMap[module.AssemblyName] = new ProcessModuleInfo
                         {
@@ -78,8 +78,13 @@ namespace DotNetMonitor.Common.Analyzer
             _dataTarget = DataTarget.AttachToProcess(_processId, false);
             VerifyDataTarget(_dataTarget);
         }
-        private string GetFileVersion(string fileName)
+        private static string GetFileVersion(string fileName)
         {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                return string.Empty;
+            }
+
             var version = FileVersionInfo.GetVersionInfo(fileName);
 
             return version.ToString();
