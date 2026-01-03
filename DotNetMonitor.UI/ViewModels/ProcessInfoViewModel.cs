@@ -23,6 +23,17 @@ public class ProcessInfoViewModel : BindableBase
         RefreshCommand = new DelegateCommand(OnRefresh);
         ExplorerFolderCommand = new DelegateCommand<ProcessInfoViewModel>(OnExplorerFolder, CanExecuateExplorerFolder);
         CopyPIDCommand = new DelegateCommand<ProcessInfoViewModel>(OnCopyPID);
+        KillCommand = new DelegateCommand(OnKill);
+    }
+
+    private void OnKill()
+    {
+        if (ProcessId == null)
+        {
+            return;
+        }
+
+        Process.GetProcessById(ProcessId.Value).Kill();
     }
 
     private static void OnCopyPID(ProcessInfoViewModel model)
@@ -58,6 +69,7 @@ public class ProcessInfoViewModel : BindableBase
     public ICommand TrimWorksetCommand { get; }
 
     public ICommand RefreshCommand { get; }
+    public ICommand KillCommand { get; }
 
     public ICommand ExplorerFolderCommand { get; }
     public ICommand CopyPIDCommand { get; }
